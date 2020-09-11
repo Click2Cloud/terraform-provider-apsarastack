@@ -202,6 +202,12 @@ func Provider() terraform.ResourceProvider {
 			"apsarastack_db_backup_policy":                    resourceApsaraStackDBBackupPolicy(),
 			"apsarastack_db_connection":                       resourceApsaraStackDBConnection(),
 			"apsarastack_db_read_write_splitting_connection":  resourceApsaraStackDBReadWriteSplittingConnection(),
+			"apsarastack_log_project":                         resourceApsaraStackLogProject(),
+			"apsarastack_log_store":                           resourceApsaraStackLogStore(),
+			"apsarastack_log_store_index":                     resourceApsaraStackLogStoreIndex(),
+			"apsarastack_log_machine_group":                   resourceApsaraStackLogMachineGroup(),
+			"apsarastack_logtail_attachment":                  resourceApsaraStackLogtailAttachment(),
+			"apsarastack_logtail_config":                      resourceApsaraStackLogtailConfig(),
 		},
 
 		ConfigureFunc: providerConfigure,
