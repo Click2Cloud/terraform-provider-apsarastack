@@ -13,7 +13,7 @@ import (
 
 func TestAccAliCloudImportImage(t *testing.T) {
 	var v ecs.Image
-	resourceId := "alicloud_image_import.default"
+	resourceId := "apsarastack_image_import.default"
 	ra := resourceAttrInit(resourceId, testAccImageImageCheckMap)
 	serviceFunc := func() interface{} {
 		return &EcsService{testAccProvider.Meta().(*connectivity.ApsaraStackClient)}

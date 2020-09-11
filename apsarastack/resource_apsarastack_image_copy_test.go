@@ -16,11 +16,11 @@ import (
 func TestAccAliCloudImageCopyBasic(t *testing.T) {
 	var v ecs.Image
 
-	resourceId := "alicloud_image_copy.default"
+	resourceId := "apsarastack_image_copy.default"
 	// multi provideris
 	var providers []*schema.Provider
 	providerFactories := map[string]terraform.ResourceProviderFactory{
-		"alicloud": func() (terraform.ResourceProvider, error) {
+		"apsarastack": func() (terraform.ResourceProvider, error) {
 			p := Provider()
 			providers = append(providers, p.(*schema.Provider))
 			return p, nil
@@ -41,8 +41,8 @@ func TestAccAliCloudImageCopyBasic(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
-					"provider":         "alicloud.sh",
-					"source_image_id":  "${alicloud_image.default.id}",
+					"provider":         "apsarastack.sh",
+					"source_image_id":  "${apsarastack_image.default.id}",
 					"source_region_id": "cn-hangzhou",
 					"description":      fmt.Sprintf("tf-testAccEcsImageConfigBasic%ddescription", rand),
 					"image_name":       name,
@@ -177,7 +177,7 @@ func testAccCheckImageDestroyWithProvider(s *terraform.State, provider *schema.P
 	ecsService := EcsService{client}
 
 	for _, rs := range s.RootModule().Resources {
-		if rs.Type != "alicloud_copy_image" {
+		if rs.Type != "apsarastack_copy_image" {
 			continue
 		}
 
@@ -202,52 +202,52 @@ func resourceImageCopyBasicConfigDependence(name string) string {
 variable "name" {
 	default = "%s"
 }
-provider "alicloud" {
+provider "apsarastack" {
   alias = "sh"
   region = "cn-shanghai"
 }
-provider "alicloud" {
+provider "apsarastack" {
   alias = "hz"
   region = "cn-hangzhou"
 }
-data "alicloud_instance_types" "default" {
-    provider = "alicloud.hz"
+data "apsarastack_instance_types" "default" {
+    provider = "apsarastack.hz"
  	cpu_core_count    = 1
 	memory_size       = 2
 }
-data "alicloud_images" "default" {
-  provider = "alicloud.hz"
+data "apsarastack_images" "default" {
+  provider = "apsarastack.hz"
   name_regex  = "^ubuntu_18.*64"
   owners      = "system"
 }
-resource "alicloud_vpc" "default" {
-  provider = "alicloud.hz"
+resource "apsarastack_vpc" "default" {
+  provider = "apsarastack.hz"
   name       = "${var.name}"
   cidr_block = "172.16.0.0/16"
 }
-resource "alicloud_vswitch" "default" {
-  provider = "alicloud.hz"
-  vpc_id            = "${alicloud_vpc.default.id}"
+resource "apsarastack_vswitch" "default" {
+  provider = "apsarastack.hz"
+  vpc_id            = "${apsarastack_vpc.default.id}"
   cidr_block        = "172.16.0.0/24"
-  availability_zone = "${data.alicloud_instance_types.default.instance_types.0.availability_zones.0}"
+  availability_zone = "${data.apsarastack_instance_types.default.instance_types.0.availability_zones.0}"
   name              = "${var.name}"
 }
-resource "alicloud_security_group" "default" {
-  provider = "alicloud.hz"
+resource "apsarastack_security_group" "default" {
+  provider = "apsarastack.hz"
   name   = "${var.name}"
-  vpc_id = "${alicloud_vpc.default.id}"
+  vpc_id = "${apsarastack_vpc.default.id}"
 }
-resource "alicloud_instance" "default" {
-  provider = "alicloud.hz"
-  image_id = "${data.alicloud_images.default.ids[0]}"
-  instance_type = "${data.alicloud_instance_types.default.ids[0]}"
-  security_groups = "${[alicloud_security_group.default.id]}"
-  vswitch_id = "${alicloud_vswitch.default.id}"
+resource "apsarastack_instance" "default" {
+  provider = "apsarastack.hz"
+  image_id = "${data.apsarastack_images.default.ids[0]}"
+  instance_type = "${data.apsarastack_instance_types.default.ids[0]}"
+  security_groups = "${[apsarastack_security_group.default.id]}"
+  vswitch_id = "${apsarastack_vswitch.default.id}"
   instance_name = "${var.name}"
 }
-resource "alicloud_image" "default" {
-  provider = "alicloud.hz"
-  instance_id = "${alicloud_instance.default.id}"
+resource "apsarastack_image" "default" {
+  provider = "apsarastack.hz"
+  instance_id = "${apsarastack_instance.default.id}"
   image_name        = "${var.name}"
 }
 `, name)

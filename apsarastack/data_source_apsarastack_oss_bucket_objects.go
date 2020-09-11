@@ -126,7 +126,7 @@ func dataSourceApsaraStackOssBucketObjectsRead(d *schema.ResourceData, meta inte
 			return bucket.ListObjects(options...)
 		})
 		if err != nil {
-			return WrapErrorf(err, DataDefaultErrorMsg, "alicloud_oss_bucket_object", "ListObjects", ApsaraStackOssGoSdk)
+			return WrapErrorf(err, DataDefaultErrorMsg, "apsarastack_oss_bucket_object", "ListObjects", ApsaraStackOssGoSdk)
 		}
 		if debugOn() {
 			addDebug("ListObjects", raw, requestInfo, map[string]interface{}{"options": options})

@@ -7,10 +7,6 @@ import (
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/adb"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/bssopenapi"
 	cdn_new "github.com/aliyun/alibaba-cloud-sdk-go/services/cdn"
-	"github.com/aliyun/alibaba-cloud-sdk-go/services/ess"
-	"github.com/aliyun/alibaba-cloud-sdk-go/services/location"
-	"github.com/aliyun/alibaba-cloud-sdk-go/services/slb"
-	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/dds"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/elasticsearch"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ess"
@@ -18,8 +14,8 @@ import (
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/hbase"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/location"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/polardb"
-
-	//r_kvstore "github.com/aliyun/alibaba-cloud-sdk-go/services/r_kvstore"
+	slsPop "github.com/aliyun/alibaba-cloud-sdk-go/services/sls"
+	sls "github.com/aliyun/aliyun-log-go-sdk"
 
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/r-kvstore"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/rds"
@@ -50,46 +46,32 @@ import (
 )
 
 type ApsaraStackClient struct {
-	Region         Region
-	RegionId       string
-	AccessKey      string
-	SecretKey      string
-	config         *Config
-	ecsconn        *ecs.Client
-	vpcconn        *vpc.Client
-	slbconn        *slb.Client
-	csconn         *cs.Client
-	ossconn        *oss.Client
-	cdnconn        *cdn.CdnClient
-	cdnconn_new    *cdn_new.Client
-	kmsconn        *kms.Client
-	bssopenapiconn *bssopenapi.Client
-	ramconn        *ram.Client
-	essconn        *ess.Client
 	Region            Region
 	RegionId          string
 	AccessKey         string
 	SecretKey         string
 	config            *Config
-	accountId         string
 	ecsconn           *ecs.Client
-	accountIdMutex    sync.RWMutex
 	vpcconn           *vpc.Client
 	slbconn           *slb.Client
 	csconn            *cs.Client
-	polarDBconn       *polardb.Client
+	ossconn           *oss.Client
 	cdnconn           *cdn.CdnClient
 	cdnconn_new       *cdn_new.Client
 	kmsconn           *kms.Client
 	bssopenapiconn    *bssopenapi.Client
-	rdsconn           *rds.Client
 	ramconn           *ram.Client
 	essconn           *ess.Client
+	logconn           *sls.Client
+	logpopconn        *slsPop.Client
+	accountId         string
+	accountIdMutex    sync.RWMutex
+	polarDBconn       *polardb.Client
+	rdsconn           *rds.Client
 	gpdbconn          *gpdb.Client
 	elasticsearchconn *elasticsearch.Client
 	hbaseconn         *hbase.Client
 	adbconn           *adb.Client
-	ossconn           *oss.Client
 	rkvconn           *r_kvstore.Client
 	fcconn            *fc.Client
 	ddsconn           *dds.Client
@@ -257,7 +239,57 @@ func (client *ApsaraStackClient) WithRkvClient(do func(*r_kvstore.Client) (inter
 
 	return do(client.rkvconn)
 }
+func (client *ApsaraStackClient) WithLogClient(do func(*sls.Client) (interface{}, error)) (interface{}, error) {
+	goSdkMutex.Lock()
+	defer goSdkMutex.Unlock()
 
+	// Initialize the LOG client if necessary
+	if client.logconn == nil {
+		endpoint := client.config.LogEndpoint
+		if endpoint == "" {
+			endpoint = loadEndpoint(client.config.RegionId, LOGCode)
+			if endpoint == "" {
+				endpoint = fmt.Sprintf("%s.log.aliyuncs.com", client.config.RegionId)
+			}
+		}
+		if !strings.HasPrefix(endpoint, "http") {
+			endpoint = fmt.Sprintf("https://%s", strings.TrimPrefix(endpoint, "://"))
+		}
+		client.logconn = &sls.Client{
+			AccessKeyID:     client.config.AccessKey,
+			AccessKeySecret: client.config.SecretKey,
+			Endpoint:        endpoint,
+			SecurityToken:   client.config.SecurityToken,
+			UserAgent:       client.getUserAgent(),
+		}
+	}
+
+	return do(client.logconn)
+}
+func (client *ApsaraStackClient) WithLogPopClient(do func(*slsPop.Client) (interface{}, error)) (interface{}, error) {
+	// Initialize the HBase client if necessary
+	if client.logpopconn == nil {
+		endpoint := client.config.LogEndpoint
+		if endpoint == "" {
+			endpoint = loadEndpoint(client.config.RegionId, LOGCode)
+		}
+		if endpoint != "" {
+			endpoint = fmt.Sprintf("%s.log.aliyuncs.com", client.config.RegionId)
+		}
+		logpopconn, err := slsPop.NewClientWithOptions(client.config.RegionId, client.getSdkConfig(), client.config.getAuthCredential(true))
+
+		if err != nil {
+			return nil, fmt.Errorf("unable to initialize the sls client: %#v", err)
+		}
+
+		logpopconn.AppendUserAgent(Terraform, terraformVersion)
+		logpopconn.AppendUserAgent(Provider, providerVersion)
+		logpopconn.AppendUserAgent(Module, client.config.ConfigurationSource)
+		client.logpopconn = logpopconn
+	}
+
+	return do(client.logpopconn)
+}
 func (client *ApsaraStackClient) WithGpdbClient(do func(*gpdb.Client) (interface{}, error)) (interface{}, error) {
 	// Initialize the GPDB client if necessary
 	if client.gpdbconn == nil {
@@ -292,7 +324,6 @@ func (client *ApsaraStackClient) WithAdbClient(do func(*adb.Client) (interface{}
 			}
 		}
 
-
 		adbconn, err := adb.NewClientWithOptions(client.config.RegionId, client.getSdkConfig(), client.config.getAuthCredential(true))
 		if err != nil {
 			return nil, fmt.Errorf("unable to initialize the adb client: %#v", err)
@@ -330,96 +361,7 @@ func (client *ApsaraStackClient) WithHbaseClient(do func(*hbase.Client) (interfa
 
 	return do(client.hbaseconn)
 }
-func (client *ApsaraStackClient) WithFcClient(do func(*fc.Client) (interface{}, error)) (interface{}, error) {
-	goSdkMutex.Lock()
-	defer goSdkMutex.Unlock()
 
-	// Initialize the FC client if necessary
-	if client.fcconn == nil {
-		endpoint := client.config.FcEndpoint
-		if endpoint == "" {
-			endpoint = loadEndpoint(client.config.RegionId, FCCode)
-			if endpoint == "" {
-				endpoint = fmt.Sprintf("%s.fc.aliyuncs.com", client.config.RegionId)
-			}
-		}
-		if strings.HasPrefix(endpoint, "http") {
-			endpoint = strings.TrimPrefix(strings.TrimPrefix(endpoint, "http://"), "https://")
-		}
-		accountId, err := client.AccountId()
-		if err != nil {
-			return nil, err
-		}
-
-		config := client.getSdkConfig()
-		clientOptions := []fc.ClientOption{fc.WithSecurityToken(client.config.SecurityToken), fc.WithTransport(config.HttpTransport),
-			fc.WithTimeout(30), fc.WithRetryCount(DefaultClientRetryCountSmall)}
-		fcconn, err := fc.NewClient(fmt.Sprintf("https://%s.%s", accountId, endpoint), string(ApiVersion20160815), client.config.AccessKey, client.config.SecretKey, clientOptions...)
-		if err != nil {
-			return nil, fmt.Errorf("unable to initialize the FC client: %#v", err)
-		}
-
-
-		adbconn, err := adb.NewClientWithOptions(client.config.RegionId, client.getSdkConfig(), client.config.getAuthCredential(true))
-		if err != nil {
-			return nil, fmt.Errorf("unable to initialize the adb client: %#v", err)
-
-		}
-
-func (client *ApsaraStackClient) WithEssClient(do func(*ess.Client) (interface{}, error)) (interface{}, error) {
-	// Initialize the ESS client if necessary
-	if client.essconn == nil {
-		endpoint := client.config.EssEndpoint
-		if endpoint == "" {
-			endpoint = loadEndpoint(client.config.RegionId, ESSCode)
-		}
-		if endpoint != "" {
-			endpoints.AddEndpointMapping(client.config.RegionId, string(ESSCode), endpoint)
-		}
-		essconn, err := ess.NewClientWithOptions(client.config.RegionId, client.getSdkConfig(), client.config.getAuthCredential(true))
-		if err != nil {
-			return nil, fmt.Errorf("unable to initialize the ESS client: %#v", err)
-		}
-
-		essconn.AppendUserAgent(Terraform, terraformVersion)
-		essconn.AppendUserAgent(Provider, providerVersion)
-		essconn.AppendUserAgent(Module, client.config.ConfigurationSource)
-		client.essconn = essconn
-	}
-
-	return do(client.essconn)
-}
-		adbconn.AppendUserAgent(Terraform, terraformVersion)
-		adbconn.AppendUserAgent(Provider, providerVersion)
-		adbconn.AppendUserAgent(Module, client.config.ConfigurationSource)
-		client.adbconn = adbconn
-	}
-
-	return do(client.adbconn)
-}
-func (client *ApsaraStackClient) WithHbaseClient(do func(*hbase.Client) (interface{}, error)) (interface{}, error) {
-	// Initialize the HBase client if necessary
-	if client.hbaseconn == nil {
-		endpoint := client.config.HBaseEndpoint
-		if endpoint == "" {
-			endpoint = loadEndpoint(client.config.RegionId, HBASECode)
-		}
-		if endpoint != "" {
-			endpoints.AddEndpointMapping(client.config.RegionId, string(HBASECode), endpoint)
-		}
-		hbaseconn, err := hbase.NewClientWithOptions(client.config.RegionId, client.getSdkConfig(), client.config.getAuthCredential(true))
-		if err != nil {
-			return nil, fmt.Errorf("unable to initialize the hbase client: %#v", err)
-		}
-
-		hbaseconn.AppendUserAgent(Terraform, terraformVersion)
-		hbaseconn.AppendUserAgent(Provider, providerVersion)
-		hbaseconn.AppendUserAgent(Module, client.config.ConfigurationSource)
-		client.hbaseconn = hbaseconn
-	}
-
-	return do(client.hbaseconn)
-}
 func (client *ApsaraStackClient) WithFcClient(do func(*fc.Client) (interface{}, error)) (interface{}, error) {
 	goSdkMutex.Lock()
 	defer goSdkMutex.Unlock()
@@ -482,63 +424,6 @@ func (client *ApsaraStackClient) WithVpcClient(do func(*vpc.Client) (interface{}
 	}
 
 	return do(client.vpcconn)
-}
-
-func (client *ApsaraStackClient) WithOssClient(do func(*oss.Client) (interface{}, error)) (interface{}, error) {
-	goSdkMutex.Lock()
-	defer goSdkMutex.Unlock()
-
-	// Initialize the OSS client if necessary
-	if client.ossconn == nil {
-		schma := "https"
-		endpoint := client.config.OssEndpoint
-		if endpoint == "" {
-			endpoint = loadEndpoint(client.config.RegionId, OSSCode)
-		}
-		if endpoint == "" {
-			endpointItem, _ := client.describeEndpointForService(strings.ToLower(string(OSSCode)))
-			if endpointItem != nil {
-				if len(endpointItem.Protocols.Protocols) > 0 {
-					// HTTP or HTTPS
-					schma = strings.ToLower(endpointItem.Protocols.Protocols[0])
-					for _, p := range endpointItem.Protocols.Protocols {
-						if strings.ToLower(p) == "https" {
-							schma = strings.ToLower(p)
-							break
-						}
-					}
-				}
-				endpoint = endpointItem.Endpoint
-			} else {
-				endpoint = fmt.Sprintf("oss-%s.aliyuncs.com", client.RegionId)
-			}
-		}
-		if !strings.HasPrefix(endpoint, "http") {
-			endpoint = fmt.Sprintf("%s://%s", schma, endpoint)
-		}
-
-		clientOptions := []oss.ClientOption{oss.UserAgent(client.getUserAgent()),
-			oss.SecurityToken(client.config.SecurityToken)}
-		proxy, err := client.getHttpProxy()
-		if proxy != nil {
-			skip, err := client.skipProxy(endpoint)
-			if err != nil {
-				return nil, err
-			}
-			if !skip {
-				clientOptions = append(clientOptions, oss.Proxy(proxy.String()))
-			}
-		}
-
-		ossconn, err := oss.New(endpoint, client.config.AccessKey, client.config.SecretKey, clientOptions...)
-		if err != nil {
-			return nil, fmt.Errorf("unable to initialize the OSS client: %#v", err)
-		}
-
-		client.ossconn = ossconn
-	}
-
-	return do(client.ossconn)
 }
 
 func (client *ApsaraStackClient) WithSlbClient(do func(*slb.Client) (interface{}, error)) (interface{}, error) {
@@ -994,57 +879,6 @@ func (client *ApsaraStackClient) getHttpProxyUrl() *url.URL {
 		}
 	}
 	return nil
-}
-
-func (client *ApsaraStackClient) WithOssClient(do func(*oss.Client) (interface{}, error)) (interface{}, error) {
-	goSdkMutex.Lock()
-	defer goSdkMutex.Unlock()
-
-	// Initialize the OSS client if necessary
-	if client.ossconn == nil {
-		schma := "https"
-		endpoint := client.config.OssEndpoint
-		if endpoint == "" {
-			endpoint = loadEndpoint(client.config.RegionId, OSSCode)
-		}
-		if endpoint == "" {
-			endpointItem, _ := client.describeEndpointForService(strings.ToLower(string(OSSCode)))
-			if endpointItem != nil {
-				if len(endpointItem.Protocols.Protocols) > 0 {
-					// HTTP or HTTPS
-					schma = strings.ToLower(endpointItem.Protocols.Protocols[0])
-					for _, p := range endpointItem.Protocols.Protocols {
-						if strings.ToLower(p) == "https" {
-							schma = strings.ToLower(p)
-							break
-						}
-					}
-				}
-				endpoint = endpointItem.Endpoint
-			} else {
-				endpoint = fmt.Sprintf("oss-%s.apsarastack.com", client.RegionId)
-			}
-		}
-		if !strings.HasPrefix(endpoint, "http") {
-			endpoint = fmt.Sprintf("%s://%s", schma, endpoint)
-		}
-
-		clientOptions := []oss.ClientOption{oss.UserAgent(client.getUserAgent()),
-			oss.SecurityToken(client.config.SecurityToken)}
-		proxyUrl := client.getHttpProxyUrl()
-		if proxyUrl != nil {
-			clientOptions = append(clientOptions, oss.Proxy(proxyUrl.String()))
-		}
-
-		ossconn, err := oss.New(endpoint, client.config.AccessKey, client.config.SecretKey, clientOptions...)
-		if err != nil {
-			return nil, fmt.Errorf("unable to initialize the OSS client: %#v", err)
-		}
-
-		client.ossconn = ossconn
-	}
-
-	return do(client.ossconn)
 }
 
 func (client *ApsaraStackClient) WithOssBucketByName(bucketName string, do func(*oss.Bucket) (interface{}, error)) (interface{}, error) {

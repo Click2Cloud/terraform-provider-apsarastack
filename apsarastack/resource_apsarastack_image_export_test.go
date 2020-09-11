@@ -12,7 +12,7 @@ import (
 
 func TestAccAliCloudImageExport(t *testing.T) {
 	var v ecs.Image
-	resourceId := "alicloud_image_export.default"
+	resourceId := "apsarastack_image_export.default"
 	ra := resourceAttrInit(resourceId, testAccExportImageCheckMap)
 	serviceFunc := func() interface{} {
 		return &EcsService{testAccProvider.Meta().(*connectivity.ApsaraStackClient)}
@@ -35,8 +35,8 @@ func TestAccAliCloudImageExport(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
-					"image_id":   "${alicloud_image.default.id}",
-					"oss_bucket": "${alicloud_oss_bucket.default.bucket}",
+					"image_id":   "${apsarastack_image.default.id}",
+					"oss_bucket": "${apsarastack_oss_bucket.default.bucket}",
 					"oss_prefix": "ecsExport",
 				}),
 				Check: resource.ComposeTestCheckFunc(
@@ -60,40 +60,40 @@ variable "name" {
 	default = "%s"
 }
 
-data "alicloud_instance_types" "default" {
+data "apsarastack_instance_types" "default" {
 	cpu_core_count    = 1
 	memory_size       = 2
 }
-data "alicloud_images" "default" {
+data "apsarastack_images" "default" {
  name_regex  = "^ubuntu_18.*64"
  owners      = "system"
 }
-resource "alicloud_vpc" "default" {
+resource "apsarastack_vpc" "default" {
  name       = "${var.name}"
  cidr_block = "172.16.0.0/16"
 }
-resource "alicloud_vswitch" "default" {
- vpc_id            = "${alicloud_vpc.default.id}"
+resource "apsarastack_vswitch" "default" {
+ vpc_id            = "${apsarastack_vpc.default.id}"
  cidr_block        = "172.16.0.0/24"
- availability_zone = "${data.alicloud_instance_types.default.instance_types.0.availability_zones.0}"
+ availability_zone = "${data.apsarastack_instance_types.default.instance_types.0.availability_zones.0}"
  name              = "${var.name}"
 }
-resource "alicloud_security_group" "default" {
+resource "apsarastack_security_group" "default" {
  name   = "${var.name}"
- vpc_id = "${alicloud_vpc.default.id}"
+ vpc_id = "${apsarastack_vpc.default.id}"
 }
-resource "alicloud_instance" "default" {
- image_id = "${data.alicloud_images.default.ids[0]}"
- instance_type = "${data.alicloud_instance_types.default.ids[0]}"
- security_groups = "${[alicloud_security_group.default.id]}"
- vswitch_id = "${alicloud_vswitch.default.id}"
+resource "apsarastack_instance" "default" {
+ image_id = "${data.apsarastack_images.default.ids[0]}"
+ instance_type = "${data.apsarastack_instance_types.default.ids[0]}"
+ security_groups = "${[apsarastack_security_group.default.id]}"
+ vswitch_id = "${apsarastack_vswitch.default.id}"
  instance_name = "${var.name}"
 }
-resource "alicloud_image" "default" {
- instance_id = "${alicloud_instance.default.id}"
+resource "apsarastack_image" "default" {
+ instance_id = "${apsarastack_instance.default.id}"
  image_name        = "${var.name}"
 }
-resource "alicloud_oss_bucket" "default" {
+resource "apsarastack_oss_bucket" "default" {
   bucket = "${var.name}"
 }
 `, name)

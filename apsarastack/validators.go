@@ -1,6 +1,7 @@
 package apsarastack
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"net"
@@ -113,6 +114,29 @@ func validateOssBucketDateTimestamp(v interface{}, k string) (ws []string, error
 	if err != nil {
 		errors = append(errors, fmt.Errorf(
 			"%q cannot be parsed as date YYYY-MM-DD Format", value))
+	}
+	return
+}
+func normalizeJsonString(jsonString interface{}) (string, error) {
+	var j interface{}
+
+	if jsonString == nil || jsonString.(string) == "" {
+		return "", nil
+	}
+
+	s := jsonString.(string)
+
+	err := json.Unmarshal([]byte(s), &j)
+	if err != nil {
+		return s, err
+	}
+
+	// The error is intentionally ignored here to allow empty policies to passthrough validation.
+	// This covers any interpolated values
+	bytes, _ := json.Marshal(j)
+
+	return string(bytes[:]), nil
+}
 func validateDBConnectionPort(v interface{}, k string) (ws []string, errors []error) {
 	if value := v.(string); value != "" {
 		port, err := strconv.Atoi(value)

@@ -2,8 +2,6 @@ package connectivity
 
 import (
 	"fmt"
-	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/endpoints"
-	"github.com/aliyun/alibaba-cloud-sdk-go/services/rds"
 	"log"
 
 	"encoding/json"
@@ -47,28 +45,18 @@ type Config struct {
 	RamEndpoint              string
 	Insecure                 bool
 	Proxy                    string
-	OssEndpoint              string
 	EssEndpoint              string
 
-	EcsEndpoint           string
 	RdsEndpoint           string
 	SlbEndpoint           string
-	VpcEndpoint           string
 	CenEndpoint           string
-	EssEndpoint           string
-	OssEndpoint           string
 	OnsEndpoint           string
 	AlikafkaEndpoint      string
 	DnsEndpoint           string
-	RamEndpoint           string
-	CsEndpoint            string
 	CrEndpoint            string
-	CdnEndpoint           string
-	KmsEndpoint           string
 	OtsEndpoint           string
 	CmsEndpoint           string
 	PvtzEndpoint          string
-	StsEndpoint           string
 	LogEndpoint           string
 	DrdsEndpoint          string
 	DdsEndpoint           string
@@ -79,10 +67,8 @@ type Config struct {
 	ApigatewayEndpoint    string
 	DatahubEndpoint       string
 	MnsEndpoint           string
-	LocationEndpoint      string
 	ElasticsearchEndpoint string
 	NasEndpoint           string
-	BssOpenApiEndpoint    string
 	DdoscooEndpoint       string
 	DdosbgpEndpoint       string
 	SagEndpoint           string
@@ -108,8 +94,6 @@ type Config struct {
 	DcdnEndpoint            string
 	MseEndpoint             string
 	ActiontrailEndpoint     string
-	Insecure                bool
-	Proxy                   string
 }
 
 func (c *Config) loadAndValidate() error {
@@ -131,29 +115,30 @@ func (c *Config) validateRegion() error {
 
 	return fmt.Errorf("Invalid Alibaba Cloud region: %s", c.RegionId)
 }
-func (client *ApsaraStackClient) WithRdsClient(do func(*rds.Client) (interface{}, error)) (interface{}, error) {
-	// Initialize the RDS client if necessary
-	if client.rdsconn == nil {
-		endpoint := client.config.RdsEndpoint
-		if endpoint == "" {
-			endpoint = loadEndpoint(client.config.RegionId, RDSCode)
-		}
-		if endpoint != "" {
-			endpoints.AddEndpointMapping(client.config.RegionId, string(RDSCode), endpoint)
-		}
-		rdsconn, err := rds.NewClientWithOptions(client.config.RegionId, client.getSdkConfig(), client.config.getAuthCredential(true))
-		if err != nil {
-			return nil, fmt.Errorf("unable to initialize the RDS client: %#v", err)
-		}
 
-		rdsconn.AppendUserAgent(Terraform, terraformVersion)
-		rdsconn.AppendUserAgent(Provider, providerVersion)
-		rdsconn.AppendUserAgent(Module, client.config.ConfigurationSource)
-		client.rdsconn = rdsconn
-	}
-
-	return do(client.rdsconn)
-}
+//func (client *ApsaraStackClient) WithRdsClient(do func(*rds.Client) (interface{}, error)) (interface{}, error) {
+//	// Initialize the RDS client if necessary
+//	if client.rdsconn == nil {
+//		endpoint := client.config.RdsEndpoint
+//		if endpoint == "" {
+//			endpoint = loadEndpoint(client.config.RegionId, RDSCode)
+//		}
+//		if endpoint != "" {
+//			endpoints.AddEndpointMapping(client.config.RegionId, string(RDSCode), endpoint)
+//		}
+//		rdsconn, err := rds.NewClientWithOptions(client.config.RegionId, client.getSdkConfig(), client.config.getAuthCredential(true))
+//		if err != nil {
+//			return nil, fmt.Errorf("unable to initialize the RDS client: %#v", err)
+//		}
+//
+//		rdsconn.AppendUserAgent(Terraform, terraformVersion)
+//		rdsconn.AppendUserAgent(Provider, providerVersion)
+//		rdsconn.AppendUserAgent(Module, client.config.ConfigurationSource)
+//		client.rdsconn = rdsconn
+//	}
+//
+//	return do(client.rdsconn)
+//}
 
 func (c *Config) getAuthCredential(stsSupported bool) auth.Credential {
 	if c.AccessKey != "" && c.SecretKey != "" {
