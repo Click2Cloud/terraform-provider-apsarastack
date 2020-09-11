@@ -233,7 +233,7 @@ resource "apsarastack_cr_ee_repo" "target_repo" {
 }
 
 func resourceCrEESyncRuleConfigMultiDependence(name string) string {
-	region := os.Getenv("ALICLOUD_REGION")
+	region := os.Getenv("APSARASTACK_REGION")
 	sourceInstanceId := os.Getenv("CR_EE_TEST_SOURCE_INSTANCE_ID")
 	targetInstanceId := os.Getenv("CR_EE_TEST_TARGET_INSTANCE_ID")
 	configTemplate := `
