@@ -185,3 +185,15 @@ func PostPaidAndRenewDiffSuppressFunc(k, old, new string, d *schema.ResourceData
 	}
 	return true
 }
+
+func dnsValueDiffSuppressFunc(k, old, new string, d *schema.ResourceData) bool {
+	switch d.Get("type") {
+	case "NS", "MX", "CNAME", "SRV":
+		new = strings.TrimSuffix(strings.TrimSpace(new), ".")
+	}
+	return old == new
+}
+
+func dnsPriorityDiffSuppressFunc(k, old, new string, d *schema.ResourceData) bool {
+	return d.Get("type").(string) != "MX"
+}
