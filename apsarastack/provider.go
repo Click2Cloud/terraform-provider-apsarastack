@@ -142,7 +142,13 @@ func Provider() terraform.ResourceProvider {
 			"apsarastack_db_zones":                       dataSourceApsaraStackDBZones(),
 			"apsarastack_slb_server_certificates":        dataSourceApsaraStackSlbServerCertificates(),
 			"apsarastack_slb_backend_servers":            dataSourceApsaraStackSlbBackendServers(),
-			"apsarastack_ess_scalingrules":               dataSourceApsaraStackEssScalingRules(),
+
+			"apsarastack_cr_ee_instances":  dataSourceApsaraStackCrEEInstances(),
+			"apsarastack_cr_ee_namespaces": dataSourceApsaraStackCrEENamespaces(),
+			"apsarastack_cr_ee_repos":      dataSourceApsaraStackCrEERepos(),
+			"apsarastack_cr_ee_sync_rules": dataSourceApsaraStackCrEESyncRules(),
+			"apsarastack_cr_namespaces":    dataSourceApsaraStackCRNamespaces(),
+			"apsarastack_cr_repos":         dataSourceApsaraStackCRRepos(),
 		},
 		ResourcesMap: map[string]*schema.Resource{
 			"apsarastack_disk":                                resourceApsaraStackDisk(),
@@ -180,7 +186,12 @@ func Provider() terraform.ResourceProvider {
 			"apsarastack_db_instance":                         resourceApsaraStackDBInstance(),
 			"apsarastack_slb_server_certificate":              resourceApsaraStackSlbServerCertificate(),
 			"apsarastack_slb_backend_server":                  resourceApsaraStackSlbBackendServer(),
-			"apsarastack_ess_scalingrule":                     resourceApsaraStackEssScalingRule(),
+
+			"apsarastack_cr_ee_namespace": resourceApsaraStackCrEENamespace(),
+			"apsarastack_cr_ee_repo":      resourceApsaraStackCrEERepo(),
+			"apsarastack_cr_ee_sync_rule": resourceApsaraStackCrEESyncRule(),
+			"apsarastack_cr_namespace":    resourceApsaraStackCRNamespace(),
+			"apsarastack_cr_repo":         resourceApsaraStackCRRepo(),
 		},
 
 		ConfigureFunc: providerConfigure,
