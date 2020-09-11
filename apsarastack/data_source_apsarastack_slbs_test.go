@@ -120,7 +120,7 @@ func TestAccApsaraStackSlbsDataSource(t *testing.T) {
 			"ids.#":                           "1",
 			"names.#":                         "1",
 			"slbs.0.id":                       CHECKSET,
-			"slbs.0.name":                     fmt.Sprintf("tf-testAccCheckAlicloudSlbsDataSourceBasic-%d", rand),
+			"slbs.0.name":                     fmt.Sprintf("tf-testAccCheckApsarastackSlbsDataSourceBasic-%d", rand),
 			"slbs.0.region_id":                CHECKSET,
 			"slbs.0.master_availability_zone": CHECKSET,
 			"slbs.0.slave_availability_zone":  CHECKSET,
@@ -161,7 +161,7 @@ func testAccCheckApsaraStackSlbDataSourceConfig(rand int, attrMap map[string]str
 
 	config := fmt.Sprintf(`
 variable "name" {
-	default = "tf-testAccCheckAlicloudSlbsDataSourceBasic-%d"
+	default = "tf-testAccCheckApsarastackSlbsDataSourceBasic-%d"
 }
 
 data "apsarastack_zones" "default" {
