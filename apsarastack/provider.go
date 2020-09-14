@@ -288,7 +288,7 @@ func providerConfigure(d *schema.ResourceData) (interface{}, error) {
 	domain := d.Get("domain").(string)
 	if domain != "" {
 		config.EcsEndpoint = "ecs." + domain
-
+		config.VpcEndpoint = "vpc." + domain
 		config.StsEndpoint = "sts." + domain
 
 	} else {
