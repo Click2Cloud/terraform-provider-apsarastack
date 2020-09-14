@@ -135,10 +135,10 @@ func (client *ApsaraStackClient) WithEcsClient(do func(*ecs.Client) (interface{}
 		ecsconn.AppendUserAgent(Terraform, terraformVersion)
 		ecsconn.AppendUserAgent(Provider, providerVersion)
 		ecsconn.AppendUserAgent(Module, client.config.ConfigurationSource)
-		//ecsconn.SetHTTPSInsecure(client.config.Insecure)
-		//if client.config.Proxy != "" {
-		//	ecsconn.SetHttpsProxy(client.config.Proxy)
-		//}
+		ecsconn.SetHTTPSInsecure(client.config.Insecure)
+		if client.config.Proxy != "" {
+			ecsconn.SetHttpsProxy(client.config.Proxy)
+		}
 		client.ecsconn = ecsconn
 	}
 
@@ -416,10 +416,10 @@ func (client *ApsaraStackClient) WithVpcClient(do func(*vpc.Client) (interface{}
 		vpcconn.AppendUserAgent(Terraform, terraformVersion)
 		vpcconn.AppendUserAgent(Provider, providerVersion)
 		vpcconn.AppendUserAgent(Module, client.config.ConfigurationSource)
-		//vpcconn.SetHTTPSInsecure(client.config.Insecure)
-		//if client.config.Proxy != "" {
-		//	vpcconn.SetHttpsProxy(client.config.Proxy)
-		//}
+		vpcconn.SetHTTPSInsecure(client.config.Insecure)
+		if client.config.Proxy != "" {
+			vpcconn.SetHttpsProxy(client.config.Proxy)
+		}
 		client.vpcconn = vpcconn
 	}
 
@@ -632,10 +632,10 @@ func (client *ApsaraStackClient) WithKmsClient(do func(*kms.Client) (interface{}
 		kmsconn.AppendUserAgent(Terraform, terraformVersion)
 		kmsconn.AppendUserAgent(Provider, providerVersion)
 		kmsconn.AppendUserAgent(Module, client.config.ConfigurationSource)
-		//kmsconn.SetHTTPSInsecure(client.config.Insecure)
-		//if client.config.Proxy != "" {
-		//	kmsconn.SetHttpsProxy(client.config.Proxy)
-		//}
+		kmsconn.SetHTTPSInsecure(client.config.Insecure)
+		if client.config.Proxy != "" {
+			kmsconn.SetHttpsProxy(client.config.Proxy)
+		}
 		client.kmsconn = kmsconn
 	}
 	return do(client.kmsconn)
@@ -687,10 +687,10 @@ func (client *ApsaraStackClient) WithBssopenapiClient(do func(*bssopenapi.Client
 		bssopenapiconn.AppendUserAgent(Terraform, terraformVersion)
 		bssopenapiconn.AppendUserAgent(Provider, providerVersion)
 		bssopenapiconn.AppendUserAgent(Module, client.config.ConfigurationSource)
-		//bssopenapiconn.SetHTTPSInsecure(client.config.Insecure)
-		//if client.config.Proxy != "" {
-		//	bssopenapiconn.SetHttpsProxy(client.config.Proxy)
-		//}
+		bssopenapiconn.SetHTTPSInsecure(client.config.Insecure)
+		if client.config.Proxy != "" {
+			bssopenapiconn.SetHttpsProxy(client.config.Proxy)
+		}
 		client.bssopenapiconn = bssopenapiconn
 	}
 
@@ -774,10 +774,10 @@ func (client *ApsaraStackClient) WithRamClient(do func(*ram.Client) (interface{}
 		ramconn.AppendUserAgent(Terraform, terraformVersion)
 		ramconn.AppendUserAgent(Provider, providerVersion)
 		ramconn.AppendUserAgent(Module, client.config.ConfigurationSource)
-		//ramconn.SetHTTPSInsecure(client.config.Insecure)
-		//if client.config.Proxy != "" {
-		//	ramconn.SetHttpsProxy(client.config.Proxy)
-		//}
+		ramconn.SetHTTPSInsecure(client.config.Insecure)
+		if client.config.Proxy != "" {
+			ramconn.SetHttpsProxy(client.config.Proxy)
+		}
 		client.ramconn = ramconn
 	}
 
@@ -826,10 +826,10 @@ func (client *ApsaraStackClient) WithCdnClient_new(do func(*cdn_new.Client) (int
 		cdnconn.AppendUserAgent(Terraform, terraformVersion)
 		cdnconn.AppendUserAgent(Provider, providerVersion)
 		cdnconn.AppendUserAgent(Module, client.config.ConfigurationSource)
-		//cdnconn.SetHTTPSInsecure(client.config.Insecure)
-		//if client.config.Proxy != "" {
-		//	cdnconn.SetHttpsProxy(client.config.Proxy)
-		//}
+		cdnconn.SetHTTPSInsecure(client.config.Insecure)
+		if client.config.Proxy != "" {
+			cdnconn.SetHttpsProxy(client.config.Proxy)
+		}
 		client.cdnconn_new = cdnconn
 	}
 
