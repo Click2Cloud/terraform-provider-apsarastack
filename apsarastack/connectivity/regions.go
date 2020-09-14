@@ -56,3 +56,4 @@ var RouteTableNoSupportedRegions = []Region{Beijing, Hangzhou, Shenzhen}
 var CasClassicSupportedRegions = []Region{Hangzhou, APSouth1, MEEast1, EUCentral1, APNorthEast1, APSouthEast2}
 var OssVersioningSupportedRegions = []Region{APSouth1}
 var OssSseSupportedRegions = []Region{Qingdao, Hangzhou, Beijing, Shanghai, Shenzhen, Hongkong, APNorthEast1, APSouth1, USEast1}
+var KmsSkippedRegions = []Region{Beijing, Shanghai}

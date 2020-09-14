@@ -681,3 +681,16 @@ func computePeriodByUnit(createTime, endTime interface{}, currentPeriod int, per
 	}
 	return period, WrapError(err)
 }
+
+func convertMaptoJsonString(m map[string]interface{}) (string, error) {
+	sm := make(map[string]string, len(m))
+	for k, v := range m {
+		sm[k] = v.(string)
+	}
+
+	if result, err := json.Marshal(sm); err != nil {
+		return "", err
+	} else {
+		return string(result), nil
+	}
+}

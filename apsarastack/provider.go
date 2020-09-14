@@ -148,6 +148,10 @@ func Provider() terraform.ResourceProvider {
 			"apsarastack_dns_records":                    dataSourceApsaraStackDnsRecords(),
 			"apsarastack_dns_groups":                     dataSourceApsaraStackDnsGroups(),
 			"apsarastack_dns_domains":                    dataSourceApsaraStackDnsDomains(),
+			"apsarastack_kms_aliases":                    dataSourceApsaraStackKmsAliases(),
+			"apsarastack_kms_ciphertext":                 dataSourceApsaraStackKmsCiphertext(),
+			"apsarastack_kms_keys":                       dataSourceApsaraStackKmsKeys(),
+			"apsarastack_kms_secrets":                    dataSourceApsaraStackKmsSecrets(),
 		},
 		ResourcesMap: map[string]*schema.Resource{
 			"apsarastack_disk":                                resourceApsaraStackDisk(),
@@ -193,6 +197,10 @@ func Provider() terraform.ResourceProvider {
 			"apsarastack_dns_group":                           resourceApsaraStackDnsGroup(),
 			"apsarastack_dns_domain":                          resourceApsaraStackDnsDomain(),
 			"apsarastack_dns_domain_attachment":               resourceApsaraStackDnsDomainAttachment(),
+			"apsarastack_kms_alias":                           resourceApsaraStackKmsAlias(),
+			"apsarastack_kms_ciphertext":                      resourceApsaraStackKmsCiphertext(),
+			"apsarastack_kms_key":                             resourceApsaraStackKmsKey(),
+			"apsarastack_kms_secret":                          resourceApsaraStackKmsSecret(),
 		},
 
 		ConfigureFunc: providerConfigure,
