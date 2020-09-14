@@ -285,24 +285,24 @@ func providerConfigure(d *schema.ResourceData) (interface{}, error) {
 	if err := config.MakeConfigByEcsRoleName(); err != nil {
 		return nil, err
 	}
-	//domain := d.Get("domain").(string)
-	//if domain != "" {
-	//	//	config.EcsEndpoint = "ecs." + domain
-	//	//	//config.VpcEndpoint = "vpc." + domain
-	//	//	config.StsEndpoint = "sts." + domain
-	//	//
-	//	//} else {
-	//	//
-	//	//	endpointsSet := d.Get("endpoints").(*schema.Set)
-	//	//
-	//	//	for _, endpointsSetI := range endpointsSet.List() {
-	//	//		endpoints := endpointsSetI.(map[string]interface{})
-	//	//		config.EcsEndpoint = strings.TrimSpace(endpoints["ecs"].(string))
-	//	//
-	//	//		config.StsEndpoint = strings.TrimSpace(endpoints["sts"].(string))
-	//	//
-	//	//	}
-	//	//}
+	domain := d.Get("domain").(string)
+	if domain != "" {
+		config.EcsEndpoint = "ecs." + domain
+		config.VpcEndpoint = "vpc." + domain
+		config.StsEndpoint = "sts." + domain
+
+	} else {
+
+		endpointsSet := d.Get("endpoints").(*schema.Set)
+
+		for _, endpointsSetI := range endpointsSet.List() {
+			endpoints := endpointsSetI.(map[string]interface{})
+			config.EcsEndpoint = strings.TrimSpace(endpoints["ecs"].(string))
+			config.VpcEndpoint = strings.TrimSpace(endpoints["vpc"].(string))
+			config.StsEndpoint = strings.TrimSpace(endpoints["sts"].(string))
+
+		}
+	}
 
 	if config.RamRoleArn != "" {
 		config.AccessKey, config.SecretKey, config.SecurityToken, err = getAssumeRoleAK(config.AccessKey, config.SecretKey, config.SecurityToken, region, config.RamRoleArn, config.RamRoleSessionName, config.RamRolePolicy, config.RamRoleSessionExpiration, config.StsEndpoint)
