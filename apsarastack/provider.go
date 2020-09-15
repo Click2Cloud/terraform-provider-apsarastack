@@ -1,27 +1,27 @@
 package apsarastack
 
 import (
-	"bytes"
-	"encoding/json"
-	"fmt"
-	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
-	"github.com/aliyun/alibaba-cloud-sdk-go/services/sts"
-	"github.com/aliyun/terraform-provider-apsarastack/apsarastack/connectivity"
-	"github.com/google/uuid"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/hashcode"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
-	"github.com/hashicorp/terraform-plugin-sdk/terraform"
-	"github.com/mitchellh/go-homedir"
-	"io/ioutil"
-	"log"
-	"os"
-	"runtime"
-	"strconv"
-	"strings"
+"bytes"
+"encoding/json"
+"fmt"
+"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
+"github.com/aliyun/alibaba-cloud-sdk-go/services/sts"
+"github.com/aliyun/terraform-provider-apsarastack/apsarastack/connectivity"
+"github.com/google/uuid"
+"github.com/hashicorp/terraform-plugin-sdk/helper/hashcode"
+"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
+"github.com/hashicorp/terraform-plugin-sdk/terraform"
+"github.com/mitchellh/go-homedir"
+"io/ioutil"
+"log"
+"os"
+"runtime"
+"strconv"
+"strings"
 )
 
-func Provider() terraform.ResourceProvider {
+func Provider1() terraform.ResourceProvider {
 	return &schema.Provider{
 		Schema: map[string]*schema.Schema{
 			"access_key": {
@@ -111,98 +111,99 @@ func Provider() terraform.ResourceProvider {
 				Description: descriptions["domain"],
 			},
 		},
-
 		DataSourcesMap: map[string]*schema.Resource{
-			"apsarastack_instances":                      dataSourceApsaraStackInstances(),
-			"apsarastack_disks":                          dataSourceApsaraStackDisks(),
-			"apsarastack_key_pairs":                      dataSourceApsaraStackKeyPairs(),
-			"apsarastack_network_interfaces":             dataSourceApsaraStackNetworkInterfaces(),
-			"apsarastack_instance_type_families":         dataSourceApsaraStackInstanceTypeFamilies(),
-			"apsarastack_instance_types":                 dataSourceApsaraStackInstanceTypes(),
-			"apsarastack_security_groups":                dataSourceApsaraStackSecurityGroups(),
-			"apsarastack_security_group_rules":           dataSourceApsaraStackSecurityGroupRules(),
-			"apsarastack_snapshots":                      dataSourceApsaraStackSnapshots(),
-			"apsarastack_images":                         dataSourceApsaraStackImages(),
-			"apsarastack_vswitches":                      dataSourceApsaraStackVSwitches(),
-			"apsarastack_vpcs":                           dataSourceApsaraStackVpcs(),
-			"apsarastack_eips":                           dataSourceApsaraStackEips(),
-			"apsarastack_slb_listeners":                  dataSourceApsaraStackSlbListeners(),
-			"apsarastack_slb_server_groups":              dataSourceApsaraStackSlbServerGroups(),
-			"apsarastack_slb_acls":                       dataSourceApsaraStackSlbAcls(),
-			"apsarastack_slb_domain_extensions":          dataSourceApsaraStackSlbDomainExtensions(),
-			"apsarastack_slb_rules":                      dataSourceApsaraStackSlbRules(),
-			"apsarastack_route_tables":                   dataSourceApsaraStackRouteTables(),
-			"apsarastack_slb_master_slave_server_groups": dataSourceApsaraStackSlbMasterSlaveServerGroups(),
-			"apsarastack_slbs":                           dataSourceApsaraStackSlbs(),
-			"apsarastack_slb_zones":                      dataSourceApsaraStackSlbZones(),
-			"apsarastack_common_bandwidth_packages":      dataSourceApsaraStackCommonBandwidthPackages(),
-			"apsarastack_forward_entries":                dataSourceApsaraStackForwardEntries(),
-			"apsarastack_nat_gateways":                   dataSourceApsaraStackNatGateways(),
-			"apsarastack_snat_entries":                   dataSourceApsaraStackSnatEntries(),
-			"apsarastack_db_instances":                   dataSourceApsaraStackDBInstances(),
-			"apsarastack_db_zones":                       dataSourceApsaraStackDBZones(),
-			"apsarastack_slb_server_certificates":        dataSourceApsaraStackSlbServerCertificates(),
-			"apsarastack_slb_backend_servers":            dataSourceApsaraStackSlbBackendServers(),
-			"apsarastack_ess_scaling_configurations":     dataSourceApsaraStackEssScalingConfigurations(),
-			"apsarastack_ess_scalingrules":               dataSourceApsaraStackEssScalingRules(),
-			"apsarastack_oss_buckets":                    dataSourceApsaraStackOssBuckets(),
-			"apsarastack_oss_bucket_objects":             dataSourceApsaraStackOssBucketObjects(),
-			"apsarastack_ess_scaling_groups":             dataSourceApsaraStackEssScalingGroups(),
-			"apsarastack_zones":                          dataSourceApsaraStackZones(),
-		},
+		"apsarastack_instances":                      dataSourceApsaraStackInstances(),
+		"apsarastack_disks":                          dataSourceApsaraStackDisks(),
+		"apsarastack_key_pairs":                      dataSourceApsaraStackKeyPairs(),
+		"apsarastack_network_interfaces":             dataSourceApsaraStackNetworkInterfaces(),
+		"apsarastack_instance_type_families":         dataSourceApsaraStackInstanceTypeFamilies(),
+		"apsarastack_instance_types":                 dataSourceApsaraStackInstanceTypes(),
+		"apsarastack_security_groups":                dataSourceApsaraStackSecurityGroups(),
+		"apsarastack_security_group_rules":           dataSourceApsaraStackSecurityGroupRules(),
+		"apsarastack_snapshots":                      dataSourceApsaraStackSnapshots(),
+		"apsarastack_images":                         dataSourceApsaraStackImages(),
+		"apsarastack_vswitches":                      dataSourceApsaraStackVSwitches(),
+		"apsarastack_vpcs":                           dataSourceApsaraStackVpcs(),
+		"apsarastack_eips":                           dataSourceApsaraStackEips(),
+		"apsarastack_slb_listeners":                  dataSourceApsaraStackSlbListeners(),
+		"apsarastack_slb_server_groups":              dataSourceApsaraStackSlbServerGroups(),
+		"apsarastack_slb_acls":                       dataSourceApsaraStackSlbAcls(),
+		"apsarastack_slb_domain_extensions":          dataSourceApsaraStackSlbDomainExtensions(),
+		"apsarastack_slb_rules":                      dataSourceApsaraStackSlbRules(),
+		"apsarastack_route_tables":                   dataSourceApsaraStackRouteTables(),
+		"apsarastack_slb_master_slave_server_groups": dataSourceApsaraStackSlbMasterSlaveServerGroups(),
+		"apsarastack_slbs":                           dataSourceApsaraStackSlbs(),
+		"apsarastack_slb_zones":                      dataSourceApsaraStackSlbZones(),
+		"apsarastack_common_bandwidth_packages":      dataSourceApsaraStackCommonBandwidthPackages(),
+		"apsarastack_forward_entries":                dataSourceApsaraStackForwardEntries(),
+		"apsarastack_nat_gateways":                   dataSourceApsaraStackNatGateways(),
+		"apsarastack_snat_entries":                   dataSourceApsaraStackSnatEntries(),
+		"apsarastack_db_instances":                   dataSourceApsaraStackDBInstances(),
+		"apsarastack_db_zones":                       dataSourceApsaraStackDBZones(),
+		"apsarastack_slb_server_certificates":        dataSourceApsaraStackSlbServerCertificates(),
+		"apsarastack_slb_backend_servers":            dataSourceApsaraStackSlbBackendServers(),
+		"apsarastack_ess_scaling_configurations":     dataSourceApsaraStackEssScalingConfigurations(),
+		"apsarastack_ess_scalingrules":               dataSourceApsaraStackEssScalingRules(),
+		"apsarastack_oss_buckets":                    dataSourceApsaraStackOssBuckets(),
+		"apsarastack_oss_bucket_objects":             dataSourceApsaraStackOssBucketObjects(),
+		"apsarastack_ess_scaling_groups":             dataSourceApsaraStackEssScalingGroups(),
+		"apsarastack_zones":                          dataSourceApsaraStackZones(),
+		"apsarastack_ess_scheduled_tasks":            dataSourceApsaraStackEssScheduledTasks(),
+	},
 		ResourcesMap: map[string]*schema.Resource{
-			"apsarastack_disk":                                resourceApsaraStackDisk(),
-			"apsarastack_disk_attachment":                     resourceApsaraStackDiskAttachment(),
-			"apsarastack_key_pair":                            resourceApsaraStackKeyPair(),
-			"apsarastack_key_pair_attachment":                 resourceApsaraStackKeyPairAttachment(),
-			"apsarastack_instance":                            resourceApsaraStackInstance(),
-			"apsarastack_ram_role_attachment":                 resourceApsaraStackRamRoleAttachment(),
-			"apsarastack_security_group":                      resourceApsaraStackSecurityGroup(),
-			"apsarastack_security_group_rule":                 resourceApsaraStackSecurityGroupRule(),
-			"apsarastack_launch_template":                     resourceApsaraStackLaunchTemplate(),
-			"apsarastack_reserved_instance":                   resourceApsaraStackReservedInstance(),
-			"apsarastack_image":                               resourceApsaraStackImage(),
-			"apsarastack_image_share_permission":              resourceApsaraStackImageSharePermission(),
-			"apsarastack_snapshot":                            resourceApsaraStackSnapshot(),
-			"apsarastack_snapshot_policy":                     resourceApsaraStackSnapshotPolicy(),
-			"apsarastack_vswitches":                           resourceApsaraStackSwitch(),
-			"apsarastack_vpc":                                 resourceApsaraStackVpc(),
-			"apsarastack_eip":                                 resourceApsaraStackEip(),
-			"apsarastack_eip_association":                     resourceApsaraStackEipAssociation(),
-			"apsarastack_slb_listener":                        resourceApsaraStackSlbListener(),
-			"apsarastack_slb_server_group":                    resourceApsaraStackSlbServerGroup(),
-			"apsarastack_slb_acl":                             resourceApsaraStackSlbAcl(),
-			"apsarastack_slb_domain_extensions":               resourceApsaraStackSlbDomainExtension(),
-			"apsarastack_slb_rule":                            resourceApsaraStackSlbRule(),
-			"apsarastack_route_table":                         resourceApsaraStackRouteTable(),
-			"apsarastack_route_table_attachment":              resourceApsaraStackRouteTableAttachment(),
-			"apsarastack_slb_master_slave_server_group":       resourceApsaraStackSlbMasterSlaveServerGroup(),
-			"apsarastack_slb":                                 resourceApsaraStackSlb(),
-			"apsarastack_common_bandwidth_package":            resourceApsaraStackCommonBandwidthPackage(),
-			"apsarastack_common_bandwidth_package_attachment": resourceApsaraStackCommonBandwidthPackageAttachment(),
-			"apsarastack_forward_entry":                       resourceApsaraStackForwardEntry(),
-			"apsarastack_nat_gateway":                         resourceApsaraStackNatGateway(),
-			"apsarastack_snat_entry":                          resourceApsaraStackSnatEntry(),
-			"apsarastack_image_copy":                          resourceApsaraStackImageCopy(),
-			"apsarastack_image_export":                        resourceApsaraStackImageExport(),
-			"apsarastack_image_import":                        resourceApsaraStackImageImport(),
-			"apsarastack_db_instance":                         resourceApsaraStackDBInstance(),
-			"apsarastack_db_readonly_instance":                resourceApsaraStackDBReadonlyInstance(),
-			"apsarastack_slb_server_certificate":              resourceApsaraStackSlbServerCertificate(),
-			"apsarastack_slb_backend_server":                  resourceApsaraStackSlbBackendServer(),
-			"apsarastack_ess_scaling_configuration":           resourceApsaraStackEssScalingConfiguration(),
-			"apsarastack_ess_scalingrule":                     resourceApsaraStackEssScalingRule(),
-			"apsarastack_oss_bucket":                          resourceApsaraStackOssBucket(),
-			"apsarastack_oss_bucket_object":                   resourceApsaraStackOssBucketObject(),
-			"apsarastack_ess_scaling_group":                   resourceApsaraStackEssScalingGroup(),
-			"apsarastack_ess_scalinggroup_vserver_groups":     resourceApsaraStackEssScalingGroupVserverGroups(),
-			"apsarastack_db_database":                         resourceApsaraStackDBDatabase(),
-			"apsarastack_db_account":                          resourceApsaraStackDBAccount(),
-			"apsarastack_db_account_privilege":                resourceApsaraStackDBAccountPrivilege(),
-			"apsarastack_db_backup_policy":                    resourceApsaraStackDBBackupPolicy(),
-			"apsarastack_db_connection":                       resourceApsaraStackDBConnection(),
-			"apsarastack_db_read_write_splitting_connection":  resourceApsaraStackDBReadWriteSplittingConnection(),
-		},
+		"apsarastack_disk":                                resourceApsaraStackDisk(),
+		"apsarastack_disk_attachment":                     resourceApsaraStackDiskAttachment(),
+		"apsarastack_key_pair":                            resourceApsaraStackKeyPair(),
+		"apsarastack_key_pair_attachment":                 resourceApsaraStackKeyPairAttachment(),
+		"apsarastack_instance":                            resourceApsaraStackInstance(),
+		"apsarastack_ram_role_attachment":                 resourceApsaraStackRamRoleAttachment(),
+		"apsarastack_security_group":                      resourceApsaraStackSecurityGroup(),
+		"apsarastack_security_group_rule":                 resourceApsaraStackSecurityGroupRule(),
+		"apsarastack_launch_template":                     resourceApsaraStackLaunchTemplate(),
+		"apsarastack_reserved_instance":                   resourceApsaraStackReservedInstance(),
+		"apsarastack_image":                               resourceApsaraStackImage(),
+		"apsarastack_image_share_permission":              resourceApsaraStackImageSharePermission(),
+		"apsarastack_snapshot":                            resourceApsaraStackSnapshot(),
+		"apsarastack_snapshot_policy":                     resourceApsaraStackSnapshotPolicy(),
+		"apsarastack_vswitches":                           resourceApsaraStackSwitch(),
+		"apsarastack_vpc":                                 resourceApsaraStackVpc(),
+		"apsarastack_eip":                                 resourceApsaraStackEip(),
+		"apsarastack_eip_association":                     resourceApsaraStackEipAssociation(),
+		"apsarastack_slb_listener":                        resourceApsaraStackSlbListener(),
+		"apsarastack_slb_server_group":                    resourceApsaraStackSlbServerGroup(),
+		"apsarastack_slb_acl":                             resourceApsaraStackSlbAcl(),
+		"apsarastack_slb_domain_extensions":               resourceApsaraStackSlbDomainExtension(),
+		"apsarastack_slb_rule":                            resourceApsaraStackSlbRule(),
+		"apsarastack_route_table":                         resourceApsaraStackRouteTable(),
+		"apsarastack_route_table_attachment":              resourceApsaraStackRouteTableAttachment(),
+		"apsarastack_slb_master_slave_server_group":       resourceApsaraStackSlbMasterSlaveServerGroup(),
+		"apsarastack_slb":                                 resourceApsaraStackSlb(),
+		"apsarastack_common_bandwidth_package":            resourceApsaraStackCommonBandwidthPackage(),
+		"apsarastack_common_bandwidth_package_attachment": resourceApsaraStackCommonBandwidthPackageAttachment(),
+		"apsarastack_forward_entry":                       resourceApsaraStackForwardEntry(),
+		"apsarastack_nat_gateway":                         resourceApsaraStackNatGateway(),
+		"apsarastack_snat_entry":                          resourceApsaraStackSnatEntry(),
+		"apsarastack_image_copy":                          resourceApsaraStackImageCopy(),
+		"apsarastack_image_export":                        resourceApsaraStackImageExport(),
+		"apsarastack_image_import":                        resourceApsaraStackImageImport(),
+		"apsarastack_db_instance":                         resourceApsaraStackDBInstance(),
+		"apsarastack_db_readonly_instance":                resourceApsaraStackDBReadonlyInstance(),
+		"apsarastack_slb_server_certificate":              resourceApsaraStackSlbServerCertificate(),
+		"apsarastack_slb_backend_server":                  resourceApsaraStackSlbBackendServer(),
+		"apsarastack_ess_scaling_configuration":           resourceApsaraStackEssScalingConfiguration(),
+		"apsarastack_ess_scalingrule":                     resourceApsaraStackEssScalingRule(),
+		"apsarastack_oss_bucket":                          resourceApsaraStackOssBucket(),
+		"apsarastack_oss_bucket_object":                   resourceApsaraStackOssBucketObject(),
+		"apsarastack_ess_scaling_group":                   resourceApsaraStackEssScalingGroup(),
+		"apsarastack_ess_scalinggroup_vserver_groups":     resourceApsaraStackEssScalingGroupVserverGroups(),
+		"apsarastack_db_database":                         resourceApsaraStackDBDatabase(),
+		"apsarastack_db_account":                          resourceApsaraStackDBAccount(),
+		"apsarastack_db_account_privilege":                resourceApsaraStackDBAccountPrivilege(),
+		"apsarastack_db_backup_policy":                    resourceApsaraStackDBBackupPolicy(),
+		"apsarastack_db_connection":                       resourceApsaraStackDBConnection(),
+		"apsarastack_db_read_write_splitting_connection":  resourceApsaraStackDBReadWriteSplittingConnection(),
+		"apsarastack_ess_scheduled_task":                  resourceApsaraStackEssScheduledTask(),
+	},
 
 		ConfigureFunc: providerConfigure,
 	}
@@ -809,3 +810,4 @@ func getAssumeRoleAK(accessKey, secretKey, stsToken, region, roleArn, sessionNam
 
 	return response.Credentials.AccessKeyId, response.Credentials.AccessKeySecret, response.Credentials.SecurityToken, nil
 }
+
