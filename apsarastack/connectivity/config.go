@@ -116,30 +116,6 @@ func (c *Config) validateRegion() error {
 	return fmt.Errorf("Invalid Alibaba Cloud region: %s", c.RegionId)
 }
 
-//func (client *ApsaraStackClient) WithRdsClient(do func(*rds.Client) (interface{}, error)) (interface{}, error) {
-//	// Initialize the RDS client if necessary
-//	if client.rdsconn == nil {
-//		endpoint := client.config.RdsEndpoint
-//		if endpoint == "" {
-//			endpoint = loadEndpoint(client.config.RegionId, RDSCode)
-//		}
-//		if endpoint != "" {
-//			endpoints.AddEndpointMapping(client.config.RegionId, string(RDSCode), endpoint)
-//		}
-//		rdsconn, err := rds.NewClientWithOptions(client.config.RegionId, client.getSdkConfig(), client.config.getAuthCredential(true))
-//		if err != nil {
-//			return nil, fmt.Errorf("unable to initialize the RDS client: %#v", err)
-//		}
-//
-//		rdsconn.AppendUserAgent(Terraform, terraformVersion)
-//		rdsconn.AppendUserAgent(Provider, providerVersion)
-//		rdsconn.AppendUserAgent(Module, client.config.ConfigurationSource)
-//		client.rdsconn = rdsconn
-//	}
-//
-//	return do(client.rdsconn)
-//}
-
 func (c *Config) getAuthCredential(stsSupported bool) auth.Credential {
 	if c.AccessKey != "" && c.SecretKey != "" {
 		if stsSupported && c.SecurityToken != "" {

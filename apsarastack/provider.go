@@ -239,8 +239,8 @@ func providerConfigure(d *schema.ResourceData) (interface{}, error) {
 		SkipRegionValidation: d.Get("skip_region_validation").(bool),
 		ConfigurationSource:  d.Get("configuration_source").(string),
 		Protocol:             d.Get("protocol").(string),
-		//Insecure:             d.Get("insecure").(bool),
-		//Proxy:                d.Get("proxy").(string),
+		Insecure:             d.Get("insecure").(bool),
+		Proxy:                d.Get("proxy").(string),
 	}
 	token := getProviderConfig(d.Get("security_token").(string), "sts_token")
 	config.SecurityToken = strings.TrimSpace(token)
@@ -290,7 +290,11 @@ func providerConfigure(d *schema.ResourceData) (interface{}, error) {
 		config.EcsEndpoint = "ecs." + domain
 		config.VpcEndpoint = "vpc." + domain
 		config.StsEndpoint = "sts." + domain
-
+		config.EssEndpoint = "ess." + domain
+		config.RdsEndpoint = "rds." + domain
+		config.SlbEndpoint = "slb." + domain
+		config.DrdsEndpoint = "drds." + domain
+		config.LogEndpoint = "sls." + domain
 	} else {
 
 		endpointsSet := d.Get("endpoints").(*schema.Set)
@@ -300,7 +304,11 @@ func providerConfigure(d *schema.ResourceData) (interface{}, error) {
 			config.EcsEndpoint = strings.TrimSpace(endpoints["ecs"].(string))
 			config.VpcEndpoint = strings.TrimSpace(endpoints["vpc"].(string))
 			config.StsEndpoint = strings.TrimSpace(endpoints["sts"].(string))
-
+			config.EssEndpoint = strings.TrimSpace(endpoints["ess"].(string))
+			config.RdsEndpoint = strings.TrimSpace(endpoints["rds"].(string))
+			config.SlbEndpoint = strings.TrimSpace(endpoints["slb"].(string))
+			config.DrdsEndpoint = strings.TrimSpace(endpoints["drds"].(string))
+			config.LogEndpoint = strings.TrimSpace(endpoints["sls"].(string))
 		}
 	}
 
