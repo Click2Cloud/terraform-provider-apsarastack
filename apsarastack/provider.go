@@ -112,37 +112,40 @@ func Provider() terraform.ResourceProvider {
 			},
 		},
 		DataSourcesMap: map[string]*schema.Resource{
-			"apsarastack_instances":                      dataSourceApsaraStackInstances(),
-			"apsarastack_disks":                          dataSourceApsaraStackDisks(),
-			"apsarastack_key_pairs":                      dataSourceApsaraStackKeyPairs(),
-			"apsarastack_network_interfaces":             dataSourceApsaraStackNetworkInterfaces(),
-			"apsarastack_instance_type_families":         dataSourceApsaraStackInstanceTypeFamilies(),
-			"apsarastack_instance_types":                 dataSourceApsaraStackInstanceTypes(),
-			"apsarastack_security_groups":                dataSourceApsaraStackSecurityGroups(),
-			"apsarastack_security_group_rules":           dataSourceApsaraStackSecurityGroupRules(),
-			"apsarastack_snapshots":                      dataSourceApsaraStackSnapshots(),
-			"apsarastack_images":                         dataSourceApsaraStackImages(),
-			"apsarastack_vswitches":                      dataSourceApsaraStackVSwitches(),
-			"apsarastack_vpcs":                           dataSourceApsaraStackVpcs(),
-			"apsarastack_eips":                           dataSourceApsaraStackEips(),
-			"apsarastack_slb_listeners":                  dataSourceApsaraStackSlbListeners(),
-			"apsarastack_slb_server_groups":              dataSourceApsaraStackSlbServerGroups(),
-			"apsarastack_slb_acls":                       dataSourceApsaraStackSlbAcls(),
-			"apsarastack_slb_domain_extensions":          dataSourceApsaraStackSlbDomainExtensions(),
-			"apsarastack_slb_rules":                      dataSourceApsaraStackSlbRules(),
-			"apsarastack_route_tables":                   dataSourceApsaraStackRouteTables(),
-			"apsarastack_slb_master_slave_server_groups": dataSourceApsaraStackSlbMasterSlaveServerGroups(),
-			"apsarastack_slbs":                           dataSourceApsaraStackSlbs(),
-			"apsarastack_slb_zones":                      dataSourceApsaraStackSlbZones(),
-			"apsarastack_common_bandwidth_packages":      dataSourceApsaraStackCommonBandwidthPackages(),
-			"apsarastack_forward_entries":                dataSourceApsaraStackForwardEntries(),
-			"apsarastack_nat_gateways":                   dataSourceApsaraStackNatGateways(),
-			"apsarastack_snat_entries":                   dataSourceApsaraStackSnatEntries(),
-			"apsarastack_db_instances":                   dataSourceApsaraStackDBInstances(),
-			"apsarastack_db_zones":                       dataSourceApsaraStackDBZones(),
-			"apsarastack_slb_server_certificates":        dataSourceApsaraStackSlbServerCertificates(),
-			"apsarastack_slb_backend_servers":            dataSourceApsaraStackSlbBackendServers(),
-			"apsarastack_ess_scaling_configurations":     dataSourceApsaraStackEssScalingConfigurations(),
+			"apsarastack_instances":                         dataSourceApsaraStackInstances(),
+			"apsarastack_disks":                             dataSourceApsaraStackDisks(),
+			"apsarastack_key_pairs":                         dataSourceApsaraStackKeyPairs(),
+			"apsarastack_network_interfaces":                dataSourceApsaraStackNetworkInterfaces(),
+			"apsarastack_instance_type_families":            dataSourceApsaraStackInstanceTypeFamilies(),
+			"apsarastack_instance_types":                    dataSourceApsaraStackInstanceTypes(),
+			"apsarastack_security_groups":                   dataSourceApsaraStackSecurityGroups(),
+			"apsarastack_security_group_rules":              dataSourceApsaraStackSecurityGroupRules(),
+			"apsarastack_snapshots":                         dataSourceApsaraStackSnapshots(),
+			"apsarastack_images":                            dataSourceApsaraStackImages(),
+			"apsarastack_vswitches":                         dataSourceApsaraStackVSwitches(),
+			"apsarastack_vpcs":                              dataSourceApsaraStackVpcs(),
+			"apsarastack_eips":                              dataSourceApsaraStackEips(),
+			"apsarastack_slb_listeners":                     dataSourceApsaraStackSlbListeners(),
+			"apsarastack_slb_server_groups":                 dataSourceApsaraStackSlbServerGroups(),
+			"apsarastack_slb_acls":                          dataSourceApsaraStackSlbAcls(),
+			"apsarastack_slb_domain_extensions":             dataSourceApsaraStackSlbDomainExtensions(),
+			"apsarastack_slb_rules":                         dataSourceApsaraStackSlbRules(),
+			"apsarastack_route_tables":                      dataSourceApsaraStackRouteTables(),
+			"apsarastack_slb_master_slave_server_groups":    dataSourceApsaraStackSlbMasterSlaveServerGroups(),
+			"apsarastack_slbs":                              dataSourceApsaraStackSlbs(),
+			"apsarastack_slb_zones":                         dataSourceApsaraStackSlbZones(),
+			"apsarastack_common_bandwidth_packages":         dataSourceApsaraStackCommonBandwidthPackages(),
+			"apsarastack_forward_entries":                   dataSourceApsaraStackForwardEntries(),
+			"apsarastack_nat_gateways":                      dataSourceApsaraStackNatGateways(),
+			"apsarastack_snat_entries":                      dataSourceApsaraStackSnatEntries(),
+			"apsarastack_db_instances":                      dataSourceApsaraStackDBInstances(),
+			"apsarastack_db_zones":                          dataSourceApsaraStackDBZones(),
+			"apsarastack_slb_server_certificates":           dataSourceApsaraStackSlbServerCertificates(),
+			"apsarastack_slb_backend_servers":               dataSourceApsaraStackSlbBackendServers(),
+			"apsarastack_ess_scaling_configurations":        dataSourceApsaraStackEssScalingConfigurations(),
+			"apsarastack_cs_kubernetes_clusters":            dataSourceApsaraStackCSKubernetesClusters(),
+			"apsarastack_cs_managed_kubernetes_clusters":    dataSourceApsaraStackCSManagerKubernetesClusters(),
+			"apsarastack_cs_serverless_kubernetes_clusters": dataSourceApsaraStackCSServerlessKubernetesClusters(),
 		},
 		ResourcesMap: map[string]*schema.Resource{
 			"apsarastack_disk":                                resourceApsaraStackDisk(),
@@ -181,6 +184,10 @@ func Provider() terraform.ResourceProvider {
 			"apsarastack_slb_server_certificate":              resourceApsaraStackSlbServerCertificate(),
 			"apsarastack_slb_backend_server":                  resourceApsaraStackSlbBackendServer(),
 			"apsarastack_ess_scaling_configuration":           resourceApsaraStackEssScalingConfiguration(),
+			"apsarastack_cs_kubernetes":                       resourceApsaraStackCSKubernetes(),
+			"apsarastack_cs_kubernetes_autoscaler":            resourceApsaraStackCSKubernetesAutoscaler(),
+			"apsarastack_cs_managed_kubernetes":               resourceApsaraStackCSManagedKubernetes(),
+			"apsarastack_cs_serverless_kubernetes":            resourceApsaraStackCSServerlessKubernetes(),
 		},
 
 		ConfigureFunc: providerConfigure,
@@ -269,7 +276,8 @@ func providerConfigure(d *schema.ResourceData) (interface{}, error) {
 		config.EcsEndpoint = "ecs." + domain
 		config.VpcEndpoint = "vpc." + domain
 		config.StsEndpoint = "sts." + domain
-
+		config.EssEndpoint = "ess." + domain
+		config.CsEndpoint = "cs." + domain
 	} else {
 
 		endpointsSet := d.Get("endpoints").(*schema.Set)
@@ -279,7 +287,8 @@ func providerConfigure(d *schema.ResourceData) (interface{}, error) {
 			config.EcsEndpoint = strings.TrimSpace(endpoints["ecs"].(string))
 			config.VpcEndpoint = strings.TrimSpace(endpoints["vpc"].(string))
 			config.StsEndpoint = strings.TrimSpace(endpoints["sts"].(string))
-
+			config.EssEndpoint = strings.TrimSpace(endpoints["ess"].(string))
+			config.CsEndpoint = strings.TrimSpace(endpoints["cs"].(string))
 		}
 	}
 

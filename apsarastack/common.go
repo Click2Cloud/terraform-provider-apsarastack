@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/aliyun/fc-go-sdk"
 	"github.com/google/uuid"
+	"github.com/mitchellh/go-homedir"
 	"io/ioutil"
 	"log"
 	"math"
@@ -680,4 +681,17 @@ func computePeriodByUnit(createTime, endTime interface{}, currentPeriod int, per
 		period = currentPeriod
 	}
 	return period, WrapError(err)
+}
+
+// loadFileContent returns contents of a file in a given path
+func loadFileContent(v string) ([]byte, error) {
+	filename, err := homedir.Expand(v)
+	if err != nil {
+		return nil, err
+	}
+	fileContent, err := ioutil.ReadFile(filename)
+	if err != nil {
+		return nil, err
+	}
+	return fileContent, nil
 }

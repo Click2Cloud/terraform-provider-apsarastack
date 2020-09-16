@@ -28,7 +28,6 @@ const (
 	// RAM Instance Not Found
 	RamInstanceNotFound        = "Forbidden.InstanceNotFound"
 	ApsaraStackGoClientFailure = "ApsaraStackGoClientFailure"
-	DenverdinoApsaraStackgo    = ErrorSource("[SDK denverdino/aliyungo ERROR]")
 )
 
 var SlbIsBusy = []string{"SystemBusy", "OperationBusy", "ServiceIsStopping", "BackendServer.configuring", "ServiceIsConfiguring"}
@@ -218,8 +217,10 @@ func GetTimeoutMessage(product, status string) string {
 type ErrorSource string
 
 const (
-	ApsaraStackSdkGoERROR = ErrorSource("[SDK alibaba-cloud-sdk-go ERROR]")
-	ProviderERROR         = ErrorSource("[Provider ERROR]")
+	ApsaraStackSdkGoERROR   = ErrorSource("[SDK alibaba-cloud-sdk-go ERROR]")
+	ProviderERROR           = ErrorSource("[Provider ERROR]")
+	DenverdinoApsaraStackgo = ErrorSource("[SDK denverdino/aliyungo ERROR]")
+	DenverdinoAliyungo      = ErrorSource("[SDK denverdino/aliyungo ERROR]")
 )
 
 // ComplexError is a format error which including origin error, extra error message, error occurred file and line

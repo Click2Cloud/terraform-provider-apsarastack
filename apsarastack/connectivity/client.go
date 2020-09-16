@@ -33,6 +33,7 @@ import (
 	"sync"
 
 	"fmt"
+	officalCS "github.com/aliyun/alibaba-cloud-sdk-go/services/cs"
 	"net/http"
 	"net/url"
 	"os"
@@ -70,6 +71,7 @@ type ApsaraStackClient struct {
 	rkvconn           *r_kvstore.Client
 	fcconn            *fc.Client
 	ddsconn           *dds.Client
+	officalCSConn     *officalCS.Client
 }
 
 const (
@@ -857,4 +859,31 @@ func (client *ApsaraStackClient) WithCsClient(do func(*cs.Client) (interface{}, 
 	}
 
 	return do(client.csconn)
+}
+
+func (client *ApsaraStackClient) WithOfficalCSClient(do func(*officalCS.Client) (interface{}, error)) (interface{}, error) {
+	goSdkMutex.Lock()
+	defer goSdkMutex.Unlock()
+
+	// Initialize the CS client if necessary
+	if client.officalCSConn == nil {
+		endpoint := client.config.CsEndpoint
+		if endpoint == "" {
+			endpoint = loadEndpoint(client.config.RegionId, CONTAINCode)
+		}
+		if endpoint != "" {
+			endpoints.AddEndpointMapping(client.config.RegionId, string(CONTAINCode), endpoint)
+		}
+		csconn, err := officalCS.NewClientWithOptions(client.config.RegionId, client.getSdkConfig(), client.config.getAuthCredential(true))
+		if err != nil {
+			return nil, fmt.Errorf("unable to initialize the CS client: %#v", err)
+		}
+
+		csconn.AppendUserAgent(Terraform, terraformVersion)
+		csconn.AppendUserAgent(Provider, providerVersion)
+		csconn.AppendUserAgent(Module, client.config.ConfigurationSource)
+		client.officalCSConn = csconn
+	}
+
+	return do(client.officalCSConn)
 }
