@@ -152,6 +152,9 @@ func Provider() terraform.ResourceProvider {
 			"apsarastack_kms_ciphertext":                 dataSourceApsaraStackKmsCiphertext(),
 			"apsarastack_kms_keys":                       dataSourceApsaraStackKmsKeys(),
 			"apsarastack_kms_secrets":                    dataSourceApsaraStackKmsSecrets(),
+			"apsarastack_zones":                          dataSourceApsaraStackZones(),
+			"apsarastack_oss_buckets":                    dataSourceApsaraStackOssBuckets(),
+			"apsarastack_oss_bucket_objects":             dataSourceApsaraStackOssBucketObjects(),
 		},
 		ResourcesMap: map[string]*schema.Resource{
 			"apsarastack_disk":                                resourceApsaraStackDisk(),
@@ -189,6 +192,8 @@ func Provider() terraform.ResourceProvider {
 			"apsarastack_db_instance":                         resourceApsaraStackDBInstance(),
 			"apsarastack_slb_server_certificate":              resourceApsaraStackSlbServerCertificate(),
 			"apsarastack_slb_backend_server":                  resourceApsaraStackSlbBackendServer(),
+			"apsarastack_oss_bucket":                          resourceApsaraStackOssBucket(),
+			"apsarastack_oss_bucket_object":                   resourceApsaraStackOssBucketObject(),
 			"apsarastack_oss_bucket":                          resourceApsaraStackOssBucket(),
 			"apsarastack_oss_bucket_object":                   resourceApsaraStackOssBucketObject(),
 			"apsarastack_ess_scaling_group":                   resourceApsaraStackEssScalingGroup(),

@@ -21,9 +21,15 @@ import (
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ram"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/rds"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/slb"
-	"github.com/aliyun/alibaba-cloud-sdk-go/services/vpc"
+	"github.com/aliyun/alibaba-cloud-sdk-go/services/sts"
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 	"github.com/aliyun/fc-go-sdk"
+	"log"
+
+	"github.com/aliyun/alibaba-cloud-sdk-go/services/ecs"
+	"github.com/aliyun/alibaba-cloud-sdk-go/services/kms"
+	"github.com/aliyun/alibaba-cloud-sdk-go/services/ram"
+	"github.com/aliyun/alibaba-cloud-sdk-go/services/vpc"
 	"github.com/denverdino/aliyungo/cdn"
 
 	"github.com/denverdino/aliyungo/cs"
@@ -855,106 +861,4 @@ func (client *ApsaraStackClient) WithCsClient(do func(*cs.Client) (interface{}, 
 	}
 
 	return do(client.csconn)
-}
-
-func (client *ApsaraStackClient) getHttpProxyUrl() *url.URL {
-	for _, v := range []string{"HTTPS_PROXY", "https_proxy", "HTTP_PROXY", "http_proxy"} {
-		value := strings.Trim(os.Getenv(v), " ")
-		if value != "" {
-			if !regexp.MustCompile(`^http(s)?://`).MatchString(value) {
-				value = fmt.Sprintf("https://%s", value)
-			}
-			proxyUrl, err := url.Parse(value)
-			if err == nil {
-				return proxyUrl
-			}
-			break
-		}
-	}
-	return nil
-}
-
-func (client *ApsaraStackClient) WithOssClient(do func(*oss.Client) (interface{}, error)) (interface{}, error) {
-	goSdkMutex.Lock()
-	defer goSdkMutex.Unlock()
-
-	// Initialize the OSS client if necessary
-	if client.ossconn == nil {
-		schma := "https"
-		endpoint := client.config.OssEndpoint
-		if endpoint == "" {
-			endpoint = loadEndpoint(client.config.RegionId, OSSCode)
-		}
-		if endpoint == "" {
-			endpointItem, _ := client.describeEndpointForService(strings.ToLower(string(OSSCode)))
-			if endpointItem != nil {
-				if len(endpointItem.Protocols.Protocols) > 0 {
-					// HTTP or HTTPS
-					schma = strings.ToLower(endpointItem.Protocols.Protocols[0])
-					for _, p := range endpointItem.Protocols.Protocols {
-						if strings.ToLower(p) == "https" {
-							schma = strings.ToLower(p)
-							break
-						}
-					}
-				}
-				endpoint = endpointItem.Endpoint
-			} else {
-				endpoint = fmt.Sprintf("oss-%s.apsarastack.com", client.RegionId)
-			}
-		}
-		if !strings.HasPrefix(endpoint, "http") {
-			endpoint = fmt.Sprintf("%s://%s", schma, endpoint)
-		}
-
-		clientOptions := []oss.ClientOption{oss.UserAgent(client.getUserAgent()),
-			oss.SecurityToken(client.config.SecurityToken)}
-		proxyUrl := client.getHttpProxyUrl()
-		if proxyUrl != nil {
-			clientOptions = append(clientOptions, oss.Proxy(proxyUrl.String()))
-		}
-
-		ossconn, err := oss.New(endpoint, client.config.AccessKey, client.config.SecretKey, clientOptions...)
-		if err != nil {
-			return nil, fmt.Errorf("unable to initialize the OSS client: %#v", err)
-		}
-
-		client.ossconn = ossconn
-	}
-
-	return do(client.ossconn)
-}
-
-func (client *ApsaraStackClient) WithOssBucketByName(bucketName string, do func(*oss.Bucket) (interface{}, error)) (interface{}, error) {
-	return client.WithOssClient(func(ossClient *oss.Client) (interface{}, error) {
-		bucket, err := client.ossconn.Bucket(bucketName)
-		if err != nil {
-			return nil, fmt.Errorf("unable to get the bucket %s: %#v", bucketName, err)
-		}
-		return do(bucket)
-	})
-}
-
-func (client *ApsaraStackClient) WithDnsClient(do func(*alidns.Client) (interface{}, error)) (interface{}, error) {
-	// Initialize the DNS client if necessary
-	if client.dnsconn == nil {
-		endpoint := client.config.DnsEndpoint
-		if endpoint == "" {
-			endpoint = loadEndpoint(client.config.RegionId, DNSCode)
-		}
-		if endpoint != "" {
-			endpoints.AddEndpointMapping(client.config.RegionId, string(DNSCode), endpoint)
-		}
-
-		dnsconn, err := alidns.NewClientWithOptions(client.config.RegionId, client.getSdkConfig(), client.config.getAuthCredential(true))
-		if err != nil {
-			return nil, fmt.Errorf("unable to initialize the DNS client: %#v", err)
-		}
-		dnsconn.AppendUserAgent(Terraform, terraformVersion)
-		dnsconn.AppendUserAgent(Provider, providerVersion)
-		dnsconn.AppendUserAgent(Module, client.config.ConfigurationSource)
-		client.dnsconn = dnsconn
-	}
-
-	return do(client.dnsconn)
 }
