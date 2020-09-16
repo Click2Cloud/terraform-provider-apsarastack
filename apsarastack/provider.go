@@ -141,6 +141,7 @@ func Provider() terraform.ResourceProvider {
 			"apsarastack_db_instances":                   dataSourceApsaraStackDBInstances(),
 			"apsarastack_db_zones":                       dataSourceApsaraStackDBZones(),
 			"apsarastack_slb_server_certificates":        dataSourceApsaraStackSlbServerCertificates(),
+			"apsarastack_slb_ca_certificates":            dataSourceApsaraStackSlbCACertificates(),
 			"apsarastack_slb_backend_servers":            dataSourceApsaraStackSlbBackendServers(),
 			"apsarastack_oss_buckets":                    dataSourceApsaraStackOssBuckets(),
 			"apsarastack_oss_bucket_objects":             dataSourceApsaraStackOssBucketObjects(),
@@ -153,8 +154,6 @@ func Provider() terraform.ResourceProvider {
 			"apsarastack_kms_keys":                       dataSourceApsaraStackKmsKeys(),
 			"apsarastack_kms_secrets":                    dataSourceApsaraStackKmsSecrets(),
 			"apsarastack_zones":                          dataSourceApsaraStackZones(),
-			"apsarastack_oss_buckets":                    dataSourceApsaraStackOssBuckets(),
-			"apsarastack_oss_bucket_objects":             dataSourceApsaraStackOssBucketObjects(),
 		},
 		ResourcesMap: map[string]*schema.Resource{
 			"apsarastack_disk":                                resourceApsaraStackDisk(),
@@ -191,9 +190,8 @@ func Provider() terraform.ResourceProvider {
 			"apsarastack_snat_entry":                          resourceApsaraStackSnatEntry(),
 			"apsarastack_db_instance":                         resourceApsaraStackDBInstance(),
 			"apsarastack_slb_server_certificate":              resourceApsaraStackSlbServerCertificate(),
+			"apsarastack_slb_ca_certificate":                  resourceApsaraStackSlbCACertificate(),
 			"apsarastack_slb_backend_server":                  resourceApsaraStackSlbBackendServer(),
-			"apsarastack_oss_bucket":                          resourceApsaraStackOssBucket(),
-			"apsarastack_oss_bucket_object":                   resourceApsaraStackOssBucketObject(),
 			"apsarastack_oss_bucket":                          resourceApsaraStackOssBucket(),
 			"apsarastack_oss_bucket_object":                   resourceApsaraStackOssBucketObject(),
 			"apsarastack_ess_scaling_group":                   resourceApsaraStackEssScalingGroup(),
@@ -294,6 +292,10 @@ func providerConfigure(d *schema.ResourceData) (interface{}, error) {
 		config.EcsEndpoint = "ecs." + domain
 		config.VpcEndpoint = "vpc." + domain
 		config.StsEndpoint = "sts." + domain
+		config.SlbEndpoint = "slb." + domain
+		config.OssEndpoint = "oss." + domain
+		config.DnsEndpoint = "dns." + domain
+		config.KmsEndpoint = "kms." + domain
 
 	} else {
 
@@ -304,6 +306,10 @@ func providerConfigure(d *schema.ResourceData) (interface{}, error) {
 			config.EcsEndpoint = strings.TrimSpace(endpoints["ecs"].(string))
 			config.VpcEndpoint = strings.TrimSpace(endpoints["vpc"].(string))
 			config.StsEndpoint = strings.TrimSpace(endpoints["sts"].(string))
+			config.SlbEndpoint = strings.TrimSpace(endpoints["slb"].(string))
+			config.OssEndpoint = strings.TrimSpace(endpoints["oss"].(string))
+			config.DnsEndpoint = strings.TrimSpace(endpoints["dns"].(string))
+			config.KmsEndpoint = strings.TrimSpace(endpoints["kms"].(string))
 
 		}
 	}
