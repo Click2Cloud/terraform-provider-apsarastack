@@ -12,7 +12,7 @@ description: |-
  help developers to use Terraform Module more simply and conveniently. Welcome to access it and let us know your more requirements!
 
 The ApsaraStack Cloud provider is used to interact with the
-many resources supported by [ApsaraStack Cloud](https://www.alibabacloud.com). The provider needs to be configured
+many resources supported by ApsaraStack Cloud. The provider needs to be configured
 with the proper credentials before it can be used.
 
 Use the navigation on the left to read about the available resources.
@@ -101,6 +101,7 @@ environment variables, representing your ApsaraStack access key and secret key r
 `APSARASTACK_REGION` is also used, if applicable:
 
 ```hcl
+
 provider "apsarastack" {
   access_key = "${var.access_key}"
   secret_key = "${var.secret_key}"
@@ -109,6 +110,9 @@ provider "apsarastack" {
   proxy      = "${var.proxy}"
   domain     = "${var.domain}"
 }
+
+
+provider "apsarastack" {}
 
 ```
 Usage:
@@ -137,7 +141,7 @@ In addition to [generic `provider` arguments](https://www.terraform.io/docs/conf
 * `region` - This is the ApsaraStack region. It must be provided, but
   it can also be sourced from the `APSARASTACK_REGION` environment variables.
 
-* `security_token` - ApsaraStack [Security Token Service](https://www.alibabacloud.com/help/doc-detail/66222.html).
+* `security_token` - ApsaraStack Security Token Service.
   It can be sourced from the `APSARASTACK_SECURITY_TOKEN` environment variable,  or via
   a dynamic security token if `ecs_role_name` is specified.
 

@@ -8,7 +8,10 @@ import (
 	"github.com/aliyun/terraform-provider-apsarastack/apsarastack/connectivity"
 )
 
+
 // OssService *connectivity.AliyunClient
+
+
 // OssService *connectivity.ApsaraStackClient
 type OssService struct {
 	client *connectivity.ApsaraStackClient

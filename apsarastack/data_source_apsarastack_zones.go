@@ -626,6 +626,7 @@ func zoneIdsDescriptionAttributes(d *schema.ResourceData, zones []string) error 
 	return nil
 }
 
+
 func splitMultiZoneId(id string) (ids []string) {
 	if !(strings.Contains(id, MULTI_IZ_SYMBOL) || strings.Contains(id, "(")) {
 		return
@@ -637,3 +638,4 @@ func splitMultiZoneId(id string) (ids []string) {
 	}
 	return
 }
+
