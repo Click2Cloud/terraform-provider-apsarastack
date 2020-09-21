@@ -90,20 +90,6 @@ func TestAccApsaraStackDisksDataSource(t *testing.T) {
 		}),
 	}
 
-	resourceGroupIdConfig := dataSourceTestAccConfig{
-		existConfig: testAccCheckApsaraStackDisksDataSourceConfigWithCommon(rand, map[string]string{
-			"instance_id": `"${apsarastack_disk_attachment.default.instance_id}"`,
-		}),
-		existChangMap: map[string]string{
-			"disks.0.instance_id":   CHECKSET,
-			"disks.0.attached_time": CHECKSET,
-			"disks.0.status":        "In_use",
-		},
-		fakeConfig: testAccCheckApsaraStackDisksDataSourceConfigWithCommon(rand, map[string]string{
-			"instance_id": `"${apsarastack_disk_attachment.default.instance_id}_fake"`,
-		}),
-	}
-
 	allConfig := dataSourceTestAccConfig{
 		existConfig: testAccCheckApsaraStackDisksDataSourceConfigWithCommon(rand, map[string]string{
 			"ids":         `[ "${apsarastack_disk.default.id}" ]`,
@@ -129,7 +115,7 @@ func TestAccApsaraStackDisksDataSource(t *testing.T) {
 	}
 
 	disksCheckInfo.dataSourceTestCheck(t, rand, idsConfig, nameRegexConfig, typeConfig, categoryConfig, encryptedConfig,
-		tagsConfig, instanceIdConfig, resourceGroupIdConfig, allConfig)
+		tagsConfig, instanceIdConfig, allConfig)
 }
 
 func testAccCheckApsaraStackDisksDataSourceConfig(rand int, attrMap map[string]string) string {
