@@ -359,6 +359,7 @@ resource "apsarastack_eip" "default" {
 }
 `)
 
+
 }
 
 var testAccCheckEipCheckMap = map[string]string{

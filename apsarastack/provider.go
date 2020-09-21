@@ -142,6 +142,7 @@ func Provider() terraform.ResourceProvider {
 			"apsarastack_db_zones":                       dataSourceApsaraStackDBZones(),
 			"apsarastack_slb_server_certificates":        dataSourceApsaraStackSlbServerCertificates(),
 			"apsarastack_slb_backend_servers":            dataSourceApsaraStackSlbBackendServers(),
+
 			"apsarastack_ess_scaling_configurations":     dataSourceApsaraStackEssScalingConfigurations(),
 			"apsarastack_cs_kubernetes_clusters":            dataSourceApsaraStackCSKubernetesClusters(),
 			"apsarastack_cs_managed_kubernetes_clusters":    dataSourceApsaraStackCSManagerKubernetesClusters(),
@@ -152,6 +153,11 @@ func Provider() terraform.ResourceProvider {
 			"apsarastack_ess_scaling_groups":             dataSourceApsaraStackEssScalingGroups(),
 			"apsarastack_zones":                          dataSourceApsaraStackZones(),
       "apsarastack_ess_scheduled_tasks":            dataSourceApsaraStackEssScheduledTasks(),
+
+			"apsarastack_zones":                          dataSourceApsaraStackZones(),
+			"apsarastack_oss_buckets":                    dataSourceApsaraStackOssBuckets(),
+			"apsarastack_oss_bucket_objects":             dataSourceApsaraStackOssBucketObjects(),
+
 		},
 		ResourcesMap: map[string]*schema.Resource{
 			"apsarastack_disk":                                resourceApsaraStackDisk(),
@@ -199,7 +205,12 @@ func Provider() terraform.ResourceProvider {
 			"apsarastack_ess_scaling_group":                   resourceApsaraStackEssScalingGroup(),
 			"apsarastack_ess_scalinggroup_vserver_groups":     resourceApsaraStackEssScalingGroupVserverGroups(),
 			"apsarastack_slb_backend_server":                  resourceApsaraStackSlbBackendServer(),
+
       "apsarastack_ess_scheduled_task":                  resourceApsaraStackEssScheduledTask(),
+
+			"apsarastack_oss_bucket":                          resourceApsaraStackOssBucket(),
+			"apsarastack_oss_bucket_object":                   resourceApsaraStackOssBucketObject(),
+
 		},
 
 		ConfigureFunc: providerConfigure,

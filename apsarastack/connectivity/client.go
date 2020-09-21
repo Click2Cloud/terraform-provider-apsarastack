@@ -142,6 +142,7 @@ func (client *ApsaraStackClient) WithEcsClient(do func(*ecs.Client) (interface{}
 
 	return do(client.ecsconn)
 }
+
 func (client *ApsaraStackClient) WithPolarDBClient(do func(*polardb.Client) (interface{}, error)) (interface{}, error) {
 	// Initialize the PolarDB client if necessary
 	if client.polarDBconn == nil {
@@ -162,6 +163,11 @@ func (client *ApsaraStackClient) WithPolarDBClient(do func(*polardb.Client) (int
 		polarDBconn.AppendUserAgent(Terraform, terraformVersion)
 		polarDBconn.AppendUserAgent(Provider, providerVersion)
 		polarDBconn.AppendUserAgent(Module, client.config.ConfigurationSource)
+		polarDBconn.SetHTTPSInsecure(client.config.Insecure)
+		if client.config.Proxy != "" {
+			polarDBconn.SetHttpsProxy(client.config.Proxy)
+		}
+
 		client.polarDBconn = polarDBconn
 	}
 
@@ -185,6 +191,10 @@ func (client *ApsaraStackClient) WithElasticsearchClient(do func(*elasticsearch.
 		elasticsearchconn.AppendUserAgent(Terraform, terraformVersion)
 		elasticsearchconn.AppendUserAgent(Provider, providerVersion)
 		elasticsearchconn.AppendUserAgent(Module, client.config.ConfigurationSource)
+		elasticsearchconn.SetHTTPSInsecure(client.config.Insecure)
+		if client.config.Proxy != "" {
+			elasticsearchconn.SetHttpsProxy(client.config.Proxy)
+		}
 		client.elasticsearchconn = elasticsearchconn
 	}
 
@@ -208,6 +218,10 @@ func (client *ApsaraStackClient) WithEssClient(do func(*ess.Client) (interface{}
 		essconn.AppendUserAgent(Terraform, terraformVersion)
 		essconn.AppendUserAgent(Provider, providerVersion)
 		essconn.AppendUserAgent(Module, client.config.ConfigurationSource)
+		essconn.SetHTTPSInsecure(client.config.Insecure)
+		if client.config.Proxy != "" {
+			essconn.SetHttpsProxy(client.config.Proxy)
+		}
 		client.essconn = essconn
 	}
 
@@ -232,6 +246,10 @@ func (client *ApsaraStackClient) WithRkvClient(do func(*r_kvstore.Client) (inter
 		rkvconn.AppendUserAgent(Terraform, terraformVersion)
 		rkvconn.AppendUserAgent(Provider, providerVersion)
 		rkvconn.AppendUserAgent(Module, client.config.ConfigurationSource)
+		rkvconn.SetHTTPSInsecure(client.config.Insecure)
+		if client.config.Proxy != "" {
+			rkvconn.SetHttpsProxy(client.config.Proxy)
+		}
 		client.rkvconn = rkvconn
 	}
 
@@ -256,6 +274,10 @@ func (client *ApsaraStackClient) WithGpdbClient(do func(*gpdb.Client) (interface
 		gpdbconn.AppendUserAgent(Terraform, terraformVersion)
 		gpdbconn.AppendUserAgent(Provider, providerVersion)
 		gpdbconn.AppendUserAgent(Module, client.config.ConfigurationSource)
+		gpdbconn.SetHTTPSInsecure(client.config.Insecure)
+		if client.config.Proxy != "" {
+			gpdbconn.SetHttpsProxy(client.config.Proxy)
+		}
 		client.gpdbconn = gpdbconn
 	}
 
@@ -281,6 +303,10 @@ func (client *ApsaraStackClient) WithAdbClient(do func(*adb.Client) (interface{}
 		adbconn.AppendUserAgent(Terraform, terraformVersion)
 		adbconn.AppendUserAgent(Provider, providerVersion)
 		adbconn.AppendUserAgent(Module, client.config.ConfigurationSource)
+		adbconn.SetHTTPSInsecure(client.config.Insecure)
+		if client.config.Proxy != "" {
+			adbconn.SetHttpsProxy(client.config.Proxy)
+		}
 		client.adbconn = adbconn
 	}
 
@@ -304,6 +330,10 @@ func (client *ApsaraStackClient) WithHbaseClient(do func(*hbase.Client) (interfa
 		hbaseconn.AppendUserAgent(Terraform, terraformVersion)
 		hbaseconn.AppendUserAgent(Provider, providerVersion)
 		hbaseconn.AppendUserAgent(Module, client.config.ConfigurationSource)
+		hbaseconn.SetHTTPSInsecure(client.config.Insecure)
+		if client.config.Proxy != "" {
+			hbaseconn.SetHttpsProxy(client.config.Proxy)
+		}
 		client.hbaseconn = hbaseconn
 	}
 
@@ -746,6 +776,37 @@ func (client *ApsaraStackClient) WithRamClient(do func(*ram.Client) (interface{}
 	return do(client.ramconn)
 }
 
+
+
+func (client *ApsaraStackClient) WithRdsClient(do func(*rds.Client) (interface{}, error)) (interface{}, error) {
+	// Initialize the RDS client if necessary
+	if client.rdsconn == nil {
+		endpoint := client.config.RdsEndpoint
+		if endpoint == "" {
+			endpoint = loadEndpoint(client.config.RegionId, RDSCode)
+		}
+		if endpoint != "" {
+			endpoints.AddEndpointMapping(client.config.RegionId, string(RDSCode), endpoint)
+		}
+		rdsconn, err := rds.NewClientWithOptions(client.config.RegionId, client.getSdkConfig(), client.config.getAuthCredential(true))
+		if err != nil {
+			return nil, fmt.Errorf("unable to initialize the RDS client: %#v", err)
+		}
+
+		rdsconn.AppendUserAgent(Terraform, terraformVersion)
+		rdsconn.AppendUserAgent(Provider, providerVersion)
+		rdsconn.AppendUserAgent(Module, client.config.ConfigurationSource)
+		rdsconn.SetHTTPSInsecure(client.config.Insecure)
+		if client.config.Proxy != "" {
+			rdsconn.SetHttpsProxy(client.config.Proxy)
+		}
+		client.rdsconn = rdsconn
+	}
+
+	return do(client.rdsconn)
+}
+
+
 func (client *ApsaraStackClient) WithCdnClient_new(do func(*cdn_new.Client) (interface{}, error)) (interface{}, error) {
 	// Initialize the CDN client if necessary
 	if client.cdnconn_new == nil {
@@ -800,6 +861,7 @@ func (client *ApsaraStackClient) WithCsClient(do func(*cs.Client) (interface{}, 
 	return do(client.csconn)
 }
 
+
 func (client *ApsaraStackClient) WithOfficalCSClient(do func(*officalCS.Client) (interface{}, error)) (interface{}, error) {
 	goSdkMutex.Lock()
 	defer goSdkMutex.Unlock()
@@ -825,4 +887,31 @@ func (client *ApsaraStackClient) WithOfficalCSClient(do func(*officalCS.Client) 
 	}
 
 	return do(client.officalCSConn)
+
+func (client *ApsaraStackClient) getHttpProxyUrl() *url.URL {
+	for _, v := range []string{"HTTPS_PROXY", "https_proxy", "HTTP_PROXY", "http_proxy"} {
+		value := strings.Trim(os.Getenv(v), " ")
+		if value != "" {
+			if !regexp.MustCompile(`^http(s)?://`).MatchString(value) {
+				value = fmt.Sprintf("https://%s", value)
+			}
+			proxyUrl, err := url.Parse(value)
+			if err == nil {
+				return proxyUrl
+			}
+			break
+		}
+	}
+	return nil
+}
+
+func (client *ApsaraStackClient) WithOssBucketByName(bucketName string, do func(*oss.Bucket) (interface{}, error)) (interface{}, error) {
+	return client.WithOssClient(func(ossClient *oss.Client) (interface{}, error) {
+		bucket, err := client.ossconn.Bucket(bucketName)
+		if err != nil {
+			return nil, fmt.Errorf("unable to get the bucket %s: %#v", bucketName, err)
+		}
+		return do(bucket)
+	})
+
 }

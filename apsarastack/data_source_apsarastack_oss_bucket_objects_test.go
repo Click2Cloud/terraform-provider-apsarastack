@@ -5,7 +5,11 @@ import (
 	"testing"
 
 	"github.com/aliyun/terraform-provider-apsarastack/apsarastack/connectivity"
+
 	"github.com/hashicorp/terraform/helper/acctest"
+
+	"github.com/hashicorp/terraform-plugin-sdk/helper/acctest"
+
 )
 
 func TestAccApsaraStackOssBucketObjectsDataSource_basic(t *testing.T) {
