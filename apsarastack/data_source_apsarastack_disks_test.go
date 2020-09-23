@@ -1,130 +1,130 @@
-package apsarastack
+	package apsarastack
 
-import (
-	"github.com/hashicorp/terraform-plugin-sdk/helper/acctest"
-	"strings"
-	"testing"
+	import (
+		"github.com/hashicorp/terraform-plugin-sdk/helper/acctest"
+		"strings"
+		"testing"
 
-	"fmt"
-)
+		"fmt"
+	)
 
-func TestAccApsaraStackDisksDataSource(t *testing.T) {
-	rand := acctest.RandIntRange(1000, 9999)
+	func TestAccApsaraStackDisksDataSource(t *testing.T) {
+		rand := acctest.RandIntRange(1000, 9999)
 
-	idsConfig := dataSourceTestAccConfig{
-		existConfig: testAccCheckApsaraStackDisksDataSourceConfig(rand, map[string]string{
-			"ids": `[ "${apsarastack_disk.default.id}" ]`,
-		}),
-		fakeConfig: testAccCheckApsaraStackDisksDataSourceConfig(rand, map[string]string{
-			"ids": `[ "${apsarastack_disk.default.id}_fake" ]`,
-		}),
-	}
+		idsConfig := dataSourceTestAccConfig{
+			existConfig: testAccCheckApsaraStackDisksDataSourceConfig(rand, map[string]string{
+				"ids": `[ "${apsarastack_disk.default.id}" ]`,
+			}),
+			fakeConfig: testAccCheckApsaraStackDisksDataSourceConfig(rand, map[string]string{
+				"ids": `[ "${apsarastack_disk.default.id}_fake" ]`,
+			}),
+		}
 
-	nameRegexConfig := dataSourceTestAccConfig{
-		existConfig: testAccCheckApsaraStackDisksDataSourceConfig(rand, map[string]string{
-			"name_regex": `"${apsarastack_disk.default.name}"`,
-		}),
-		fakeConfig: testAccCheckApsaraStackDisksDataSourceConfig(rand, map[string]string{
-			"name_regex": `"${apsarastack_disk.default.name}_fake"`,
-		}),
-	}
+		nameRegexConfig := dataSourceTestAccConfig{
+			existConfig: testAccCheckApsaraStackDisksDataSourceConfig(rand, map[string]string{
+				"name_regex": `"${apsarastack_disk.default.name}"`,
+			}),
+			fakeConfig: testAccCheckApsaraStackDisksDataSourceConfig(rand, map[string]string{
+				"name_regex": `"${apsarastack_disk.default.name}_fake"`,
+			}),
+		}
 
-	typeConfig := dataSourceTestAccConfig{
-		existConfig: testAccCheckApsaraStackDisksDataSourceConfig(rand, map[string]string{
-			"name_regex": `"${apsarastack_disk.default.name}"`,
-			"type":       `"data"`,
-		}),
-		fakeConfig: testAccCheckApsaraStackDisksDataSourceConfig(rand, map[string]string{
-			"name_regex": `"${apsarastack_disk.default.name}"`,
-			"type":       `"system"`,
-		}),
-	}
+		typeConfig := dataSourceTestAccConfig{
+			existConfig: testAccCheckApsaraStackDisksDataSourceConfig(rand, map[string]string{
+				"name_regex": `"${apsarastack_disk.default.name}"`,
+				"type":       `"data"`,
+			}),
+			fakeConfig: testAccCheckApsaraStackDisksDataSourceConfig(rand, map[string]string{
+				"name_regex": `"${apsarastack_disk.default.name}"`,
+				"type":       `"system"`,
+			}),
+		}
 
-	categoryConfig := dataSourceTestAccConfig{
-		existConfig: testAccCheckApsaraStackDisksDataSourceConfig(rand, map[string]string{
-			"name_regex": `"${apsarastack_disk.default.name}"`,
-			"category":   `"cloud_efficiency"`,
-		}),
-		fakeConfig: testAccCheckApsaraStackDisksDataSourceConfig(rand, map[string]string{
-			"name_regex": `"${apsarastack_disk.default.name}"`,
-			"category":   `"cloud"`,
-		}),
-	}
+		categoryConfig := dataSourceTestAccConfig{
+			existConfig: testAccCheckApsaraStackDisksDataSourceConfig(rand, map[string]string{
+				"name_regex": `"${apsarastack_disk.default.name}"`,
+				"category":   `"cloud_efficiency"`,
+			}),
+			fakeConfig: testAccCheckApsaraStackDisksDataSourceConfig(rand, map[string]string{
+				"name_regex": `"${apsarastack_disk.default.name}"`,
+				"category":   `"cloud"`,
+			}),
+		}
 
-	encryptedConfig := dataSourceTestAccConfig{
-		existConfig: testAccCheckApsaraStackDisksDataSourceConfig(rand, map[string]string{
-			"name_regex": `"${apsarastack_disk.default.name}"`,
-		}),
-		fakeConfig: testAccCheckApsaraStackDisksDataSourceConfig(rand, map[string]string{
-			"name_regex": `"${apsarastack_disk.default.name}"`,
-		}),
-	}
+		encryptedConfig := dataSourceTestAccConfig{
+			existConfig: testAccCheckApsaraStackDisksDataSourceConfig(rand, map[string]string{
+				"name_regex": `"${apsarastack_disk.default.name}"`,
+			}),
+			fakeConfig: testAccCheckApsaraStackDisksDataSourceConfig(rand, map[string]string{
+				"name_regex": `"${apsarastack_disk.default.name}"`,
+			}),
+		}
 
-	tagsConfig := dataSourceTestAccConfig{
-		existConfig: testAccCheckApsaraStackDisksDataSourceConfig(rand, map[string]string{
-			"name_regex": `"${apsarastack_disk.default.name}"`,
-			"tags":       `"${apsarastack_disk.default.tags}"`,
-		}),
-		fakeConfig: testAccCheckApsaraStackDisksDataSourceConfig(rand, map[string]string{
-			"name_regex": `"${apsarastack_disk.default.name}"`,
-			"tags": `{
+		tagsConfig := dataSourceTestAccConfig{
+			existConfig: testAccCheckApsaraStackDisksDataSourceConfig(rand, map[string]string{
+				"name_regex": `"${apsarastack_disk.default.name}"`,
+				"tags":       `"${apsarastack_disk.default.tags}"`,
+			}),
+			fakeConfig: testAccCheckApsaraStackDisksDataSourceConfig(rand, map[string]string{
+				"name_regex": `"${apsarastack_disk.default.name}"`,
+				"tags": `{
                            Name = "TerraformTest_fake"
                            Name1 = "TerraformTest_fake"
                         }`,
-		}),
+			}),
+		}
+
+		instanceIdConfig := dataSourceTestAccConfig{
+			existConfig: testAccCheckApsaraStackDisksDataSourceConfigWithCommon(rand, map[string]string{
+				"instance_id": `"${apsarastack_disk_attachment.default.instance_id}"`,
+				"name_regex":  `"${apsarastack_disk.default.name}"`,
+			}),
+			existChangMap: map[string]string{
+				"disks.0.instance_id":   CHECKSET,
+				"disks.0.attached_time": CHECKSET,
+				"disks.0.status":        "In_use",
+			},
+			fakeConfig: testAccCheckApsaraStackDisksDataSourceConfigWithCommon(rand, map[string]string{
+				"instance_id": `"${apsarastack_disk_attachment.default.instance_id}_fake"`,
+				"name_regex":  `"${apsarastack_disk.default.name}"`,
+			}),
+		}
+
+		allConfig := dataSourceTestAccConfig{
+			existConfig: testAccCheckApsaraStackDisksDataSourceConfigWithCommon(rand, map[string]string{
+				"ids":         `[ "${apsarastack_disk.default.id}" ]`,
+				"name_regex":  `"${apsarastack_disk.default.name}"`,
+				"type":        `"data"`,
+				"category":    `"cloud_efficiency"`,
+				"tags":        `"${apsarastack_disk.default.tags}"`,
+				"instance_id": `"${apsarastack_disk_attachment.default.instance_id}"`,
+			}),
+			existChangMap: map[string]string{
+				"disks.0.instance_id":   CHECKSET,
+				"disks.0.attached_time": CHECKSET,
+				"disks.0.status":        "In_use",
+			},
+			fakeConfig: testAccCheckApsaraStackDisksDataSourceConfigWithCommon(rand, map[string]string{
+				"ids":         `[ "${apsarastack_disk.default.id}" ]`,
+				"name_regex":  `"${apsarastack_disk.default.name}"`,
+				"type":        `"data"`,
+				"category":    `"cloud_efficiency"`,
+				"tags":        `"${apsarastack_disk.default.tags}"`,
+				"instance_id": `"${apsarastack_disk_attachment.default.instance_id}"`,
+			}),
+		}
+
+		disksCheckInfo.dataSourceTestCheck(t, rand, idsConfig, nameRegexConfig, typeConfig, categoryConfig, encryptedConfig,
+			tagsConfig, instanceIdConfig, allConfig)
 	}
 
-	instanceIdConfig := dataSourceTestAccConfig{
-		existConfig: testAccCheckApsaraStackDisksDataSourceConfigWithCommon(rand, map[string]string{
-			"instance_id": `"${apsarastack_disk_attachment.default.instance_id}"`,
-			"name_regex":  `"${apsarastack_disk.default.name}"`,
-		}),
-		existChangMap: map[string]string{
-			"disks.0.instance_id":   CHECKSET,
-			"disks.0.attached_time": CHECKSET,
-			"disks.0.status":        "In_use",
-		},
-		fakeConfig: testAccCheckApsaraStackDisksDataSourceConfigWithCommon(rand, map[string]string{
-			"instance_id": `"${apsarastack_disk_attachment.default.instance_id}_fake"`,
-			"name_regex":  `"${apsarastack_disk.default.name}"`,
-		}),
-	}
+	func testAccCheckApsaraStackDisksDataSourceConfig(rand int, attrMap map[string]string) string {
+		var pairs []string
+		for k, v := range attrMap {
+			pairs = append(pairs, k+" = "+v)
+		}
 
-	allConfig := dataSourceTestAccConfig{
-		existConfig: testAccCheckApsaraStackDisksDataSourceConfigWithCommon(rand, map[string]string{
-			"ids":         `[ "${apsarastack_disk.default.id}" ]`,
-			"name_regex":  `"${apsarastack_disk.default.name}"`,
-			"type":        `"data"`,
-			"category":    `"cloud_efficiency"`,
-			"tags":        `"${apsarastack_disk.default.tags}"`,
-			"instance_id": `"${apsarastack_disk_attachment.default.instance_id}"`,
-		}),
-		existChangMap: map[string]string{
-			"disks.0.instance_id":   CHECKSET,
-			"disks.0.attached_time": CHECKSET,
-			"disks.0.status":        "In_use",
-		},
-		fakeConfig: testAccCheckApsaraStackDisksDataSourceConfigWithCommon(rand, map[string]string{
-			"ids":         `[ "${apsarastack_disk.default.id}" ]`,
-			"name_regex":  `"${apsarastack_disk.default.name}"`,
-			"type":        `"data"`,
-			"category":    `"cloud_efficiency"`,
-			"tags":        `"${apsarastack_disk.default.tags}"`,
-			"instance_id": `"${apsarastack_disk_attachment.default.instance_id}"`,
-		}),
-	}
-
-	disksCheckInfo.dataSourceTestCheck(t, rand, idsConfig, nameRegexConfig, typeConfig, categoryConfig, encryptedConfig,
-		tagsConfig, instanceIdConfig, allConfig)
-}
-
-func testAccCheckApsaraStackDisksDataSourceConfig(rand int, attrMap map[string]string) string {
-	var pairs []string
-	for k, v := range attrMap {
-		pairs = append(pairs, k+" = "+v)
-	}
-
-	config := fmt.Sprintf(`
+		config := fmt.Sprintf(`
 
 variable "name" {
 	default = "tf-testAccCheckApsaraStackDisksDataSource_ids-%d"
@@ -150,16 +150,16 @@ data "apsarastack_disks" "default" {
 	%s
 }
 	`, rand, strings.Join(pairs, "\n	"))
-	return config
-}
-
-func testAccCheckApsaraStackDisksDataSourceConfigWithCommon(rand int, attrMap map[string]string) string {
-	var pairs []string
-	for k, v := range attrMap {
-		pairs = append(pairs, k+" = "+v)
+		return config
 	}
 
-	config := fmt.Sprintf(`
+	func testAccCheckApsaraStackDisksDataSourceConfigWithCommon(rand int, attrMap map[string]string) string {
+		var pairs []string
+		for k, v := range attrMap {
+			pairs = append(pairs, k+" = "+v)
+		}
+
+		config := fmt.Sprintf(`
 %s
 
 variable "name" {
@@ -197,39 +197,39 @@ data "apsarastack_disks" "default" {
 	%s
 }
 `, EcsInstanceCommonTestCase, rand, strings.Join(pairs, "\n	"))
-	return config
-}
-
-var existDisksMapFunc = func(rand int) map[string]string {
-	return map[string]string{
-		"disks.#":                   "1",
-		"disks.0.id":                CHECKSET,
-		"disks.0.name":              fmt.Sprintf("tf-testAccCheckApsaraStackDisksDataSource_ids-%d", rand),
-		"disks.0.description":       fmt.Sprintf("tf-testAccCheckApsaraStackDisksDataSource_ids-%d_description", rand),
-		"disks.0.region_id":         CHECKSET,
-		"disks.0.availability_zone": CHECKSET,
-		"disks.0.status":            "Available",
-		"disks.0.type":              "data",
-		"disks.0.category":          "cloud_efficiency",
-		"disks.0.size":              "20",
-		"disks.0.image_id":          "",
-		"disks.0.snapshot_id":       "",
-		"disks.0.instance_id":       "",
-		"disks.0.creation_time":     CHECKSET,
-		"disks.0.attached_time":     "",
-		"disks.0.detached_time":     "",
-		"disks.0.tags.%":            "2",
+		return config
 	}
-}
 
-var fakeDisksMapFunc = func(rand int) map[string]string {
-	return map[string]string{
-		"disks.#": "0",
+	var existDisksMapFunc = func(rand int) map[string]string {
+		return map[string]string{
+			"disks.#":                   "1",
+			"disks.0.id":                CHECKSET,
+			"disks.0.name":              fmt.Sprintf("tf-testAccCheckApsaraStackDisksDataSource_ids-%d", rand),
+			"disks.0.description":       fmt.Sprintf("tf-testAccCheckApsaraStackDisksDataSource_ids-%d_description", rand),
+			"disks.0.region_id":         CHECKSET,
+			"disks.0.availability_zone": CHECKSET,
+			"disks.0.status":            "Available",
+			"disks.0.type":              "data",
+			"disks.0.category":          "cloud_efficiency",
+			"disks.0.size":              "20",
+			"disks.0.image_id":          "",
+			"disks.0.snapshot_id":       "",
+			"disks.0.instance_id":       "",
+			"disks.0.creation_time":     CHECKSET,
+			"disks.0.attached_time":     "",
+			"disks.0.detached_time":     "",
+			"disks.0.tags.%":            "2",
+		}
 	}
-}
 
-var disksCheckInfo = dataSourceAttr{
-	resourceId:   "data.apsarastack_disks.default",
-	existMapFunc: existDisksMapFunc,
-	fakeMapFunc:  fakeDisksMapFunc,
-}
+	var fakeDisksMapFunc = func(rand int) map[string]string {
+		return map[string]string{
+			"disks.#": "0",
+		}
+	}
+
+	var disksCheckInfo = dataSourceAttr{
+		resourceId:   "data.apsarastack_disks.default",
+		existMapFunc: existDisksMapFunc,
+		fakeMapFunc:  fakeDisksMapFunc,
+	}
