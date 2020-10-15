@@ -14,4 +14,5 @@ require (
 	github.com/hashicorp/terraform-plugin-sdk v1.15.0
 	github.com/jmespath/go-jmespath v0.3.0
 	github.com/mitchellh/go-homedir v1.1.0
+	github.com/sirupsen/logrus v1.7.0 // indirect
 )
