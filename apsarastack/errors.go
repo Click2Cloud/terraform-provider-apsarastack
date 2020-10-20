@@ -29,6 +29,7 @@ const (
 	RamInstanceNotFound        = "Forbidden.InstanceNotFound"
 	ApsaraStackGoClientFailure = "ApsaraStackGoClientFailure"
 	DenverdinoApsaraStackgo    = ErrorSource("[SDK denverdino/aliyungo ERROR]")
+	LogClientTimeout = "Client.Timeout exceeded while awaiting headers"
 )
 
 var SlbIsBusy = []string{"SystemBusy", "OperationBusy", "ServiceIsStopping", "BackendServer.configuring", "ServiceIsConfiguring"}

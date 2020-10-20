@@ -17,6 +17,7 @@ import (
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/r-kvstore"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/rds"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/slb"
+	slsPop "github.com/aliyun/alibaba-cloud-sdk-go/services/sls"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/sts"
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 	"github.com/aliyun/fc-go-sdk"
@@ -27,7 +28,7 @@ import (
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ram"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/vpc"
 	"github.com/denverdino/aliyungo/cdn"
-
+	sls "github.com/aliyun/aliyun-log-go-sdk"
 	"github.com/denverdino/aliyungo/cs"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"sync"
@@ -70,6 +71,8 @@ type ApsaraStackClient struct {
 	rkvconn           *r_kvstore.Client
 	fcconn            *fc.Client
 	ddsconn           *dds.Client
+	logconn                      *sls.Client
+	logpopconn                   *slsPop.Client
 }
 
 const (
@@ -884,4 +887,57 @@ func (client *ApsaraStackClient) WithOssBucketByName(bucketName string, do func(
 		}
 		return do(bucket)
 	})
+}
+
+func (client *ApsaraStackClient) WithLogClient(do func(*sls.Client) (interface{}, error)) (interface{}, error) {
+	goSdkMutex.Lock()
+	defer goSdkMutex.Unlock()
+
+	// Initialize the LOG client if necessary
+	if client.logconn == nil {
+		endpoint := client.config.LogEndpoint
+		if endpoint == "" {
+			endpoint = loadEndpoint(client.config.RegionId, LOGCode)
+			if endpoint == "" {
+				endpoint = fmt.Sprintf("%s.log.aliyuncs.com", client.config.RegionId)
+			}
+		}
+		if !strings.HasPrefix(endpoint, "http") {
+			endpoint = fmt.Sprintf("https://%s", strings.TrimPrefix(endpoint, "://"))
+		}
+		client.logconn = &sls.Client{
+			AccessKeyID:     client.config.AccessKey,
+			AccessKeySecret: client.config.SecretKey,
+			Endpoint:        endpoint,
+			SecurityToken:   client.config.SecurityToken,
+			UserAgent:       client.getUserAgent(),
+		}
+	}
+
+	return do(client.logconn)
+}
+
+func (client *ApsaraStackClient) WithLogPopClient(do func(*slsPop.Client) (interface{}, error)) (interface{}, error) {
+	// Initialize the HBase client if necessary
+	if client.logpopconn == nil {
+		endpoint := client.config.LogEndpoint
+		if endpoint == "" {
+			endpoint = loadEndpoint(client.config.RegionId, LOGCode)
+		}
+		if endpoint != "" {
+			endpoint = fmt.Sprintf("%s.log.aliyuncs.com", client.config.RegionId)
+		}
+		logpopconn, err := slsPop.NewClientWithOptions(client.config.RegionId, client.getSdkConfig(), client.config.getAuthCredential(true))
+
+		if err != nil {
+			return nil, fmt.Errorf("unable to initialize the sls client: %#v", err)
+		}
+
+		logpopconn.AppendUserAgent(Terraform, terraformVersion)
+		logpopconn.AppendUserAgent(Provider, providerVersion)
+		logpopconn.AppendUserAgent(Module, client.config.ConfigurationSource)
+		client.logpopconn = logpopconn
+	}
+
+	return do(client.logpopconn)
 }

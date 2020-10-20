@@ -215,6 +215,12 @@ func Provider() terraform.ResourceProvider {
 			"apsarastack_router_interface_connection":         resourceApsaraStackRouterInterfaceConnection(),
 			"apsarastack_ess_scheduled_task":                  resourceApsaraStackEssScheduledTask(),
 			"apsarastack_ess_scalinggroup_vserver_groups":     resourceApsaraStackEssScalingGroupVserverGroups(),
+			"apsarastack_log_project":                         resourceApsaraStackLogProject(),
+			"apsarastack_log_store":                           resourceApsaraStackLogStore(),
+			"apsarastack_log_store_index":                     resourceApsaraStackLogStoreIndex(),
+			"apsarastack_log_machine_group":                   resourceApsaraStackLogMachineGroup(),
+			"apsarastack_logtail_config":                      resourceApsaraStackLogtailConfig(),
+			"apsarastack_logtail_attachment":                  resourceApsaraStackLogtailAttachment(),
 		},
 		ConfigureFunc: providerConfigure,
 	}

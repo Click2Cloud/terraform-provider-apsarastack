@@ -1,6 +1,7 @@
 package apsarastack
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"net"
@@ -128,4 +129,28 @@ func validateDBConnectionPort(v interface{}, k string) (ws []string, errors []er
 		}
 	}
 	return
+}
+
+// Takes a value containing JSON string and passes it through
+// the JSON parser to normalize it, returns either a parsing
+// error or normalized JSON string.
+func normalizeJsonString(jsonString interface{}) (string, error) {
+	var j interface{}
+
+	if jsonString == nil || jsonString.(string) == "" {
+		return "", nil
+	}
+
+	s := jsonString.(string)
+
+	err := json.Unmarshal([]byte(s), &j)
+	if err != nil {
+		return s, err
+	}
+
+	// The error is intentionally ignored here to allow empty policies to passthrough validation.
+	// This covers any interpolated values
+	bytes, _ := json.Marshal(j)
+
+	return string(bytes[:]), nil
 }
