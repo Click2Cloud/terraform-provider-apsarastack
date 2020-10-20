@@ -278,7 +278,7 @@ func resourceApsaraStackMongoDBShardingInstanceCreate(d *schema.ResourceData, me
 	})
 
 	if err != nil {
-		return WrapErrorf(err, DefaultErrorMsg, "alicloud_mongodb_sharding_instance", request.GetActionName(), ApsaraStackSdkGoERROR)
+		return WrapErrorf(err, DefaultErrorMsg, "apsarastack_mongodb_sharding_instance", request.GetActionName(), ApsaraStackSdkGoERROR)
 	}
 
 	response, _ := raw.(*dds.CreateShardingDBInstanceResponse)

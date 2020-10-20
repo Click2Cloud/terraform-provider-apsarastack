@@ -34,16 +34,16 @@ func resourceApsaraStackMongoDBInstance() *schema.Resource {
 				Type:     schema.TypeString,
 				ForceNew: true,
 				Required: true,
-			},
+			}, // EngineVersion
 			"db_instance_class": {
 				Type:     schema.TypeString,
 				Required: true,
-			},
+			}, // DBInstanceClass
 			"db_instance_storage": {
 				Type:         schema.TypeInt,
 				ValidateFunc: validation.IntBetween(10, 2000),
 				Required:     true,
-			},
+			}, // DBInstanceStorage
 			"replication_factor": {
 				Type:         schema.TypeInt,
 				ValidateFunc: validation.IntInSlice([]int{3, 5, 7}),
@@ -56,32 +56,32 @@ func resourceApsaraStackMongoDBInstance() *schema.Resource {
 				Optional:     true,
 				Computed:     true,
 				ForceNew:     true,
-			},
+			}, // Engine
 			"instance_charge_type": {
 				Type:         schema.TypeString,
 				ValidateFunc: validation.StringInSlice([]string{string(PrePaid), string(PostPaid)}, false),
 				Optional:     true,
 				Default:      PostPaid,
-			},
+			},//ChargeType
 			"period": {
 				Type:             schema.TypeInt,
 				ValidateFunc:     validation.IntInSlice([]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 12, 24, 36}),
 				Optional:         true,
 				Computed:         true,
 				DiffSuppressFunc: PostPaidDiffSuppressFunc,
-			},
+			}, //Period
 			"zone_id": {
 				Type:     schema.TypeString,
 				Optional: true,
 				ForceNew: true,
 				Computed: true,
-			},
+			}, // ZoneId
 			"vswitch_id": {
 				Type:     schema.TypeString,
 				ForceNew: true,
 				Optional: true,
 				Computed: true,
-			},
+			},// VSwitchId
 			"name": {
 				Type:         schema.TypeString,
 				Optional:     true,
@@ -92,7 +92,7 @@ func resourceApsaraStackMongoDBInstance() *schema.Resource {
 				Elem:     &schema.Schema{Type: schema.TypeString},
 				Computed: true,
 				Optional: true,
-			},
+			}, //SecurityIPList
 			"security_group_id": {
 				Type:     schema.TypeString,
 				Computed: true,
@@ -102,7 +102,7 @@ func resourceApsaraStackMongoDBInstance() *schema.Resource {
 				Type:      schema.TypeString,
 				Optional:  true,
 				Sensitive: true,
-			},
+			}, //AccountPassword
 			"kms_encrypted_password": {
 				Type:             schema.TypeString,
 				Optional:         true,
@@ -256,7 +256,7 @@ func resourceApsaraStackMongoDBInstanceCreate(d *schema.ResourceData, meta inter
 	})
 
 	if err != nil {
-		return WrapErrorf(err, DefaultErrorMsg, "alicloud_mongodb_instance", request.GetActionName(), ApsaraStackSdkGoERROR)
+		return WrapErrorf(err, DefaultErrorMsg, "apsarastack_mongodb_instance", request.GetActionName(), ApsaraStackSdkGoERROR)
 	}
 
 	addDebug(request.GetActionName(), raw, request.RpcRequest, request)

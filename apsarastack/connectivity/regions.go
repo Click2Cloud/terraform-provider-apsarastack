@@ -56,3 +56,4 @@ var HttpHttpsHealthCheckMehtodSupportedRegions = []Region{Hangzhou, Beijing, Sha
 var OssVersioningSupportedRegions = []Region{APSouth1}
 var OssSseSupportedRegions = []Region{Qingdao, Hangzhou, Beijing, Shanghai, Shenzhen, Hongkong, APNorthEast1, APSouth1, USEast1}
 var MongoDBClassicNoSupportedRegions = []Region{Huhehaote, Zhangjiakou, APSouthEast2, APSouthEast3, APSouthEast5, APSouth1, USEast1, USWest1, APNorthEast1}
+var MongoDBMultiAzSupportedRegions = []Region{Hangzhou, Beijing, Shenzhen, EUCentral1}
