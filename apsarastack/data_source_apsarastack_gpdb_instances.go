@@ -1,4 +1,4 @@
-package alicloud
+package apsarastack
 
 import (
 	"regexp"
@@ -7,14 +7,14 @@ import (
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
 
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/gpdb"
-	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
+	"github.com/aliyun/terraform-provider-apsarastack/apsarastack/connectivity"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
 )
 
-func dataSourceAlicloudGpdbInstances() *schema.Resource {
+func dataSourceApsaraStackGpdbInstances() *schema.Resource {
 	return &schema.Resource{
-		Read: dataSourceAlicloudGpdbInstancesRead,
+		Read: dataSourceApsaraStackGpdbInstancesRead,
 		Schema: map[string]*schema.Schema{
 			"name_regex": {
 				Type:         schema.TypeString,
@@ -108,7 +108,7 @@ func dataSourceAlicloudGpdbInstances() *schema.Resource {
 	}
 }
 
-func dataSourceAlicloudGpdbInstancesRead(d *schema.ResourceData, meta interface{}) error {
+func dataSourceApsaraStackGpdbInstancesRead(d *schema.ResourceData, meta interface{}) error {
 	// name regex
 	var nameRegex *regexp.Regexp
 	if v, ok := d.GetOk("name_regex"); ok {
@@ -130,7 +130,7 @@ func dataSourceAlicloudGpdbInstancesRead(d *schema.ResourceData, meta interface{
 		}
 	}
 
-	client := meta.(*connectivity.AliyunClient)
+	client := meta.(*connectivity.ApsaraStackClient)
 	gpdbService := GpdbService{client}
 	request := gpdb.CreateDescribeDBInstancesRequest()
 	request.RegionId = client.RegionId
@@ -153,7 +153,7 @@ func dataSourceAlicloudGpdbInstancesRead(d *schema.ResourceData, meta interface{
 			return gpdbClient.DescribeDBInstances(request)
 		})
 		if err != nil {
-			return WrapErrorf(err, DataDefaultErrorMsg, "alicloud_gpdb_instances", request.GetActionName(), AlibabaCloudSdkGoERROR)
+			return WrapErrorf(err, DataDefaultErrorMsg, "apsarastack_gpdb_instances", request.GetActionName(), ApsaraStackSdkGoERROR)
 		}
 		response, _ := raw.(*gpdb.DescribeDBInstancesResponse)
 		addDebug(request.GetActionName(), response)

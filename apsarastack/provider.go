@@ -154,6 +154,7 @@ func Provider() terraform.ResourceProvider {
 			"apsarastack_ess_scaling_rules":              dataSourceApsaraStackEssScalingRules(),
 			"apsarastack_router_interfaces":              dataSourceApsaraStackRouterInterfaces(),
 			"apsarastack_ess_scheduled_tasks":            dataSourceApsaraStackEssScheduledTasks(),
+			"apsarastack_gpdb_instances":                 dataSourceApsaraStackGpdbInstances(),
 		},
 		ResourcesMap: map[string]*schema.Resource{
 			"apsarastack_ess_scaling_configuration":           resourceApsaraStackEssScalingConfiguration(),
@@ -215,6 +216,8 @@ func Provider() terraform.ResourceProvider {
 			"apsarastack_router_interface_connection":         resourceApsaraStackRouterInterfaceConnection(),
 			"apsarastack_ess_scheduled_task":                  resourceApsaraStackEssScheduledTask(),
 			"apsarastack_ess_scalinggroup_vserver_groups":     resourceApsaraStackEssScalingGroupVserverGroups(),
+			"apsarastack_gpdb_instance":                      resourceApsaraStackGpdbInstance(),
+			"apsarastack_gpdb_connection":                    resourceApsaraStackGpdbConnection(),
 		},
 		ConfigureFunc: providerConfigure,
 	}

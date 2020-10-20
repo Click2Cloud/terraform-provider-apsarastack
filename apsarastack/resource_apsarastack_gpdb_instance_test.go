@@ -1,4 +1,4 @@
-package alicloud
+package apsarastack
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/gpdb"
-	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
+	"github.com/aliyun/terraform-provider-apsarastack/apsarastack/connectivity"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
 )
 
@@ -17,8 +17,8 @@ import (
 // Create by yewei.oyyw@alibaba-inc.com on 2019-05-31
 
 func init() {
-	resource.AddTestSweepers("alicloud_gpdb_instance", &resource.Sweeper{
-		Name: "alicloud_gpdb_instance",
+	resource.AddTestSweepers("apsarastack_gpdb_instance", &resource.Sweeper{
+		Name: "apsarastack_gpdb_instance",
 		F:    testSweepGpdbInstances,
 	})
 }
@@ -28,7 +28,7 @@ func testSweepGpdbInstances(region string) error {
 	if err != nil {
 		return WrapError(err)
 	}
-	client := rawClient.(*connectivity.AliyunClient)
+	client := rawClient.(*connectivity.ApsaraStackClient)
 
 	prefixes := []string{
 		"tf-testAcc",
@@ -45,7 +45,7 @@ func testSweepGpdbInstances(region string) error {
 			return gpdbClient.DescribeDBInstances(request)
 		})
 		if err != nil {
-			return WrapErrorf(err, DefaultErrorMsg, "testSweepGpdbInstances", request.GetActionName(), AlibabaCloudSdkGoERROR)
+			return WrapErrorf(err, DefaultErrorMsg, "testSweepGpdbInstances", request.GetActionName(), ApsaraStackSdkGoERROR)
 		}
 		response, _ := raw.(*gpdb.DescribeDBInstancesResponse)
 		addDebug(request.GetActionName(), response)
@@ -108,11 +108,11 @@ func testSweepGpdbInstances(region string) error {
 	return nil
 }
 
-func TestAccAlicloudGpdbInstance_classic(t *testing.T) {
+func TestAccApsaraStackGpdbInstance_classic(t *testing.T) {
 	var v gpdb.DBInstanceAttribute
-	resourceId := "alicloud_gpdb_instance.default"
+	resourceId := "apsarastack_gpdb_instance.default"
 	serverFunc := func() interface{} {
-		return &GpdbService{testAccProvider.Meta().(*connectivity.AliyunClient)}
+		return &GpdbService{testAccProvider.Meta().(*connectivity.ApsaraStackClient)}
 	}
 	rc := resourceCheckInitWithDescribeMethod(resourceId, &v, serverFunc, "DescribeGpdbInstance")
 	ra := resourceAttrInit(resourceId, nil)
@@ -128,7 +128,7 @@ func TestAccAlicloudGpdbInstance_classic(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
-					"availability_zone":    "${data.alicloud_zones.default.zones.0.id}",
+					"availability_zone":    "${data.apsarastack_zones.default.zones.0.id}",
 					"engine":               "gpdb",
 					"engine_version":       "4.3",
 					"instance_class":       "gpdb.group.segsdx2",
@@ -219,11 +219,11 @@ func TestAccAlicloudGpdbInstance_classic(t *testing.T) {
 		}})
 }
 
-func TestAccAlicloudGpdbInstance_vpc(t *testing.T) {
+func TestAccApsaraStackGpdbInstance_vpc(t *testing.T) {
 	var v gpdb.DBInstanceAttribute
-	resourceId := "alicloud_gpdb_instance.default"
+	resourceId := "apsarastack_gpdb_instance.default"
 	serverFunc := func() interface{} {
-		return &GpdbService{testAccProvider.Meta().(*connectivity.AliyunClient)}
+		return &GpdbService{testAccProvider.Meta().(*connectivity.ApsaraStackClient)}
 	}
 	rc := resourceCheckInitWithDescribeMethod(resourceId, &v, serverFunc, "DescribeGpdbInstance")
 	ra := resourceAttrInit(resourceId, nil)
@@ -242,8 +242,8 @@ func TestAccAlicloudGpdbInstance_vpc(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
-					"availability_zone":    "${data.alicloud_zones.default.zones.0.id}",
-					"vswitch_id":           "${data.alicloud_vswitches.default.ids.0}",
+					"availability_zone":    "${data.apsarastack_zones.default.zones.0.id}",
+					"vswitch_id":           "${data.apsarastack_vswitches.default.ids.0}",
 					"engine":               "gpdb",
 					"engine_version":       "4.3",
 					"instance_class":       "gpdb.group.segsdx2",
@@ -284,21 +284,21 @@ func TestAccAlicloudGpdbInstance_vpc(t *testing.T) {
 
 func resourceGpdbClassicConfigDependence(s string) string {
 	return fmt.Sprintf(`
-        data "alicloud_zones" "default" {
+        data "apsarastack_zones" "default" {
             available_resource_creation = "Gpdb"
         }`)
 }
 
 func resourceGpdbVpcConfigDependence(s string) string {
 	return fmt.Sprintf(`
-        data "alicloud_zones" "default" {
+        data "apsarastack_zones" "default" {
             available_resource_creation = "Gpdb"
         }
         variable "name" {
             default                = "tf-testAccGpdbInstance_vpc"
         }
-		data "alicloud_vswitches" "default" {
-		  zone_id    = data.alicloud_zones.default.ids[0]
+		data "apsarastack_vswitches" "default" {
+		  zone_id    = data.apsarastack_zones.default.ids[0]
 		  name_regex = "default-tf--testAcc-00"
 		}`)
 }

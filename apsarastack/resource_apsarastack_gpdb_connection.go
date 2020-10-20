@@ -1,4 +1,4 @@
-package alicloud
+package apsarastack
 
 import (
 	"fmt"
@@ -8,17 +8,17 @@ import (
 
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/gpdb"
 
-	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
+	"github.com/aliyun/terraform-provider-apsarastack/apsarastack/connectivity"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 )
 
-func resourceAlicloudGpdbConnection() *schema.Resource {
+func resourceApsaraStackGpdbConnection() *schema.Resource {
 	return &schema.Resource{
-		Create: resourceAlicloudGpdbConnectionCreate,
-		Read:   resourceAlicloudGpdbConnectionRead,
-		Update: resourceAlicloudGpdbConnectionUpdate,
-		Delete: resourceAlicloudGpdbConnectionDelete,
+		Create: resourceApsaraStackGpdbConnectionCreate,
+		Read:   resourceApsaraStackGpdbConnectionRead,
+		Update: resourceApsaraStackGpdbConnectionUpdate,
+		Delete: resourceApsaraStackGpdbConnectionDelete,
 		Importer: &schema.ResourceImporter{
 			State: schema.ImportStatePassthrough,
 		},
@@ -60,8 +60,8 @@ func resourceAlicloudGpdbConnection() *schema.Resource {
 	}
 }
 
-func resourceAlicloudGpdbConnectionCreate(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(*connectivity.AliyunClient)
+func resourceApsaraStackGpdbConnectionCreate(d *schema.ResourceData, meta interface{}) error {
+	client := meta.(*connectivity.ApsaraStackClient)
 	gpdbService := GpdbService{client}
 	instanceId := d.Get("instance_id").(string)
 	prefix := d.Get("connection_prefix").(string)
@@ -89,7 +89,7 @@ func resourceAlicloudGpdbConnectionCreate(d *schema.ResourceData, meta interface
 		return nil
 	})
 	if err != nil {
-		return WrapErrorf(err, DefaultErrorMsg, "alicloud_gpdb_connection", request.GetActionName(), AlibabaCloudSdkGoERROR)
+		return WrapErrorf(err, DefaultErrorMsg, "apsarastack_gpdb_connection", request.GetActionName(), ApsaraStackSdkGoERROR)
 	}
 
 	d.SetId(fmt.Sprintf("%s%s%s", instanceId, COLON_SEPARATED, request.ConnectionStringPrefix))
@@ -100,16 +100,16 @@ func resourceAlicloudGpdbConnectionCreate(d *schema.ResourceData, meta interface
 		return WrapErrorf(err, IdMsg, d.Id())
 	}
 
-	return resourceAlicloudGpdbConnectionRead(d, meta)
+	return resourceApsaraStackGpdbConnectionRead(d, meta)
 }
 
-func resourceAlicloudGpdbConnectionRead(d *schema.ResourceData, meta interface{}) error {
+func resourceApsaraStackGpdbConnectionRead(d *schema.ResourceData, meta interface{}) error {
 	parts, err := ParseResourceId(d.Id(), 2)
 	if err != nil {
 		return WrapError(err)
 	}
 
-	client := meta.(*connectivity.AliyunClient)
+	client := meta.(*connectivity.ApsaraStackClient)
 	gpdbService := GpdbService{client}
 	object, err := gpdbService.DescribeGpdbConnection(d.Id())
 	if err != nil {
@@ -129,14 +129,14 @@ func resourceAlicloudGpdbConnectionRead(d *schema.ResourceData, meta interface{}
 	return nil
 }
 
-func resourceAlicloudGpdbConnectionUpdate(d *schema.ResourceData, meta interface{}) error {
+func resourceApsaraStackGpdbConnectionUpdate(d *schema.ResourceData, meta interface{}) error {
 	parts, err := ParseResourceId(d.Id(), 2)
 	if err != nil {
 		return WrapError(err)
 	}
 
 	if d.HasChange("port") {
-		client := meta.(*connectivity.AliyunClient)
+		client := meta.(*connectivity.ApsaraStackClient)
 		gpdbService := GpdbService{client}
 
 		request := gpdb.CreateModifyDBInstanceConnectionStringRequest()
@@ -163,7 +163,7 @@ func resourceAlicloudGpdbConnectionUpdate(d *schema.ResourceData, meta interface
 			addDebug(request.GetActionName(), raw, request.RpcRequest, request)
 			return nil
 		}); err != nil {
-			return WrapErrorf(err, DefaultErrorMsg, d.Id(), request.GetActionName(), AlibabaCloudSdkGoERROR)
+			return WrapErrorf(err, DefaultErrorMsg, d.Id(), request.GetActionName(), ApsaraStackSdkGoERROR)
 		}
 
 		// wait instance running after modifying
@@ -173,10 +173,10 @@ func resourceAlicloudGpdbConnectionUpdate(d *schema.ResourceData, meta interface
 			return WrapErrorf(err, IdMsg, d.Id())
 		}
 	}
-	return resourceAlicloudGpdbConnectionRead(d, meta)
+	return resourceApsaraStackGpdbConnectionRead(d, meta)
 }
 
-func resourceAlicloudGpdbConnectionDelete(d *schema.ResourceData, meta interface{}) error {
+func resourceApsaraStackGpdbConnectionDelete(d *schema.ResourceData, meta interface{}) error {
 	parts, err := ParseResourceId(d.Id(), 2)
 	if err != nil {
 		return WrapError(err)
@@ -185,7 +185,7 @@ func resourceAlicloudGpdbConnectionDelete(d *schema.ResourceData, meta interface
 	request := gpdb.CreateReleaseInstancePublicConnectionRequest()
 	request.DBInstanceId = parts[0]
 
-	client := meta.(*connectivity.AliyunClient)
+	client := meta.(*connectivity.ApsaraStackClient)
 	gpdbService := GpdbService{client}
 	request.RegionId = client.RegionId
 	err = resource.Retry(5*time.Minute, func() *resource.RetryError {
@@ -212,7 +212,7 @@ func resourceAlicloudGpdbConnectionDelete(d *schema.ResourceData, meta interface
 		if IsExpectedErrors(err, []string{"InvalidDBInstanceId.NotFound", "InvalidCurrentConnectionString.NotFound", "AtLeastOneNetTypeExists"}) {
 			return nil
 		}
-		return WrapErrorf(err, DefaultErrorMsg, d.Id(), request.GetActionName(), AlibabaCloudSdkGoERROR)
+		return WrapErrorf(err, DefaultErrorMsg, d.Id(), request.GetActionName(), ApsaraStackSdkGoERROR)
 	}
 	stateConf := BuildStateConf([]string{"NetAddressDeleting"}, []string{"Running"}, d.Timeout(schema.TimeoutDelete), 5*time.Second, gpdbService.GpdbInstanceStateRefreshFunc(request.DBInstanceId, []string{"Deleting"}))
 
