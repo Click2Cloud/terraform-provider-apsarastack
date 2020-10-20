@@ -122,7 +122,7 @@ func resourceApsaraStackKVStoreAccountCreate(d *schema.ResourceData, meta interf
 	})
 
 	if err != nil {
-		return WrapErrorf(err, DefaultErrorMsg, "alicloud_kvstore_account", request.GetActionName(), ApsaraStackSdkGoERROR)
+		return WrapErrorf(err, DefaultErrorMsg, "apsarastack_kvstore_account", request.GetActionName(), ApsaraStackSdkGoERROR)
 	}
 
 	d.SetId(fmt.Sprintf("%s%s%s", request.InstanceId, COLON_SEPARATED, request.AccountName))

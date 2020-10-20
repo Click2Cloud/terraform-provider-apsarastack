@@ -34,5 +34,5 @@ examples
 # Test exclusions
 !command/test-fixtures/**/*.tfstate
 !command/test-fixtures/**/.terraform/
-terraform-provider-alicloud
+terraform-provider-apsarastack
 terraform-provider-apsarastack

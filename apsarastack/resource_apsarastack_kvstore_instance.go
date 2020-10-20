@@ -41,12 +41,12 @@ func resourceApsaraStackKVStoreInstance() *schema.Resource {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validation.StringLenBetween(2, 128),
-			},
+			}, //InstanceName
 			"password": {
 				Type:      schema.TypeString,
 				Optional:  true,
 				Sensitive: true,
-			},
+			}, // Password
 			"kms_encrypted_password": {
 				Type:             schema.TypeString,
 				Optional:         true,
@@ -63,7 +63,7 @@ func resourceApsaraStackKVStoreInstance() *schema.Resource {
 			"instance_class": {
 				Type:     schema.TypeString,
 				Required: true,
-			},
+			}, // InstanceClass
 			"availability_zone": {
 				Type:     schema.TypeString,
 				Optional: true,
@@ -75,14 +75,14 @@ func resourceApsaraStackKVStoreInstance() *schema.Resource {
 				ValidateFunc: validation.StringInSlice([]string{string(common.PrePaid), string(common.PostPaid)}, false),
 				Optional:     true,
 				Default:      PostPaid,
-			},
+			}, //ChargeType
 			"period": {
 				Type:             schema.TypeInt,
 				ValidateFunc:     validation.IntInSlice([]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 12, 24, 36}),
 				Optional:         true,
 				Default:          1,
 				DiffSuppressFunc: PostPaidDiffSuppressFunc,
-			},
+			}, // Period
 			"auto_renew": {
 				Type:             schema.TypeBool,
 				Optional:         true,
@@ -105,12 +105,12 @@ func resourceApsaraStackKVStoreInstance() *schema.Resource {
 					string(KVStoreMemcache),
 					string(KVStoreRedis),
 				}, false),
-			},
+			}, // InstanceType
 			"vswitch_id": {
 				Type:     schema.TypeString,
 				ForceNew: true,
 				Optional: true,
-			},
+			}, // VSwitchId
 			"engine_version": {
 				Type:     schema.TypeString,
 				ForceNew: true,
@@ -125,11 +125,11 @@ func resourceApsaraStackKVStoreInstance() *schema.Resource {
 				Type:     schema.TypeString,
 				Computed: true,
 				Optional: true,
-			},
+			}, // PrivateIp
 			"backup_id": {
 				Type:     schema.TypeString,
 				Optional: true,
-			},
+			}, // BackupId
 			"tags": tagsSchema(),
 			"security_ips": {
 				Type:     schema.TypeSet,
@@ -223,7 +223,7 @@ func resourceApsaraStackKVStoreInstanceCreate(d *schema.ResourceData, meta inter
 	})
 
 	if err != nil {
-		return WrapErrorf(err, DefaultErrorMsg, "alicloud_kvstore_instance", request.GetActionName(), ApsaraStackSdkGoERROR)
+		return WrapErrorf(err, DefaultErrorMsg, "apsarastack_kvstore_instance", request.GetActionName(), ApsaraStackSdkGoERROR)
 	}
 	addDebug(request.GetActionName(), raw, request.RpcRequest, request)
 	response, _ := raw.(*r_kvstore.CreateInstanceResponse)

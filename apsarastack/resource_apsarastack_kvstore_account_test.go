@@ -21,7 +21,7 @@ func TestAccApsaraStackKVStoreAccountUpdateV4(t *testing.T) {
 		"account_password": "YourPassword_123",
 		"account_type":     "Normal",
 	}
-	resourceId := "alicloud_kvstore_account.default"
+	resourceId := "apsarastack_kvstore_account.default"
 	ra := resourceAttrInit(resourceId, basicMap)
 	serviceFunc := func() interface{} {
 		return &KvstoreService{testAccProvider.Meta().(*connectivity.ApsaraStackClient)}
@@ -43,7 +43,7 @@ func TestAccApsaraStackKVStoreAccountUpdateV4(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
-					"instance_id":      "${alicloud_kvstore_instance.instance.id}",
+					"instance_id":      "${apsarastack_kvstore_instance.instance.id}",
 					"account_name":     "tftestnormal",
 					"account_password": "YourPassword_123",
 				}),
@@ -115,7 +115,7 @@ func TestAccApsaraStackKVStoreAccountUpdateV5(t *testing.T) {
 		"account_password": "YourPassword_123",
 		"account_type":     "Normal",
 	}
-	resourceId := "alicloud_kvstore_account.default"
+	resourceId := "apsarastack_kvstore_account.default"
 	ra := resourceAttrInit(resourceId, basicMap)
 	serviceFunc := func() interface{} {
 		return &KvstoreService{testAccProvider.Meta().(*connectivity.ApsaraStackClient)}
@@ -137,7 +137,7 @@ func TestAccApsaraStackKVStoreAccountUpdateV5(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: testAccConfig(map[string]interface{}{
-					"instance_id":      "${alicloud_kvstore_instance.instance.id}",
+					"instance_id":      "${apsarastack_kvstore_instance.instance.id}",
 					"account_name":     "tftestnormal",
 					"account_password": "YourPassword_123",
 				}),
@@ -201,14 +201,14 @@ func TestAccApsaraStackKVStoreAccountUpdateV5(t *testing.T) {
 
 func resourceKVstoreAccountConfigDependenceV4(name string) string {
 	return fmt.Sprintf(`
-	data "alicloud_zones" "default" {
+	data "apsarastack_zones" "default" {
 		available_resource_creation = "KVStore"
 	}
 	variable "name" {
 		default = "%v"
 	}
-	resource "alicloud_kvstore_instance" "instance" {
-		availability_zone = "${lookup(data.alicloud_zones.default.zones[(length(data.alicloud_zones.default.zones)-1)%%length(data.alicloud_zones.default.zones)], "id")}"
+	resource "apsarastack_kvstore_instance" "instance" {
+		availability_zone = "${lookup(data.apsarastack_zones.default.zones[(length(data.apsarastack_zones.default.zones)-1)%%length(data.apsarastack_zones.default.zones)], "id")}"
 		instance_class = "redis.master.small.default"
 		instance_name  = "${var.name}"
 		instance_charge_type = "PostPaid"
@@ -219,14 +219,14 @@ func resourceKVstoreAccountConfigDependenceV4(name string) string {
 
 func resourceKVstoreAccountConfigDependenceV5(name string) string {
 	return fmt.Sprintf(`
-	data "alicloud_zones" "default" {
+	data "apsarastack_zones" "default" {
 		available_resource_creation = "KVStore"
 	}
 	variable "name" {
 		default = "%v"
 	}
-	resource "alicloud_kvstore_instance" "instance" {
-		availability_zone = "${lookup(data.alicloud_zones.default.zones[(length(data.alicloud_zones.default.zones)-1)%%length(data.alicloud_zones.default.zones)], "id")}"
+	resource "apsarastack_kvstore_instance" "instance" {
+		availability_zone = "${lookup(data.apsarastack_zones.default.zones[(length(data.apsarastack_zones.default.zones)-1)%%length(data.apsarastack_zones.default.zones)], "id")}"
 		instance_class = "redis.master.small.default"
 		instance_name  = "${var.name}"
 		instance_charge_type = "PostPaid"

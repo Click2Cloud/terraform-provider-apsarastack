@@ -13,7 +13,7 @@ import (
 func TestAccApsaraStackKVStoreRedisBackupPolicy_classic(t *testing.T) {
 	var policy *r_kvstore.DescribeBackupPolicyResponse
 
-	resourceId := "alicloud_kvstore_backup_policy.default"
+	resourceId := "apsarastack_kvstore_backup_policy.default"
 	ra := resourceAttrInit(resourceId, kvStoreMap)
 	serviceFunc := func() interface{} {
 		return &KvstoreService{testAccProvider.Meta().(*connectivity.ApsaraStackClient)}
@@ -76,7 +76,7 @@ func TestAccApsaraStackKVStoreRedisBackupPolicy_classic(t *testing.T) {
 func TestAccApsaraStackKVStoreMemcacheBackupPolicy_classic(t *testing.T) {
 	var policy *r_kvstore.DescribeBackupPolicyResponse
 
-	resourceId := "alicloud_kvstore_backup_policy.default"
+	resourceId := "apsarastack_kvstore_backup_policy.default"
 	ra := resourceAttrInit(resourceId, kvStoreMap)
 	serviceFunc := func() interface{} {
 		return &KvstoreService{testAccProvider.Meta().(*connectivity.ApsaraStackClient)}
@@ -140,7 +140,7 @@ func TestAccApsaraStackKVStoreMemcacheBackupPolicy_classic(t *testing.T) {
 func TestAccApsaraStackKVStoreRedisBackupPolicy_vpc(t *testing.T) {
 	var policy *r_kvstore.DescribeBackupPolicyResponse
 
-	resourceId := "alicloud_kvstore_backup_policy.default"
+	resourceId := "apsarastack_kvstore_backup_policy.default"
 	ra := resourceAttrInit(resourceId, kvStoreMap)
 	serviceFunc := func() interface{} {
 		return &KvstoreService{testAccProvider.Meta().(*connectivity.ApsaraStackClient)}
@@ -205,7 +205,7 @@ func TestAccApsaraStackKVStoreRedisBackupPolicy_vpc(t *testing.T) {
 func TestAccApsaraStackKVStoreMemcacheBackupPolicy_vpc(t *testing.T) {
 	var policy *r_kvstore.DescribeBackupPolicyResponse
 
-	resourceId := "alicloud_kvstore_backup_policy.default"
+	resourceId := "apsarastack_kvstore_backup_policy.default"
 	ra := resourceAttrInit(resourceId, kvStoreMap)
 	serviceFunc := func() interface{} {
 		return &KvstoreService{testAccProvider.Meta().(*connectivity.ApsaraStackClient)}
@@ -272,7 +272,7 @@ func testAccCheckKVStoreBackupPolicyDestroy(s *terraform.State) error {
 	kvstoreService := KvstoreService{client}
 
 	for _, rs := range s.RootModule().Resources {
-		if rs.Type != "alicloud_kvstore_instance" {
+		if rs.Type != "apsarastack_kvstore_instance" {
 			continue
 		}
 
@@ -296,23 +296,23 @@ var kvStoreMap = map[string]string{
 
 func testAccKVStoreBackupPolicy_classic(instanceType, instanceClass, engineVersion string) string {
 	return fmt.Sprintf(`
-	data "alicloud_zones" "default" {
+	data "apsarastack_zones" "default" {
 		available_resource_creation = "KVStore"
 	}
 	variable "name" {
 		default = "tf-testAccKVStoreBackupPolicy_classic"
 	}
 
-	resource "alicloud_kvstore_instance" "default" {
-		availability_zone = "${lookup(data.alicloud_zones.default.zones[(length(data.alicloud_zones.default.zones)-1)%%length(data.alicloud_zones.default.zones)], "id")}"
+	resource "apsarastack_kvstore_instance" "default" {
+		availability_zone = "${lookup(data.apsarastack_zones.default.zones[(length(data.apsarastack_zones.default.zones)-1)%%length(data.apsarastack_zones.default.zones)], "id")}"
 		instance_name  = "${var.name}"
 		security_ips = ["10.0.0.1"]
 		instance_type = "%s"
 		instance_class = "%s"
 		engine_version = "%s"
 	}
-	resource "alicloud_kvstore_backup_policy" "default" {
-		instance_id = "${alicloud_kvstore_instance.default.id}"
+	resource "apsarastack_kvstore_backup_policy" "default" {
+		instance_id = "${apsarastack_kvstore_instance.default.id}"
 		backup_period = ["Tuesday", "Wednesday"]
 		backup_time = "10:00Z-11:00Z"
 	}
@@ -321,23 +321,23 @@ func testAccKVStoreBackupPolicy_classic(instanceType, instanceClass, engineVersi
 
 func testAccKVStoreBackupPolicy_classicUpdatePeriod(instanceType, instanceClass, engineVersion string) string {
 	return fmt.Sprintf(`
-	data "alicloud_zones" "default" {
+	data "apsarastack_zones" "default" {
 		available_resource_creation = "KVStore"
 	}
 	variable "name" {
 		default = "tf-testAccKVStoreBackupPolicy_classic"
 	}
 
-	resource "alicloud_kvstore_instance" "default" {
-		availability_zone = "${lookup(data.alicloud_zones.default.zones[(length(data.alicloud_zones.default.zones)-1)%%length(data.alicloud_zones.default.zones)], "id")}"
+	resource "apsarastack_kvstore_instance" "default" {
+		availability_zone = "${lookup(data.apsarastack_zones.default.zones[(length(data.apsarastack_zones.default.zones)-1)%%length(data.apsarastack_zones.default.zones)], "id")}"
 		instance_name  = "${var.name}"
 		security_ips = ["10.0.0.1"]
 		instance_type = "%s"
 		instance_class = "%s"
 		engine_version = "%s"
 	}
-	resource "alicloud_kvstore_backup_policy" "default" {
-		instance_id = "${alicloud_kvstore_instance.default.id}"
+	resource "apsarastack_kvstore_backup_policy" "default" {
+		instance_id = "${apsarastack_kvstore_instance.default.id}"
 		backup_period = ["Tuesday", "Wednesday", "Sunday"]
 		backup_time = "10:00Z-11:00Z"
 	}
@@ -346,23 +346,23 @@ func testAccKVStoreBackupPolicy_classicUpdatePeriod(instanceType, instanceClass,
 
 func testAccKVStoreBackupPolicy_classicUpdateTime(instanceType, instanceClass, engineVersion string) string {
 	return fmt.Sprintf(`
-	data "alicloud_zones" "default" {
+	data "apsarastack_zones" "default" {
 		available_resource_creation = "KVStore"
 	}
 	variable "name" {
 		default = "tf-testAccKVStoreBackupPolicy_classic"
 	}
 
-	resource "alicloud_kvstore_instance" "default" {
-		availability_zone = "${lookup(data.alicloud_zones.default.zones[(length(data.alicloud_zones.default.zones)-1)%%length(data.alicloud_zones.default.zones)], "id")}"
+	resource "apsarastack_kvstore_instance" "default" {
+		availability_zone = "${lookup(data.apsarastack_zones.default.zones[(length(data.apsarastack_zones.default.zones)-1)%%length(data.apsarastack_zones.default.zones)], "id")}"
 		instance_name  = "${var.name}"
 		security_ips = ["10.0.0.1"]
 		instance_type = "%s"
 		instance_class = "%s"
 		engine_version = "%s"
 	}
-	resource "alicloud_kvstore_backup_policy" "default" {
-		instance_id = "${alicloud_kvstore_instance.default.id}"
+	resource "apsarastack_kvstore_backup_policy" "default" {
+		instance_id = "${apsarastack_kvstore_instance.default.id}"
 		backup_period = ["Tuesday", "Wednesday", "Sunday"]
 		backup_time = "12:00Z-13:00Z"
 	}
@@ -371,23 +371,23 @@ func testAccKVStoreBackupPolicy_classicUpdateTime(instanceType, instanceClass, e
 
 func testAccKVStoreBackupPolicy_classicUpdateAll(instanceType, instanceClass, engineVersion string) string {
 	return fmt.Sprintf(`
-	data "alicloud_zones" "default" {
+	data "apsarastack_zones" "default" {
 		available_resource_creation = "KVStore"
 	}
 	variable "name" {
 		default = "tf-testAccKVStoreBackupPolicy_classic"
 	}
 
-	resource "alicloud_kvstore_instance" "default" {
-		availability_zone = "${lookup(data.alicloud_zones.default.zones[(length(data.alicloud_zones.default.zones)-1)%%length(data.alicloud_zones.default.zones)], "id")}"
+	resource "apsarastack_kvstore_instance" "default" {
+		availability_zone = "${lookup(data.apsarastack_zones.default.zones[(length(data.apsarastack_zones.default.zones)-1)%%length(data.apsarastack_zones.default.zones)], "id")}"
 		instance_name  = "${var.name}"
 		security_ips = ["10.0.0.1"]
 		instance_type = "%s"
 		instance_class = "%s"
 		engine_version = "%s"
 	}
-	resource "alicloud_kvstore_backup_policy" "default" {
-		instance_id = "${alicloud_kvstore_instance.default.id}"
+	resource "apsarastack_kvstore_backup_policy" "default" {
+		instance_id = "${apsarastack_kvstore_instance.default.id}"
 		backup_period = ["Sunday"]
 		backup_time = "13:00Z-14:00Z"
 	}
@@ -406,16 +406,16 @@ func testAccKVStoreBackupPolicy_vpc(common, instanceType, instanceClass, engineV
 	variable "name" {
 		default = "tf-testAccKVStoreBackupPolicy_vpc"
 	}
-	resource "alicloud_kvstore_instance" "default" {
+	resource "apsarastack_kvstore_instance" "default" {
 		instance_class = "%s"
 		instance_name  = "${var.name}"
-		vswitch_id     = data.alicloud_vswitches.default.ids.0
+		vswitch_id     = data.apsarastack_vswitches.default.ids.0
 		security_ips = ["10.0.0.1"]
 		instance_type = "%s"
 		engine_version = "%s"
 	}
-	resource "alicloud_kvstore_backup_policy" "default" {
-		instance_id = "${alicloud_kvstore_instance.default.id}"
+	resource "apsarastack_kvstore_backup_policy" "default" {
+		instance_id = "${apsarastack_kvstore_instance.default.id}"
 		backup_period = ["Tuesday", "Wednesday"]
 		backup_time = "10:00Z-11:00Z"
 	}
@@ -434,16 +434,16 @@ func testAccKVStoreBackupPolicy_vpcUpdatePeriod(common, instanceType, instanceCl
 	variable "name" {
 		default = "tf-testAccKVStoreBackupPolicy_vpc"
 	}
-	resource "alicloud_kvstore_instance" "default" {
+	resource "apsarastack_kvstore_instance" "default" {
 		instance_class = "%s"
 		instance_name  = "${var.name}"
-		vswitch_id     = data.alicloud_vswitches.default.ids.0
+		vswitch_id     = data.apsarastack_vswitches.default.ids.0
 		security_ips = ["10.0.0.1"]
 		instance_type = "%s"
 		engine_version = "%s"
 	}
-	resource "alicloud_kvstore_backup_policy" "default" {
-		instance_id = "${alicloud_kvstore_instance.default.id}"
+	resource "apsarastack_kvstore_backup_policy" "default" {
+		instance_id = "${apsarastack_kvstore_instance.default.id}"
 		backup_period = ["Tuesday", "Wednesday", "Sunday"]
 		backup_time = "10:00Z-11:00Z"
 	}
@@ -461,16 +461,16 @@ func testAccKVStoreBackupPolicy_vpcUpdateTime(common, instanceType, instanceClas
 	variable "name" {
 		default = "tf-testAccKVStoreBackupPolicy_vpc"
 	}
-	resource "alicloud_kvstore_instance" "default" {
+	resource "apsarastack_kvstore_instance" "default" {
 		instance_class = "%s"
 		instance_name  = "${var.name}"
-		vswitch_id     = data.alicloud_vswitches.default.ids.0
+		vswitch_id     = data.apsarastack_vswitches.default.ids.0
 		security_ips = ["10.0.0.1"]
 		instance_type = "%s"
 		engine_version = "%s"
 	}
-	resource "alicloud_kvstore_backup_policy" "default" {
-		instance_id = "${alicloud_kvstore_instance.default.id}"
+	resource "apsarastack_kvstore_backup_policy" "default" {
+		instance_id = "${apsarastack_kvstore_instance.default.id}"
 		backup_period = ["Tuesday", "Wednesday", "Sunday"]
 		backup_time = "11:00Z-12:00Z"
 	}
@@ -488,16 +488,16 @@ func testAccKVStoreBackupPolicy_vpcUpdateAll(common, instanceType, instanceClass
 	variable "name" {
 		default = "tf-testAccKVStoreBackupPolicy_vpc"
 	}
-	resource "alicloud_kvstore_instance" "default" {
+	resource "apsarastack_kvstore_instance" "default" {
 		instance_class = "%s"
 		instance_name  = "${var.name}"
-		vswitch_id     = data.alicloud_vswitches.default.ids.0
+		vswitch_id     = data.apsarastack_vswitches.default.ids.0
 		security_ips = ["10.0.0.1"]
 		instance_type = "%s"
 		engine_version = "%s"
 	}
-	resource "alicloud_kvstore_backup_policy" "default" {
-		instance_id = "${alicloud_kvstore_instance.default.id}"
+	resource "apsarastack_kvstore_backup_policy" "default" {
+		instance_id = "${apsarastack_kvstore_instance.default.id}"
 		backup_period = ["Tuesday"]
 		backup_time = "12:00Z-13:00Z"
 	}

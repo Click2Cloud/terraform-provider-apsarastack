@@ -23,8 +23,8 @@ var memcacheInstanceClassForTest = "memcache.master.small.default"
 var memcacheInstanceClassForTestUpdateClass = "memcache.master.mid.default"
 
 func init() {
-	resource.AddTestSweepers("alicloud_kvstore_instance", &resource.Sweeper{
-		Name: "alicloud_kvstore_instance",
+	resource.AddTestSweepers("apsarastack_kvstore_instance", &resource.Sweeper{
+		Name: "apsarastack_kvstore_instance",
 		F:    testSweepKVStoreInstances,
 	})
 }
@@ -109,7 +109,7 @@ func testSweepKVStoreInstances(region string) error {
 
 func TestAccApsaraStackKVStoreRedisInstance_classictest(t *testing.T) {
 	var instance *r_kvstore.DBInstanceAttribute
-	resourceId := "alicloud_kvstore_instance.default"
+	resourceId := "apsarastack_kvstore_instance.default"
 	ra := resourceAttrInit(resourceId, nil)
 	rc := resourceCheckInitWithDescribeMethod(resourceId, &instance, func() interface{} {
 		return &KvstoreService{testAccProvider.Meta().(*connectivity.ApsaraStackClient)}
@@ -264,7 +264,7 @@ func TestAccApsaraStackKVStoreRedisInstance_classictest(t *testing.T) {
 
 func TestAccApsaraStackKVStoreMemcacheInstance_classictest(t *testing.T) {
 	var instance *r_kvstore.DBInstanceAttribute
-	resourceId := "alicloud_kvstore_instance.default"
+	resourceId := "apsarastack_kvstore_instance.default"
 	ra := resourceAttrInit(resourceId, nil)
 	rc := resourceCheckInitWithDescribeMethod(resourceId, &instance, func() interface{} {
 		return &KvstoreService{testAccProvider.Meta().(*connectivity.ApsaraStackClient)}
@@ -376,7 +376,7 @@ func TestAccApsaraStackKVStoreMemcacheInstance_classictest(t *testing.T) {
 
 func TestAccApsaraStackKVStoreRedisInstance_vpctest(t *testing.T) {
 	var instance *r_kvstore.DBInstanceAttribute
-	resourceId := "alicloud_kvstore_instance.default"
+	resourceId := "apsarastack_kvstore_instance.default"
 	ra := resourceAttrInit(resourceId, nil)
 	rc := resourceCheckInitWithDescribeMethod(resourceId, &instance, func() interface{} {
 		return &KvstoreService{testAccProvider.Meta().(*connectivity.ApsaraStackClient)}
@@ -496,7 +496,7 @@ func TestAccApsaraStackKVStoreRedisInstance_vpctest(t *testing.T) {
 // Currently Memcache instance only supports engine version 2.8.
 func TestAccApsaraStackKVStoreMemcacheInstance_vpctest(t *testing.T) {
 	var instance *r_kvstore.DBInstanceAttribute
-	resourceId := "alicloud_kvstore_instance.default"
+	resourceId := "apsarastack_kvstore_instance.default"
 	ra := resourceAttrInit(resourceId, nil)
 	rc := resourceCheckInitWithDescribeMethod(resourceId, &instance, func() interface{} {
 		return &KvstoreService{testAccProvider.Meta().(*connectivity.ApsaraStackClient)}
@@ -600,7 +600,7 @@ func TestAccApsaraStackKVStoreMemcacheInstance_vpctest(t *testing.T) {
 
 func TestAccApsaraStackKVStoreRedisInstance_vpcmulti(t *testing.T) {
 	var instance *r_kvstore.DBInstanceAttribute
-	resourceId := "alicloud_kvstore_instance.default.9"
+	resourceId := "apsarastack_kvstore_instance.default.9"
 	ra := resourceAttrInit(resourceId, nil)
 	rc := resourceCheckInitWithDescribeMethod(resourceId, &instance, func() interface{} {
 		return &KvstoreService{testAccProvider.Meta().(*connectivity.ApsaraStackClient)}
@@ -646,7 +646,7 @@ func TestAccApsaraStackKVStoreRedisInstance_vpcmulti(t *testing.T) {
 
 func TestAccApsaraStackKVStoreRedisInstance_classicmulti(t *testing.T) {
 	var instance *r_kvstore.DBInstanceAttribute
-	resourceId := "alicloud_kvstore_instance.default.9"
+	resourceId := "apsarastack_kvstore_instance.default.9"
 	ra := resourceAttrInit(resourceId, nil)
 	rc := resourceCheckInitWithDescribeMethod(resourceId, &instance, func() interface{} {
 		return &KvstoreService{testAccProvider.Meta().(*connectivity.ApsaraStackClient)}
@@ -694,7 +694,7 @@ func testAccCheckKVStoreInstanceDestroy(s *terraform.State) error {
 	kvstoreService := KvstoreService{client}
 
 	for _, rs := range s.RootModule().Resources {
-		if rs.Type != "alicloud_kvstore_instance" {
+		if rs.Type != "apsarastack_kvstore_instance" {
 			continue
 		}
 
@@ -712,15 +712,15 @@ func testAccCheckKVStoreInstanceDestroy(s *terraform.State) error {
 
 func testAccKVStoreInstance_classic(instanceType, instanceClass, engineVersion string) string {
 	return fmt.Sprintf(`
-	data "alicloud_zones" "default" {
+	data "apsarastack_zones" "default" {
 		available_resource_creation = "KVStore"
 	}
 	variable "name" {
 		default = "tf-testAccKVStoreInstance_classic"
 	}
 
-	resource "alicloud_kvstore_instance" "default" {
-		availability_zone = "${lookup(data.alicloud_zones.default.zones[(length(data.alicloud_zones.default.zones)-1)%%length(data.alicloud_zones.default.zones)], "id")}"
+	resource "apsarastack_kvstore_instance" "default" {
+		availability_zone = "${lookup(data.apsarastack_zones.default.zones[(length(data.apsarastack_zones.default.zones)-1)%%length(data.apsarastack_zones.default.zones)], "id")}"
 		instance_name  = "${var.name}"
 		security_ips = ["10.0.0.1"]
 		instance_type = "%s"
@@ -732,15 +732,15 @@ func testAccKVStoreInstance_classic(instanceType, instanceClass, engineVersion s
 
 func testAccKVStoreInstance_classicAllocateConnection(instanceType, instanceClass, engineVersion string) string {
 	return fmt.Sprintf(`
-	data "alicloud_zones" "default" {
+	data "apsarastack_zones" "default" {
 		available_resource_creation = "KVStore"
 	}
 	variable "name" {
 		default = "tf-testAccKVStoreInstance_classic"
 	}
 
-	resource "alicloud_kvstore_instance" "default" {
-		availability_zone = "${lookup(data.alicloud_zones.default.zones[(length(data.alicloud_zones.default.zones)-1)%%length(data.alicloud_zones.default.zones)], "id")}"
+	resource "apsarastack_kvstore_instance" "default" {
+		availability_zone = "${lookup(data.apsarastack_zones.default.zones[(length(data.apsarastack_zones.default.zones)-1)%%length(data.apsarastack_zones.default.zones)], "id")}"
 		instance_name  = "${var.name}"
 		security_ips = ["10.0.0.1"]
 		instance_type = "%s"
@@ -755,15 +755,15 @@ func testAccKVStoreInstance_classicAllocateConnection(instanceType, instanceClas
 
 func testAccKVStoreInstance_classicReleasePublicConnection(instanceType, instanceClass, engineVersion string) string {
 	return fmt.Sprintf(`
-	data "alicloud_zones" "default" {
+	data "apsarastack_zones" "default" {
 		available_resource_creation = "KVStore"
 	}
 	variable "name" {
 		default = "tf-testAccKVStoreInstance_classic"
 	}
 
-	resource "alicloud_kvstore_instance" "default" {
-		availability_zone = "${lookup(data.alicloud_zones.default.zones[(length(data.alicloud_zones.default.zones)-1)%%length(data.alicloud_zones.default.zones)], "id")}"
+	resource "apsarastack_kvstore_instance" "default" {
+		availability_zone = "${lookup(data.apsarastack_zones.default.zones[(length(data.apsarastack_zones.default.zones)-1)%%length(data.apsarastack_zones.default.zones)], "id")}"
 		instance_name  = "${var.name}"
 		security_ips = ["10.0.0.1"]
 		instance_type = "%s"
@@ -777,15 +777,15 @@ func testAccKVStoreInstance_classicReleasePublicConnection(instanceType, instanc
 
 func testAccKVStoreInstance_classicUpdateParameter(instanceType, instanceClass, engineVersion string) string {
 	return fmt.Sprintf(`
-	data "alicloud_zones" "default" {
+	data "apsarastack_zones" "default" {
 		available_resource_creation = "KVStore"
 	}
 	variable "name" {
 		default = "tf-testAccKVStoreInstance_classic"
 	}
 
-	resource "alicloud_kvstore_instance" "default" {
-		availability_zone = "${lookup(data.alicloud_zones.default.zones[(length(data.alicloud_zones.default.zones)-1)%%length(data.alicloud_zones.default.zones)], "id")}"
+	resource "apsarastack_kvstore_instance" "default" {
+		availability_zone = "${lookup(data.apsarastack_zones.default.zones[(length(data.apsarastack_zones.default.zones)-1)%%length(data.apsarastack_zones.default.zones)], "id")}"
 		instance_name  = "${var.name}"
 		security_ips = ["10.0.0.1"]
 		instance_type = "%s"
@@ -801,15 +801,15 @@ func testAccKVStoreInstance_classicUpdateParameter(instanceType, instanceClass, 
 
 func testAccKVStoreInstance_classicAddParameter(instanceType, instanceClass, engineVersion string) string {
 	return fmt.Sprintf(`
-	data "alicloud_zones" "default" {
+	data "apsarastack_zones" "default" {
 		available_resource_creation = "KVStore"
 	}
 	variable "name" {
 		default = "tf-testAccKVStoreInstance_classic"
 	}
 
-	resource "alicloud_kvstore_instance" "default" {
-		availability_zone = "${lookup(data.alicloud_zones.default.zones[(length(data.alicloud_zones.default.zones)-1)%%length(data.alicloud_zones.default.zones)], "id")}"
+	resource "apsarastack_kvstore_instance" "default" {
+		availability_zone = "${lookup(data.apsarastack_zones.default.zones[(length(data.apsarastack_zones.default.zones)-1)%%length(data.apsarastack_zones.default.zones)], "id")}"
 		instance_name  = "${var.name}"
 		security_ips = ["10.0.0.1"]
 		instance_type = "%s"
@@ -829,15 +829,15 @@ func testAccKVStoreInstance_classicAddParameter(instanceType, instanceClass, eng
 
 func testAccKVStoreInstance_classicDeleteParameter(instanceType, instanceClass, engineVersion string) string {
 	return fmt.Sprintf(`
-	data "alicloud_zones" "default" {
+	data "apsarastack_zones" "default" {
 		available_resource_creation = "KVStore"
 	}
 	variable "name" {
 		default = "tf-testAccKVStoreInstance_classic"
 	}
 
-	resource "alicloud_kvstore_instance" "default" {
-		availability_zone = "${lookup(data.alicloud_zones.default.zones[(length(data.alicloud_zones.default.zones)-1)%%length(data.alicloud_zones.default.zones)], "id")}"
+	resource "apsarastack_kvstore_instance" "default" {
+		availability_zone = "${lookup(data.apsarastack_zones.default.zones[(length(data.apsarastack_zones.default.zones)-1)%%length(data.apsarastack_zones.default.zones)], "id")}"
 		instance_name  = "${var.name}"
 		security_ips = ["10.0.0.1"]
 		instance_type = "%s"
@@ -853,15 +853,15 @@ func testAccKVStoreInstance_classicDeleteParameter(instanceType, instanceClass, 
 
 func testAccKVStoreInstance_classicUpdateSecuirtyIps(instanceType, instanceClass, engineVersion string) string {
 	return fmt.Sprintf(`
-	data "alicloud_zones" "default" {
+	data "apsarastack_zones" "default" {
 		available_resource_creation = "KVStore"
 	}
 	variable "name" {
 		default = "tf-testAccKVStoreInstance_classic"
 	}
 
-	resource "alicloud_kvstore_instance" "default" {
-		availability_zone = "${lookup(data.alicloud_zones.default.zones[(length(data.alicloud_zones.default.zones)-1)%%length(data.alicloud_zones.default.zones)], "id")}"
+	resource "apsarastack_kvstore_instance" "default" {
+		availability_zone = "${lookup(data.apsarastack_zones.default.zones[(length(data.apsarastack_zones.default.zones)-1)%%length(data.apsarastack_zones.default.zones)], "id")}"
 		instance_name  = "${var.name}"
 		security_ips = ["10.0.0.3", "10.0.0.2"]
 		instance_type = "%s"
@@ -872,15 +872,15 @@ func testAccKVStoreInstance_classicUpdateSecuirtyIps(instanceType, instanceClass
 }
 func testAccKVStoreInstance_classicUpdateClass(instanceType, instanceClass, engineVersion string) string {
 	return fmt.Sprintf(`
-	data "alicloud_zones" "default" {
+	data "apsarastack_zones" "default" {
 		available_resource_creation = "KVStore"
 	}
 	variable "name" {
 		default = "tf-testAccKVStoreInstance_classic"
 	}
 
-	resource "alicloud_kvstore_instance" "default" {
-		availability_zone = "${lookup(data.alicloud_zones.default.zones[(length(data.alicloud_zones.default.zones)-1)%%length(data.alicloud_zones.default.zones)], "id")}"
+	resource "apsarastack_kvstore_instance" "default" {
+		availability_zone = "${lookup(data.apsarastack_zones.default.zones[(length(data.apsarastack_zones.default.zones)-1)%%length(data.apsarastack_zones.default.zones)], "id")}"
 		instance_name  = "${var.name}"
 		security_ips = ["10.0.0.1"]
 		instance_type = "%s"
@@ -891,15 +891,15 @@ func testAccKVStoreInstance_classicUpdateClass(instanceType, instanceClass, engi
 }
 func testAccKVStoreInstance_classicUpdateAttr(instanceType, instanceClass, engineVersion string) string {
 	return fmt.Sprintf(`
-	data "alicloud_zones" "default" {
+	data "apsarastack_zones" "default" {
 		available_resource_creation = "KVStore"
 	}
 	variable "name" {
 		default = "tf-testAccKVStoreInstance_classic"
 	}
 
-	resource "alicloud_kvstore_instance" "default" {
-		availability_zone = "${lookup(data.alicloud_zones.default.zones[(length(data.alicloud_zones.default.zones)-1)%%length(data.alicloud_zones.default.zones)], "id")}"
+	resource "apsarastack_kvstore_instance" "default" {
+		availability_zone = "${lookup(data.apsarastack_zones.default.zones[(length(data.apsarastack_zones.default.zones)-1)%%length(data.apsarastack_zones.default.zones)], "id")}"
 		password = "Yourpassword1234"
 		instance_name  = "${var.name}"
 		security_ips = ["10.0.0.1"]
@@ -911,15 +911,15 @@ func testAccKVStoreInstance_classicUpdateAttr(instanceType, instanceClass, engin
 }
 func testAccKVStoreInstance_classicUpdateTags(instanceType, instanceClass, engineVersion string) string {
 	return fmt.Sprintf(`
-	data "alicloud_zones" "default" {
+	data "apsarastack_zones" "default" {
 		available_resource_creation = "KVStore"
 	}
 	variable "name" {
 		default = "tf-testAccKVStoreInstance_classic"
 	}
 
-	resource "alicloud_kvstore_instance" "default" {
-		availability_zone = "${lookup(data.alicloud_zones.default.zones[(length(data.alicloud_zones.default.zones)-1)%%length(data.alicloud_zones.default.zones)], "id")}"
+	resource "apsarastack_kvstore_instance" "default" {
+		availability_zone = "${lookup(data.apsarastack_zones.default.zones[(length(data.apsarastack_zones.default.zones)-1)%%length(data.apsarastack_zones.default.zones)], "id")}"
 		password = "Yourpassword1234"
 		instance_name  = "${var.name}"
 		security_ips = ["10.0.0.1"]
@@ -935,15 +935,15 @@ func testAccKVStoreInstance_classicUpdateTags(instanceType, instanceClass, engin
 }
 func testAccKVStoreInstance_classicUpdateMaintainStartTime(instanceType, instanceClass, engineVersion string) string {
 	return fmt.Sprintf(`
-	data "alicloud_zones" "default" {
+	data "apsarastack_zones" "default" {
 		available_resource_creation = "KVStore"
 	}
 	variable "name" {
 		default = "tf-testAccKVStoreInstance_classic"
 	}
 
-	resource "alicloud_kvstore_instance" "default" {
-		availability_zone = "${lookup(data.alicloud_zones.default.zones[(length(data.alicloud_zones.default.zones)-1)%%length(data.alicloud_zones.default.zones)], "id")}"
+	resource "apsarastack_kvstore_instance" "default" {
+		availability_zone = "${lookup(data.apsarastack_zones.default.zones[(length(data.apsarastack_zones.default.zones)-1)%%length(data.apsarastack_zones.default.zones)], "id")}"
 		password = "Yourpassword1234"
 		instance_name  = "${var.name}"
 		security_ips = ["10.0.0.1"]
@@ -961,15 +961,15 @@ func testAccKVStoreInstance_classicUpdateMaintainStartTime(instanceType, instanc
 }
 func testAccKVStoreInstance_classicUpdateAll(instanceType, instanceClass, engineVersion string) string {
 	return fmt.Sprintf(`
-	data "alicloud_zones" "default" {
+	data "apsarastack_zones" "default" {
 		available_resource_creation = "KVStore"
 	}
 	variable "name" {
 		default = "tf-testAccKVStoreInstance_classicUpdateAll"
 	}
 
-	resource "alicloud_kvstore_instance" "default" {
-		availability_zone = "${lookup(data.alicloud_zones.default.zones[(length(data.alicloud_zones.default.zones)-1)%%length(data.alicloud_zones.default.zones)], "id")}"
+	resource "apsarastack_kvstore_instance" "default" {
+		availability_zone = "${lookup(data.apsarastack_zones.default.zones[(length(data.apsarastack_zones.default.zones)-1)%%length(data.apsarastack_zones.default.zones)], "id")}"
 		password = "Yourpassword1234"
 		instance_name  = "${var.name}"
 		security_ips = ["10.0.0.2","10.0.0.3"]
@@ -989,10 +989,10 @@ func testAccKVStoreInstance_vpc(common, instanceClass, instanceType, engineVersi
 	variable "name" {
 		default = "tf-testAccKVStoreInstance_vpc"
 	}
-	resource "alicloud_kvstore_instance" "default" {
+	resource "apsarastack_kvstore_instance" "default" {
 		instance_class = "%s"
 		instance_name  = "${var.name}"
-		vswitch_id     = data.alicloud_vswitches.default.ids.0
+		vswitch_id     = data.apsarastack_vswitches.default.ids.0
 		security_ips = ["10.0.0.1"]
 		instance_type = "%s"
 		engine_version = "%s"
@@ -1008,10 +1008,10 @@ func testAccKVStoreInstance_vpcUpdateSecurityIps(common, instanceClass, instance
 	variable "name" {
 		default = "tf-testAccKVStoreInstance_vpc"
 	}
-	resource "alicloud_kvstore_instance" "default" {
+	resource "apsarastack_kvstore_instance" "default" {
 		instance_class = "%s"
 		instance_name  = "${var.name}"
-		vswitch_id     = data.alicloud_vswitches.default.ids.0
+		vswitch_id     = data.apsarastack_vswitches.default.ids.0
 		security_ips = ["10.0.0.3", "10.0.0.2"]
 		instance_type = "%s"
 		engine_version = "%s"
@@ -1028,16 +1028,16 @@ func testAccKVStoreInstance_vpcUpdateSecurityGroupIds(common, instanceClass, ins
 	variable "name" {
 		default = "tf-testAccKVStoreInstance_vpc"
 	}
-	data "alicloud_security_groups" "default" {
+	data "apsarastack_security_groups" "default" {
 	}
-	resource "alicloud_kvstore_instance" "default" {
+	resource "apsarastack_kvstore_instance" "default" {
 		instance_class = "%s"
 		instance_name  = "${var.name}"
-		vswitch_id     = data.alicloud_vswitches.default.ids.0
+		vswitch_id     = data.apsarastack_vswitches.default.ids.0
 		security_ips = ["10.0.0.3", "10.0.0.2"]
 		instance_type = "%s"
 		engine_version = "%s"
-		security_group_id    = "${data.alicloud_security_groups.default.groups.0.id}"
+		security_group_id    = "${data.apsarastack_security_groups.default.groups.0.id}"
 	}
 	`, common, instanceClass, instanceType, engineVersion)
 }
@@ -1051,10 +1051,10 @@ func testAccKVStoreInstance_vpcUpdateVpcAuthMode(common, instanceClass, instance
 	variable "name" {
 		default = "tf-testAccKVStoreInstance_vpc"
 	}
-	resource "alicloud_kvstore_instance" "default" {
+	resource "apsarastack_kvstore_instance" "default" {
 		instance_class = "%s"
 		instance_name  = "${var.name}"
-		vswitch_id     = data.alicloud_vswitches.default.ids.0
+		vswitch_id     = data.apsarastack_vswitches.default.ids.0
 		vpc_auth_mode = "Close"
 		security_ips = ["10.0.0.3", "10.0.0.2"]
 		instance_type = "%s"
@@ -1072,10 +1072,10 @@ func testAccKVStoreInstance_vpcUpdateParameter(common, instanceClass, instanceTy
 	variable "name" {
 		default = "tf-testAccKVStoreInstance_vpc"
 	}
-	resource "alicloud_kvstore_instance" "default" {
+	resource "apsarastack_kvstore_instance" "default" {
 		instance_class = "%s"
 		instance_name  = "${var.name}"
-		vswitch_id     = data.alicloud_vswitches.default.ids.0
+		vswitch_id     = data.apsarastack_vswitches.default.ids.0
 		security_ips = ["10.0.0.3", "10.0.0.2"]
 		parameters {
 			  name = "maxmemory-policy"
@@ -1096,10 +1096,10 @@ func testAccKVStoreInstance_vpcAddParameter(common, instanceClass, instanceType,
 	variable "name" {
 		default = "tf-testAccKVStoreInstance_vpc"
 	}
-	resource "alicloud_kvstore_instance" "default" {
+	resource "apsarastack_kvstore_instance" "default" {
 		instance_class = "%s"
 		instance_name  = "${var.name}"
-		vswitch_id     = data.alicloud_vswitches.default.ids.0
+		vswitch_id     = data.apsarastack_vswitches.default.ids.0
 		security_ips = ["10.0.0.3", "10.0.0.2"]
 		parameters {
 			  name = "maxmemory-policy"
@@ -1124,10 +1124,10 @@ func testAccKVStoreInstance_vpcDeleteParameter(common, instanceClass, instanceTy
 	variable "name" {
 		default = "tf-testAccKVStoreInstance_vpc"
 	}
-	resource "alicloud_kvstore_instance" "default" {
+	resource "apsarastack_kvstore_instance" "default" {
 		instance_class = "%s"
 		instance_name  = "${var.name}"
-		vswitch_id     = data.alicloud_vswitches.default.ids.0
+		vswitch_id     = data.apsarastack_vswitches.default.ids.0
 		security_ips = ["10.0.0.3", "10.0.0.2"]
 		parameters {
 				name = "slowlog-max-len"
@@ -1148,10 +1148,10 @@ func testAccKVStoreInstance_vpcUpdateClass(common, instanceClass, instanceType, 
 	variable "name" {
 		default = "tf-testAccKVStoreInstance_vpc"
 	}
-	resource "alicloud_kvstore_instance" "default" {
+	resource "apsarastack_kvstore_instance" "default" {
 		instance_class = "%s"
 		instance_name  = "${var.name}"
-		vswitch_id     = data.alicloud_vswitches.default.ids.0
+		vswitch_id     = data.apsarastack_vswitches.default.ids.0
 		security_ips = ["10.0.0.3", "10.0.0.2"]
 		instance_type = "%s"
 		engine_version = "%s"
@@ -1167,11 +1167,11 @@ func testAccKVStoreInstance_vpcUpdateAll(common, instanceClass, instanceType, en
 	variable "name" {
 		default = "tf-testAccKVStoreInstance_vpcUpdateAll"
 	}
-	resource "alicloud_kvstore_instance" "default" {
+	resource "apsarastack_kvstore_instance" "default" {
 		instance_class = "%s"
 		instance_name  = "${var.name}"
 		password       = "Yourpassword1234"
-		vswitch_id     = data.alicloud_vswitches.default.ids.0
+		vswitch_id     = data.apsarastack_vswitches.default.ids.0
 		security_ips = ["10.0.0.1"]
 		instance_type = "%s"
 		engine_version = "%s"
@@ -1188,12 +1188,12 @@ func testAccKVStoreInstance_vpcmulti(common, instanceClass, instanceType, engine
 	variable "name" {
 		default = "tf-testAccKVStoreInstance_vpc"
 	}
-	resource "alicloud_kvstore_instance" "default" {
+	resource "apsarastack_kvstore_instance" "default" {
 		count		   = 10
 		instance_class = "%s"
 		instance_name  = "${var.name}"
 		password       = "Yourpassword1234"
-		vswitch_id     = data.alicloud_vswitches.default.ids.0
+		vswitch_id     = data.apsarastack_vswitches.default.ids.0
 		security_ips   = ["10.0.0.1"]
 		instance_type  = "%s"
 		engine_version = "%s"
@@ -1203,16 +1203,16 @@ func testAccKVStoreInstance_vpcmulti(common, instanceClass, instanceType, engine
 
 func testAccKVStoreInstance_classicmulti(instanceType, instanceClass, engineVersion string) string {
 	return fmt.Sprintf(`
-	data "alicloud_zones" "default" {
+	data "apsarastack_zones" "default" {
 		available_resource_creation = "KVStore"
 	}
 	variable "name" {
 		default = "tf-testAccKVStoreInstance_classic"
 	}
 
-	resource "alicloud_kvstore_instance" "default" {
+	resource "apsarastack_kvstore_instance" "default" {
 		count = 10
-		availability_zone = "${lookup(data.alicloud_zones.default.zones[(length(data.alicloud_zones.default.zones)-1)%%length(data.alicloud_zones.default.zones)], "id")}"
+		availability_zone = "${lookup(data.apsarastack_zones.default.zones[(length(data.apsarastack_zones.default.zones)-1)%%length(data.apsarastack_zones.default.zones)], "id")}"
 		instance_name  = "${var.name}"
 		security_ips = ["10.0.0.1"]
 		instance_type = "%s"
