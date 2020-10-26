@@ -332,7 +332,7 @@ func providerConfigure(d *schema.ResourceData) (interface{}, error) {
 			config.RdsEndpoint = strings.TrimSpace(endpoints["rds"].(string))
 			config.OssEndpoint = strings.TrimSpace(endpoints["oss."].(string))
 			config.StsEndpoint = strings.TrimSpace(endpoints["slb."].(string))
-			config.KVStoreEndpoint = strings.TrimSpace(endpoints["r-kvstore."].(string))
+			config.KVStoreEndpoint = strings.TrimSpace(endpoints["kvstore"].(string))
 
 		}
 	}
