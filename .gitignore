@@ -30,9 +30,8 @@ develop*
 !vendor/github.com/valyala/**/*.pem
 vendor
 website/vendor
-examples
+example
 # Test exclusions
 !command/test-fixtures/**/*.tfstate
 !command/test-fixtures/**/.terraform/
-terraform-provider-apsarastack
 terraform-provider-apsarastack
