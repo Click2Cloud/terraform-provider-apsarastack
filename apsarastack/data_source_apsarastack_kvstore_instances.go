@@ -160,6 +160,8 @@ func dataSourceApsaraStackKVStoreInstancesRead(d *schema.ResourceData, meta inte
 
 	request := r_kvstore.CreateDescribeInstancesRequest()
 	request.RegionId = client.RegionId
+	request.Headers = map[string]string{"RegionId": client.RegionId}
+	request.QueryParams = map[string]string{"AccessKeySecret": client.SecretKey, "Product": "R-kvstore"}
 	request.VpcId = d.Get("vpc_id").(string)
 	request.VSwitchId = d.Get("vswitch_id").(string)
 	request.InstanceType = d.Get("instance_type").(string)

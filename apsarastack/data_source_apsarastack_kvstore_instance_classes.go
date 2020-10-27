@@ -140,6 +140,8 @@ func dataSourceApsaraStackKVStoreAvailableResourceRead(d *schema.ResourceData, m
 
 	request := r_kvstore.CreateDescribeAvailableResourceRequest()
 	request.RegionId = client.RegionId
+	request.Headers = map[string]string{"RegionId": client.RegionId}
+	request.QueryParams = map[string]string{"AccessKeySecret": client.SecretKey, "Product": "R-kvstore"}
 	request.ZoneId = d.Get("zone_id").(string)
 	instanceChargeType := d.Get("instance_charge_type").(string)
 	request.InstanceChargeType = instanceChargeType
