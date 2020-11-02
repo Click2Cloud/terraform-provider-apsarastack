@@ -28,9 +28,10 @@ website/node_modules
 vars-pipeline*
 develop*
 !vendor/github.com/valyala/**/*.pem
-
+vendor
 website/vendor
 
 # Test exclusions
 !command/test-fixtures/**/*.tfstate
 !command/test-fixtures/**/.terraform/
+terraform-provider-apsarastack
