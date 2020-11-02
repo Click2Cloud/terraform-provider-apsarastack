@@ -260,7 +260,7 @@ func (client *ApsaraStackClient) WithRkvClient(do func(*r_kvstore.Client) (inter
 func (client *ApsaraStackClient) WithGpdbClient(do func(*gpdb.Client) (interface{}, error)) (interface{}, error) {
 	// Initialize the GPDB client if necessary
 	if client.gpdbconn == nil {
-		endpoint := client.config.GpdbEnpoint
+		endpoint := client.config.GpdbEndpoint
 		if endpoint == "" {
 			endpoint = loadEndpoint(client.config.RegionId, GPDBCode)
 		}
@@ -277,7 +277,7 @@ func (client *ApsaraStackClient) WithGpdbClient(do func(*gpdb.Client) (interface
 		gpdbconn.AppendUserAgent(Module, client.config.ConfigurationSource)
 		gpdbconn.SetHTTPSInsecure(client.config.Insecure)
 		if client.config.Proxy != "" {
-			gpdbconn.SetHttpsProxy(client.config.Proxy)
+			gpdbconn.SetHttpProxy(client.config.Proxy)
 		}
 		client.gpdbconn = gpdbconn
 	}

@@ -21,6 +21,8 @@ type GpdbService struct {
 func (s *GpdbService) DescribeGpdbInstance(id string) (instanceAttribute gpdb.DBInstanceAttribute, err error) {
 	request := gpdb.CreateDescribeDBInstanceAttributeRequest()
 	request.RegionId = s.client.RegionId
+	request.Headers = map[string]string{"RegionId": s.client.RegionId}
+	request.QueryParams = map[string]string{"AccessKeySecret": s.client.SecretKey, "Product": "gpdb"}
 	request.DBInstanceId = id
 	raw, err := s.client.WithGpdbClient(func(client *gpdb.Client) (interface{}, error) {
 		return client.DescribeDBInstanceAttribute(request)
@@ -48,6 +50,8 @@ func (s *GpdbService) DescribeGpdbInstance(id string) (instanceAttribute gpdb.DB
 func (s *GpdbService) DescribeGpdbSecurityIps(id string) (ips []string, err error) {
 	request := gpdb.CreateDescribeDBInstanceIPArrayListRequest()
 	request.RegionId = s.client.RegionId
+	request.Headers = map[string]string{"RegionId": s.client.RegionId}
+	request.QueryParams = map[string]string{"AccessKeySecret": s.client.SecretKey, "Product": "gpdb"}
 	request.DBInstanceId = id
 
 	raw, err := s.client.WithGpdbClient(func(client *gpdb.Client) (interface{}, error) {
@@ -88,6 +92,8 @@ func (s *GpdbService) DescribeGpdbSecurityIps(id string) (ips []string, err erro
 func (s *GpdbService) ModifyGpdbSecurityIps(id, ips string) error {
 	request := gpdb.CreateModifySecurityIpsRequest()
 	request.RegionId = s.client.RegionId
+	request.Headers = map[string]string{"RegionId": s.client.RegionId}
+	request.QueryParams = map[string]string{"AccessKeySecret": s.client.SecretKey, "Product": "gpdb"}
 	request.DBInstanceId = id
 	request.SecurityIPList = ips
 	raw, err := s.client.WithGpdbClient(func(client *gpdb.Client) (interface{}, error) {
@@ -112,6 +118,8 @@ func (s *GpdbService) DescribeGpdbConnection(id string) (*gpdb.DBInstanceNetInfo
 	// Describe DB Instance Net Info
 	request := gpdb.CreateDescribeDBInstanceNetInfoRequest()
 	request.RegionId = s.client.RegionId
+	request.Headers = map[string]string{"RegionId": s.client.RegionId}
+	request.QueryParams = map[string]string{"AccessKeySecret": s.client.SecretKey, "Product": "gpdb"}
 	request.DBInstanceId = parts[0]
 	raw, err := s.client.WithGpdbClient(func(gpdbClient *gpdb.Client) (interface{}, error) {
 		return gpdbClient.DescribeDBInstanceNetInfo(request)
@@ -193,6 +201,8 @@ func (s *GpdbService) setInstanceTags(d *schema.ResourceData) error {
 		request.ResourceType = string(TagResourceInstance)
 		request.TagKey = &tagKey
 		request.RegionId = s.client.RegionId
+		request.Headers = map[string]string{"RegionId": s.client.RegionId}
+		request.QueryParams = map[string]string{"AccessKeySecret": s.client.SecretKey, "Product": "gpdb"}
 		raw, err := s.client.WithGpdbClient(func(client *gpdb.Client) (interface{}, error) {
 			return client.UntagResources(request)
 		})
@@ -208,6 +218,8 @@ func (s *GpdbService) setInstanceTags(d *schema.ResourceData) error {
 		request.Tag = &create
 		request.ResourceType = string(TagResourceInstance)
 		request.RegionId = s.client.RegionId
+		request.Headers = map[string]string{"RegionId": s.client.RegionId}
+		request.QueryParams = map[string]string{"AccessKeySecret": s.client.SecretKey, "Product": "gpdb"}
 		raw, err := s.client.WithGpdbClient(func(client *gpdb.Client) (interface{}, error) {
 			return client.TagResources(request)
 		})

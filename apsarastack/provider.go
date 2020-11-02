@@ -308,6 +308,7 @@ func providerConfigure(d *schema.ResourceData) (interface{}, error) {
 		config.OssEndpoint = "oss." + domain
 		config.StsEndpoint = "sts." + domain
 		config.RdsEndpoint = "rds." + domain
+		config.GpdbEndpoint = "gpdb." + domain
 
 	} else {
 
@@ -319,8 +320,9 @@ func providerConfigure(d *schema.ResourceData) (interface{}, error) {
 			config.VpcEndpoint = strings.TrimSpace(endpoints["vpc"].(string))
 			config.StsEndpoint = strings.TrimSpace(endpoints["sts"].(string))
 			config.RdsEndpoint = strings.TrimSpace(endpoints["rds"].(string))
-			config.OssEndpoint = strings.TrimSpace(endpoints["oss."].(string))
-			config.StsEndpoint = strings.TrimSpace(endpoints["slb."].(string))
+			config.OssEndpoint = strings.TrimSpace(endpoints["oss"].(string))
+			config.StsEndpoint = strings.TrimSpace(endpoints["slb"].(string))
+			config.GpdbEndpoint = strings.TrimSpace(endpoints["gpdb"].(string))
 
 		}
 	}

@@ -38,6 +38,7 @@ func resourceApsaraStackGpdbInstance() *schema.Resource {
 				Type:     schema.TypeString,
 				Required: true,
 			},
+
 			"instance_group_count": {
 				Type:     schema.TypeString,
 				Required: true,
@@ -166,6 +167,8 @@ func resourceApsaraStackGpdbInstanceUpdate(d *schema.ResourceData, meta interfac
 	if d.HasChange("description") {
 		request := gpdb.CreateModifyDBInstanceDescriptionRequest()
 		request.RegionId = client.RegionId
+		request.Headers = map[string]string{"RegionId": client.RegionId}
+		request.QueryParams = map[string]string{"AccessKeySecret": client.SecretKey, "Product": "gpdb"}
 		request.DBInstanceId = d.Id()
 		request.DBInstanceDescription = d.Get("description").(string)
 		raw, err := client.WithGpdbClient(func(gpdbClient *gpdb.Client) (interface{}, error) {
@@ -207,6 +210,8 @@ func resourceApsaraStackGpdbInstanceDelete(d *schema.ResourceData, meta interfac
 
 	request := gpdb.CreateDeleteDBInstanceRequest()
 	request.RegionId = client.RegionId
+	request.Headers = map[string]string{"RegionId": client.RegionId}
+	request.QueryParams = map[string]string{"AccessKeySecret": client.SecretKey, "Product": "gpdb"}
 	request.DBInstanceId = d.Id()
 
 	err := resource.Retry(10*5*time.Minute, func() *resource.RetryError {
@@ -237,6 +242,8 @@ func buildGpdbCreateRequest(d *schema.ResourceData, meta interface{}) (*gpdb.Cre
 	client := meta.(*connectivity.ApsaraStackClient)
 	request := gpdb.CreateCreateDBInstanceRequest()
 	request.RegionId = string(client.Region)
+	request.Headers = map[string]string{"RegionId": client.RegionId,"ZoneId": Trim(d.Get("availability_zone").(string)),"EngineVersion" : Trim(d.Get("engine").(string))}
+	request.QueryParams = map[string]string{"AccessKeySecret": client.SecretKey, "Product": "gpdb","ZoneId": Trim(d.Get("availability_zone").(string)), "EngineVersion" : Trim(d.Get("engine").(string))}
 	request.ZoneId = Trim(d.Get("availability_zone").(string))
 	request.PayType = d.Get("instance_charge_type").(string)
 	request.VSwitchId = Trim(d.Get("vswitch_id").(string))

@@ -56,7 +56,7 @@ type Config struct {
 	LogEndpoint           string
 	DrdsEndpoint          string
 	DdsEndpoint           string
-	GpdbEnpoint           string
+	GpdbEndpoint           string
 	KVStoreEndpoint       string
 	PolarDBEndpoint       string
 	FcEndpoint            string
