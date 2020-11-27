@@ -95,3 +95,20 @@ func (s *AscmService) DescribeResourceGroup(id string) (rg ascm.ResourceGroup, e
 	addDebug(request.GetActionName(), raw, request.RpcRequest, request)
 	return response.ResourceGroups.ResourceGroup[0], nil
 }
+
+
+func (s *AscmService) GetPasswordPolicy() (PP ascm.PasswordPolicy, err error){
+    request := ascm.CreateGetPasswordPolicyRequest()
+	request.RegionId = s.client.RegionId
+	request.Headers = map[string]string{"RegionId": s.client.RegionId}
+	raw, err := s.client.WithAscmClient(func(ascmClient *ascm.Client) (interface{}, error) {
+		return ascmClient.GetPasswordPolicy(request)
+	})
+	if err != nil {
+		return PP, WrapErrorf(err, DefaultErrorMsg, request.GetActionName(), ApsaraStackSdkGoERROR)
+	}
+	response, _ := raw.(*ascm.GetPasswordPolicyResponse)
+	addDebug(request.GetActionName(), raw, request.RpcRequest, request)
+	return response.Data, nil
+
+}

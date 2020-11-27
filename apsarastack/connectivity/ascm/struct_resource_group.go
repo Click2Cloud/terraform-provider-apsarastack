@@ -34,4 +34,26 @@ type ResourceGroup struct {
 	PureListData bool `json:"pureListData"`
 	Redirect     bool `json:"redirect"`
 	Success      bool `json:"success"`
+
+}
+type PasswordPolicy struct {
+	Cost int    `json:"cost" xml:"cost"`
+	Code string `json:"code" xml:"code"`
+	Data struct {
+		HardExpiry        bool `json:"hardExpiry" xml:"hardExpiry"`
+		MaxLoginAttemps  int `json:"maxLoginAttemps" xml:"maxLoginAttemps"`
+		MaxPasswordAge  int `json:"maxPasswordAge" xml:"maxPasswordAge"`
+		MinimumPasswordLength  int `json:"minimumPasswordLength" xml:"minimumPasswordLength"`
+		PasswordErrorLockPeriod  int `json:"passwordErrorLockPeriod" xml:"passwordErrorLockPeriod"`
+		PasswordErrorTolerancePeriod  int `json:"passwordErrorTolerancePeriod" xml:"passwordErrorTolerancePeriod"`
+		PasswordReusePrevention  int `json:"passwordReusePrevention" xml:"passwordReusePrevention"`
+		RequireLowercaseCharacters bool `json:"requireLowercaseCharacters" xml:"requireLowercaseCharacters"`
+		RequireNumbers bool `json:"requireNumbers" xml:"requireNumbers"`
+		RequireSymbols bool `json:"requireSymbols" xml:"requireSymbols"`
+		RequireUppercaseCharacters bool `json:"requireUppercaseCharacters" xml:"requireUppercaseCharacters"`
+	} `json:"data" xml:"data"`
+		Message  string `json:"message" xml:"message"`
+		Redirect     bool `json:"redirect" xml:"redirect"`
+		Success      bool `json:"success" xml:"success"`
+		AsapiRequestId string `json:"asapiRequestId" xml:"asapiRequestId"`
 }
