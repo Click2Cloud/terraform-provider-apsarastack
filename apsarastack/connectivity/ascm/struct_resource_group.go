@@ -14,6 +14,7 @@ type ResourceGroup struct {
 	Code string `json:"code"`
 	Cost int    `json:"cost"`
 	Data []struct {
+		Status            string `json:"Status"`
 		Creator           string `json:"creator"`
 		GmtCreated        int64  `json:"gmtCreated"`
 		ResourceGroupID   int    `json:"id"`
@@ -34,7 +35,7 @@ type ResourceGroup struct {
 	PureListData bool `json:"pureListData"`
 	Redirect     bool `json:"redirect"`
 	Success      bool `json:"success"`
-
+Status       string `json:"Status"`
 }
 type PasswordPolicy struct {
 	Cost int    `json:"cost" xml:"cost"`
