@@ -308,6 +308,9 @@ func Provider() terraform.ResourceProvider {
 		},
 		ConfigureFunc: providerConfigure,
 	}
+
+
+
 }
 
 var providerConfig map[string]interface{}
