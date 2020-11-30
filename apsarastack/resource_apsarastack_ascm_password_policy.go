@@ -78,7 +78,10 @@ func resourceApsaraStackAscmPasswordPolicyCreate(d *schema.ResourceData, meta in
 	request.Method = "POST"
 	request.Scheme = "http"
 	request.Headers = map[string]string{"RegionId": client.RegionId}
-	request.QueryParams = map[string]string{"Id": d.Id(), "Product": "ascm", "RegionId": client.RegionId, "Action": "SetPasswordPolicy", "Version": "2019-05-10"}
+	request.QueryParams = map[string]string{"AccessKeyId": client.AccessKey,
+		"AccessKeySecret": client.SecretKey, "Product": "ascm", "RegionId": client.RegionId,
+		"Action": "SetPasswordPolicy", "Version": "2019-05-10", "Department": client.Department,
+		"ResourceGroup": client.ResourceGroup ,"Id": d.Id()}
 	request.RegionId = client.RegionId
 	if err != nil {
 		return WrapError(err)
@@ -152,7 +155,10 @@ func resourceApsaraStackAscmPasswordPolicyDelete(d *schema.ResourceData, meta in
 	request.Method = "POST"
 	request.Scheme = "http"
 	request.Headers = map[string]string{"RegionId": client.RegionId}
-	request.QueryParams = map[string]string{"Id": d.Id(), "Product": "ascm", "RegionId": client.RegionId, "Action": "RemoveLoginPolicyById", "Version": "2019-05-10"}
+	request.QueryParams = map[string]string{"AccessKeyId": client.AccessKey,
+		"AccessKeySecret": client.SecretKey, "Product": "ascm", "RegionId": client.RegionId,
+		"Action": "RemoveLoginPolicyById", "Version": "2019-05-10", "Department": client.Department,
+		"ResourceGroup": client.ResourceGroup ,"Id": d.Id()}
 	request.RegionId = client.RegionId
 
 	raw, err := client.WithAscmClient(func(ascmClient *ascm.Client) (interface{}, error) {

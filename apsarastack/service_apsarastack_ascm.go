@@ -101,6 +101,7 @@ func (s *AscmService) GetPasswordPolicy() (PP ascm.PasswordPolicy, err error){
     request := ascm.CreateGetPasswordPolicyRequest()
 	request.RegionId = s.client.RegionId
 	request.Headers = map[string]string{"RegionId": s.client.RegionId}
+	request.QueryParams = map[string]string{"AccessKeyId": s.client.AccessKey, "AccessKeySecret": s.client.SecretKey, "Product": "ascm", "RegionId": s.client.RegionId, "Action": "GetPasswordPolicy", "Version": "2019-05-10", "Department": s.client.Department, "ResourceGroup": s.client.ResourceGroup}
 	raw, err := s.client.WithAscmClient(func(ascmClient *ascm.Client) (interface{}, error) {
 		return ascmClient.GetPasswordPolicy(request)
 	})
