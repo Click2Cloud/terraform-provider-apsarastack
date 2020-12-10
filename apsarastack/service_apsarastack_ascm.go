@@ -148,6 +148,52 @@ func (s *AscmService) DescribeAscmUser(id string) (response *User, err error) {
 	return resp, nil
 }
 
+func (s *AscmService) DescribeAscmRole(name string) (response *Roles, err error) {
+	var requestInfo *ecs.Client
+	request := requests.NewCommonRequest()
+	request.QueryParams = map[string]string{
+		"RegionId":        s.client.RegionId,
+		"AccessKeySecret": s.client.SecretKey,
+		"Product":         "ascm",
+		"Action":          "ListRoles",
+		"Version":         "2019-05-10",
+		"roleName":       name,
+	}
+	request.Method = "POST"
+	request.Product = "Ascm"
+	request.Version = "2019-05-10"
+	request.ServiceCode = "ascm"
+	request.Domain = s.client.Domain
+	request.Scheme = "http"
+	request.ApiName = "ListRoles"
+	request.Headers = map[string]string{"RegionId": s.client.RegionId}
+	request.RegionId = s.client.RegionId
+	var resp = &Roles{}
+	raw, err := s.client.WithEcsClient(func(ecsClient *ecs.Client) (interface{}, error) {
+		return ecsClient.ProcessCommonRequest(request)
+	})
+	if err != nil {
+		if IsExpectedErrors(err, []string{"ErrorUserNotFound"}) {
+			return resp, WrapErrorf(err, NotFoundMsg, ApsaraStackSdkGoERROR)
+		}
+		return resp, WrapErrorf(err, DefaultErrorMsg, name, "ListRoles", ApsaraStackSdkGoERROR)
+
+	}
+	addDebug("ListRoles", response, requestInfo, request)
+
+	bresponse, _ := raw.(*responses.CommonResponse)
+	err = json.Unmarshal(bresponse.GetHttpContentBytes(), resp)
+	if err != nil {
+		return resp, WrapError(err)
+	}
+
+	if len(resp.Data) < 1 || resp.Code == "200" {
+		return resp, WrapError(err)
+	}
+
+	return resp, nil
+}
+
 func (s *AscmService) DescribeAscmOrganization(id string) (response *Organization, err error) {
 	var requestInfo *ecs.Client
 	did := strings.Split(id, SLASH_SEPARATED)

@@ -1,15 +1,14 @@
 package apsarastack
 
 import (
-import (
-	"encoding/json"
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/responses"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ecs"
 	"github.com/aliyun/terraform-provider-apsarastack/apsarastack/connectivity"
 	"github.com/aliyun/terraform-provider-apsarastack/apsarastack/connectivity/ascm"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"regexp"
+	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
+	"time"
 )
 
 func resourceApsaraStackAscmRole() *schema.Resource {
@@ -27,99 +26,31 @@ func resourceApsaraStackAscmRole() *schema.Resource {
 				Type:     schema.TypeString,
 				Required: true,
 			},
-			"ids": {
-				Type:     schema.TypeList,
-				Optional: true,
-				Elem:     &schema.Schema{Type: schema.TypeInt},
-				Computed: true,
-				ForceNew: true,
-				MinItems: 1,
-			},
-			"name_regex": {
-				Type:     schema.TypeString,
-				Optional: true,
-				ForceNew: true,
-			},
-			"names": {
-				Type:     schema.TypeList,
-				Computed: true,
-				Elem:     &schema.Schema{Type: schema.TypeString},
-			},
-			"description": {
-				Type:     schema.TypeString,
-				Computed: true,
-				Optional: true,
-			},
-			"user_count": {
-				Type:     schema.TypeInt,
-				Computed: true,
-				Optional: true,
-			},
-			"output_file": {
-				Type:     schema.TypeString,
-				Optional: true,
-			},
-
-			"roles": {
-				Type:     schema.TypeList,
-				Computed: true,
-				Elem: &schema.Resource{
-					Schema: map[string]*schema.Schema{
-						"id": {
-							Type:     schema.TypeInt,
-							Computed: true,
-						},
-						"name": {
-							Type:     schema.TypeString,
-							Computed: true,
-						},
-						"description": {
-							Type:     schema.TypeString,
-							Computed: true,
-						},
-						"role_level": {
-							Type:     schema.TypeInt,
-							Computed: true,
-						},
-						"role_type": {
-							Type:     schema.TypeString,
-							Computed: true,
-						},
-						"ram_role": {
-							Type:     schema.TypeBool,
-							Computed: true,
-						},
-						"role_range": {
-							Type:     schema.TypeString,
-							Computed: true,
-						},
-						"user_count": {
-							Type:     schema.TypeInt,
-							Computed: true,
-						},
-					},
-				},
-			},
 		},
 	}
 }
 
 func resourceApsaraStackAscmRoleCreate(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(*connectivity.ApsaraStackClient)
-	var requestInfo *ascm.Client
+	ascmService := AscmService{client}
 	rname := d.Get("role_name").(string)
 	rrange := d.Get("role_range").(string)
-
+	check, err := ascmService.DescribeAscmRole(rname)
+	if err != nil {
+		return WrapErrorf(err, DefaultErrorMsg, "apsarastack_ascm_organization", "ORG alreadyExist", ApsaraStackSdkGoERROR)
+	}
+	    var requestInfo *ascm.Client
+	if len(check.Data) == 0 {
 		request := requests.NewCommonRequest()
 		request.QueryParams = map[string]string{
-			"RegionId":         client.RegionId,
-			"AccessKeySecret":  client.SecretKey,
-			"Product":          "Ascm",
-			"Action":           "CreateRole",
-			"Version":          "2019-05-10",
-			"ProductName":      "ascm",
+			"RegionId":        client.RegionId,
+			"AccessKeySecret": client.SecretKey,
+			"Product":         "Ascm",
+			"Action":          "CreateRole",
+			"Version":         "2019-05-10",
+			"ProductName":     "ascm",
 			"RoleName":        rname,
-			"RoleRange":      rrange,
+			"RoleRange":       rrange,
 		}
 		request.Method = "POST"
 		request.Product = "Ascm"
@@ -130,9 +61,11 @@ func resourceApsaraStackAscmRoleCreate(d *schema.ResourceData, meta interface{})
 		request.RegionId = client.RegionId
 		request.Headers = map[string]string{"RegionId": client.RegionId}
 
-		raw, err := client.WithEcsClient(func(ecsClient *ecs.Client) (interface{}, error) {
-			return ecsClient.ProcessCommonRequest(request)
-		})
+		raw, err := client.WithEcsClient(
+			func(ecsClient *ecs.Client) (interface{}, error) {
+				return ecsClient.ProcessCommonRequest(request)
+			}
+		)
 		if err != nil {
 			return WrapErrorf(err, DefaultErrorMsg, "apsarastack_ascm_role", "CreateRole", raw)
 		}
@@ -143,7 +76,21 @@ func resourceApsaraStackAscmRoleCreate(d *schema.ResourceData, meta interface{})
 			return WrapErrorf(err, DefaultErrorMsg, "apsarastack_ascm_role", "CreateRole", ApsaraStackSdkGoERROR)
 		}
 		addDebug("CreateRole", raw, requestInfo, bresponse.GetHttpContentString())
-
+	}
+	err = resource.Retry(5*time.Minute, func() *resource.RetryError {
+		check, err = ascmService.DescribeAscmRole(rname)
+		if err != nil {
+			return resource.NonRetryableError(err)
+		}
+		if len(check.Data) != 0 {
+			return nil
+		}
+		return resource.RetryableError(Error("New Role has been created successfully."))
+	})
+	if err != nil {
+		return WrapErrorf(err, DefaultErrorMsg, "apsarastack_ascm_role", "Failed to create role",
+			ApsaraStackSdkGoERROR)
+	}
 	return resourceApsaraStackAscmUserUpdate(d, meta)
 
 }
@@ -156,68 +103,24 @@ return resourceApsaraStackAscmUserRead(d, meta)
 
 func resourceApsaraStackAscmRoleRead(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(*connectivity.ApsaraStackClient)
-	request := requests.NewCommonRequest()
-	//request.Method = "GET"
-	request.Product = "ascm"
-	request.Version = "2019-05-10"
-	request.Scheme = "http"
-	request.RegionId = client.RegionId
-	request.ApiName = "ListRoles"
-	request.Headers = map[string]string{"RegionId": client.RegionId}
-	request.QueryParams = map[string]string{"AccessKeyId": client.AccessKey, "AccessKeySecret": client.SecretKey, "Product": "ascm", "RegionId": client.RegionId, "Action": "ListRoles", "Version": "2019-05-10"}
-	response := ascm.Role{}
-
-	for {
-		raw, err := client.WithEcsClient(func(ecsClient *ecs.Client) (interface{}, error) {
-			return ecsClient.ProcessCommonRequest(request)
-		})
-		if err != nil {
-			return WrapErrorf(err, DataDefaultErrorMsg, "apsarastack_ascm_roles", request.GetActionName(), ApsaraStackSdkGoERROR)
+	ascmService := AscmService{client}
+	rname := d.Get("role_name").(string)
+	object, err := ascmService.DescribeAscmRole(rname)
+	if err != nil {
+		if NotFoundError(err) {
+			d.SetId("")
+			return nil
 		}
-
-		bresponse, _ := raw.(*responses.CommonResponse)
-
-		err = json.Unmarshal(bresponse.GetHttpContentBytes(), &response)
-		if err != nil {
-			return WrapError(err)
-		}
-		if response.Code == "200" || len(response.Data) < 1 {
-			break
-		}
-
-	}
-
-	var r *regexp.Regexp
-	if nameRegex, ok := d.GetOk("name_regex"); ok && nameRegex.(string) != "" {
-		r = regexp.MustCompile(nameRegex.(string))
-	}
-	var ids []string
-	var s []map[string]interface{}
-	for _, rg := range response.Data {
-		if r != nil && !r.MatchString(rg.RoleName) {
-			continue
-		}
-		mapping := map[string]interface{}{
-			"id":          rg.ID,
-			"name":        rg.RoleName,
-			"description": rg.Description,
-			"user_count":  rg.UserCount,
-			"role_level":  rg.RoleLevel,
-			"role_type":   rg.RoleType,
-			"role_range":  rg.RoleRange,
-			"ram_role":    rg.RAMRole,
-		}
-		ids = append(ids, string(rune(rg.ID)))
-		s = append(s, mapping)
-	}
-	d.SetId(dataResourceIdHash(ids))
-	if err := d.Set("roles", s); err != nil {
 		return WrapError(err)
 	}
-
-	if output, ok := d.GetOk("output_file"); ok && output.(string) != "" {
-		writeToFile(output.(string), s)
+	if len(object.Data) == 0 {
+		d.SetId("")
+		return nil
 	}
+
+	d.Set("role_name", object.Data[0].RoleName)
+	d.Set("role_range", object.Data[0].RoleRange)
+
 	return nil
 }
 
