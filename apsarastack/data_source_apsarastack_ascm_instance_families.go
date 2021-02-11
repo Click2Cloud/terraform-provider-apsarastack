@@ -2,6 +2,7 @@ package apsarastack
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/responses"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ecs"
@@ -90,7 +91,7 @@ func dataSourceApsaraStackInstanceFamiliesRead(d *schema.ResourceData, meta inte
 	}
 	request.Method = "POST"
 	request.Product = "ascm"
-	request.Version = "2019-05-10"
+	request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 	if strings.ToLower(client.Config.Protocol) == "https" {
 		request.Scheme = "https"
 	} else {
@@ -104,10 +105,10 @@ func dataSourceApsaraStackInstanceFamiliesRead(d *schema.ResourceData, meta inte
 		"AccessKeySecret": client.SecretKey,
 		"Department":      client.Department,
 		"ResourceGroup":   client.ResourceGroup,
-		"Product":         "ascm",
+		"Product":         connectivity.ApsaraStackAscmProduct,
 		"RegionId":        client.RegionId,
 		"Action":          "DescribeSeriesIdFamilies",
-		"Version":         "2019-05-10",
+		"Version":         fmt.Sprint(connectivity.ApiVersion20190510),
 	}
 	response := InstanceFamily{}
 

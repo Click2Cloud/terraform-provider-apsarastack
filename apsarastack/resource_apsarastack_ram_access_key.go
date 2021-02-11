@@ -88,7 +88,7 @@ func resourceApsarastackAscmAccessKeyCreate(d *schema.ResourceData, meta interfa
 		"AccessKeySecret": client.SecretKey,
 		"Department":      client.Department,
 		"ResourceGroup":   client.ResourceGroup,
-		"Product":         "ascm",
+		"Product":         connectivity.ApsaraStackAscmProduct,
 		"Action":          "RamCreateAccessKey",
 		"Version":         "2015-05-01",
 		"ProductName":     "ascm",
@@ -155,7 +155,7 @@ func resourceApsarastackAscmAccessKeyDelete(d *schema.ResourceData, meta interfa
 		request.QueryParams = map[string]string{
 			"RegionId":        client.RegionId,
 			"AccessKeySecret": client.SecretKey,
-			"Product":         "ascm",
+			"Product":         connectivity.ApsaraStackAscmProduct,
 			"Action":          "RamDeleteAccessKey",
 			"Version":         "2015-05-01",
 			"ProductName":     "ascm",
@@ -164,7 +164,7 @@ func resourceApsarastackAscmAccessKeyDelete(d *schema.ResourceData, meta interfa
 
 		request.Method = "POST"
 		request.Product = "ascm"
-		request.Version = "2019-05-10"
+		request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 		request.ServiceCode = "ascm"
 		if strings.ToLower(client.Config.Protocol) == "https" {
 			request.Scheme = "https"
@@ -203,7 +203,7 @@ func (s *AscmService) DescribeAscmKeypolicy(id string) (response *AccessKeyInCre
 		"AccessKeySecret": s.client.SecretKey,
 		"Department":      s.client.Department,
 		"ResourceGroup":   s.client.ResourceGroup,
-		"Product":         "ascm",
+		"Product":         connectivity.ApsaraStackAscmProduct,
 		"Action":          "RamListAccessKeys",
 		"Version":         "2015-05-01",
 		"id":              id,

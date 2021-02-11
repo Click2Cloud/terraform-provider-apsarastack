@@ -116,8 +116,8 @@ func dataSourceApsaraStackAscmRolesRead(d *schema.ResourceData, meta interface{}
 	id := d.Get("id").(int)
 	roleType := d.Get("role_type").(string)
 	request := requests.NewCommonRequest()
-	request.Product = "ascm"
-	request.Version = "2019-05-10"
+	request.Product = connectivity.ApsaraStackAscmProduct
+	request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 	if strings.ToLower(client.Config.Protocol) == "https" {
 		request.Scheme = "https"
 	} else {
@@ -131,12 +131,11 @@ func dataSourceApsaraStackAscmRolesRead(d *schema.ResourceData, meta interface{}
 		"AccessKeySecret": client.SecretKey,
 		"Department":      client.Department,
 		"ResourceGroup":   client.ResourceGroup,
-		"Product":         "ascm",
+		"Product":         connectivity.ApsaraStackAscmProduct,
 		"RegionId":        client.RegionId,
 		"Action":          "ListRoles",
-		"Version":         "2019-05-10",
+		"Version":         fmt.Sprint(connectivity.ApiVersion20190510),
 		"pageSize":        "100000",
-		//"roleType":        roleType,
 	}
 	response := AscmRoles{}
 

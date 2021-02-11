@@ -53,16 +53,16 @@ func resourceApsaraStackAscmUserRoleBindingCreate(d *schema.ResourceData, meta i
 			request.QueryParams = map[string]string{
 				"RegionId":        client.RegionId,
 				"AccessKeySecret": client.SecretKey,
-				"Product":         "Ascm",
+				"Product":         connectivity.ApsaraStackAscmProduct,
 				"Action":          "AddRoleToUser",
-				"Version":         "2019-05-10",
+				"Version":         fmt.Sprint(connectivity.ApiVersion20190510),
 				"ProductName":     "ascm",
 				"LoginName":       lname,
 				"RoleId":          fmt.Sprint(roleids[i]),
 			}
 			request.Method = "POST"
 			request.Product = "Ascm"
-			request.Version = "2019-05-10"
+			request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 			request.ServiceCode = "ascm"
 			request.Domain = client.Domain
 			if strings.ToLower(client.Config.Protocol) == "https" {
@@ -161,9 +161,9 @@ func resourceApsaraStackAscmUserRoleBindingDelete(d *schema.ResourceData, meta i
 			request.QueryParams = map[string]string{
 				"RegionId":        client.RegionId,
 				"AccessKeySecret": client.SecretKey,
-				"Product":         "ascm",
+				"Product":         connectivity.ApsaraStackAscmProduct,
 				"Action":          "RemoveRoleFromUser",
-				"Version":         "2019-05-10",
+				"Version":         fmt.Sprint(connectivity.ApiVersion20190510),
 				"ProductName":     "ascm",
 				"LoginName":       d.Id(),
 				"RoleId":          fmt.Sprint(roleid),
@@ -171,7 +171,7 @@ func resourceApsaraStackAscmUserRoleBindingDelete(d *schema.ResourceData, meta i
 
 			request.Method = "POST"
 			request.Product = "ascm"
-			request.Version = "2019-05-10"
+			request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 			request.ServiceCode = "ascm"
 			request.Domain = client.Domain
 			if strings.ToLower(client.Config.Protocol) == "https" {

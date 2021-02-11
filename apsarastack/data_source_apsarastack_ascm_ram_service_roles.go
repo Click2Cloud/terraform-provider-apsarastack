@@ -92,7 +92,7 @@ func dataSourceApsaraStackAscmRamServiceRolesRead(d *schema.ResourceData, meta i
 		request.SetHTTPSInsecure(client.Config.Insecure)
 	}
 	request.Product = "ascm"
-	request.Version = "2019-05-10"
+	request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 	if strings.ToLower(client.Config.Protocol) == "https" {
 		request.Scheme = "https"
 	} else {
@@ -104,12 +104,12 @@ func dataSourceApsaraStackAscmRamServiceRolesRead(d *schema.ResourceData, meta i
 	request.QueryParams = map[string]string{
 		"AccessKeyId":     client.AccessKey,
 		"AccessKeySecret": client.SecretKey,
-		"Product":         "ascm",
+		"Product":         connectivity.ApsaraStackAscmProduct,
 		"Department":      client.Department,
 		"ResourceGroup":   client.ResourceGroup,
 		"RegionId":        client.RegionId,
 		"Action":          "ListRAMServiceRoles",
-		"Version":         "2019-05-10",
+		"Version":         fmt.Sprint(connectivity.ApiVersion20190510),
 		"roleType":        "ROLETYPE_RAM",
 	}
 	response := RamRole{}

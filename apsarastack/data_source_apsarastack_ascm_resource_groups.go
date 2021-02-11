@@ -96,7 +96,7 @@ func dataSourceApsaraStackAscmResourceGroupsRead(d *schema.ResourceData, meta in
 	}
 	request.Method = "POST"
 	request.Product = "ascm"
-	request.Version = "2019-05-10"
+	request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 	if strings.ToLower(client.Config.Protocol) == "https" {
 		request.Scheme = "https"
 	} else {
@@ -108,10 +108,10 @@ func dataSourceApsaraStackAscmResourceGroupsRead(d *schema.ResourceData, meta in
 	request.QueryParams = map[string]string{
 		"AccessKeyId":       client.AccessKey,
 		"AccessKeySecret":   client.SecretKey,
-		"Product":           "ascm",
+		"Product":           connectivity.ApsaraStackAscmProduct,
 		"RegionId":          client.RegionId,
 		"Action":            "ListResourceGroup",
-		"Version":           "2019-05-10",
+		"Version":           fmt.Sprint(connectivity.ApiVersion20190510),
 		"resourceGroupName": name,
 	}
 	response := ResourceGroup{}

@@ -75,7 +75,7 @@ func resourceApsaraStackAscmPasswordPolicyCreate(d *schema.ResourceData, meta in
 	}
 	request.Method = "POST"
 	request.Product = "Ascm"
-	request.Version = "2019-05-10"
+	request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 	request.ServiceCode = "ascm"
 	request.Domain = client.Domain
 	if strings.ToLower(client.Config.Protocol) == "https" {
@@ -91,9 +91,9 @@ func resourceApsaraStackAscmPasswordPolicyCreate(d *schema.ResourceData, meta in
 		"AccessKeySecret":       client.SecretKey,
 		"Department":            client.Department,
 		"ResourceGroup":         client.ResourceGroup,
-		"Product":               "ascm",
+		"Product":               connectivity.ApsaraStackAscmProduct,
 		"Action":                "SetPasswordPolicy",
-		"Version":               "2019-05-10",
+		"Version":               fmt.Sprint(connectivity.ApiVersion20190510),
 		"ProductName":           "ascm",
 		"minimumPasswordLength": value123,
 	}
@@ -167,16 +167,16 @@ func resourceApsaraStackAscmPasswordPolicyDelete(d *schema.ResourceData, meta in
 		request.QueryParams = map[string]string{
 			"RegionId":        client.RegionId,
 			"AccessKeySecret": client.SecretKey,
-			"Product":         "ascm",
+			"Product":         connectivity.ApsaraStackAscmProduct,
 			"Action":          "ResetPasswordPolicy",
-			"Version":         "2019-05-10",
+			"Version":         fmt.Sprint(connectivity.ApiVersion20190510),
 			"ProductName":     "ascm",
 			"id":              d.Id(),
 		}
 
 		request.Method = "POST"
 		request.Product = "ascm"
-		request.Version = "2019-05-10"
+		request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 		request.ServiceCode = "ascm"
 		if strings.ToLower(client.Config.Protocol) == "https" {
 			request.Scheme = "https"

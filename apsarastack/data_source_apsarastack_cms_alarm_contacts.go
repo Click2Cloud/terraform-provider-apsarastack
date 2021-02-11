@@ -2,6 +2,7 @@ package apsarastack
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/responses"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ecs"
@@ -78,7 +79,7 @@ func dataSourceApsarastackCmsAlarmContactsRead(d *schema.ResourceData, meta inte
 	}
 	request.Method = "GET"
 	request.Product = "ascm"
-	request.Version = "2019-05-10"
+	request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 	if strings.ToLower(client.Config.Protocol) == "https" {
 		request.Scheme = "https"
 	} else {
@@ -87,7 +88,7 @@ func dataSourceApsarastackCmsAlarmContactsRead(d *schema.ResourceData, meta inte
 	request.RegionId = client.RegionId
 	request.ApiName = "ListCmsContacts"
 	request.Headers = map[string]string{"RegionId": client.RegionId}
-	request.QueryParams = map[string]string{"AccessKeyId": client.AccessKey, "AccessKeySecret": client.SecretKey, "Department": client.Department, "ResourceGroup": client.ResourceGroup, "Product": "ascm", "RegionId": client.RegionId, "Action": "ListCmsContacts", "Version": string(connectivity.ApiVersion20190510)}
+	request.QueryParams = map[string]string{"AccessKeyId": client.AccessKey, "AccessKeySecret": client.SecretKey, "Department": client.Department, "ResourceGroup": client.ResourceGroup, "Product": connectivity.ApsaraStackAscmProduct, "RegionId": client.RegionId, "Action": "ListCmsContacts", "Version": string(connectivity.ApiVersion20190510)}
 	response := CmsContact{}
 
 	for {

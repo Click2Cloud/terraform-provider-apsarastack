@@ -2,6 +2,7 @@ package apsarastack
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/responses"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ecs"
@@ -21,7 +22,7 @@ func (s *AscmService) DescribeAscmLogonPolicy(id string) (response *LoginPolicy,
 	}
 	request.Method = "POST"
 	request.Product = "ascm"
-	request.Version = "2019-05-10"
+	request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 	if strings.ToLower(s.client.Config.Protocol) == "https" {
 		request.Scheme = "https"
 	} else {
@@ -31,12 +32,12 @@ func (s *AscmService) DescribeAscmLogonPolicy(id string) (response *LoginPolicy,
 	request.Headers = map[string]string{"RegionId": s.client.RegionId}
 	request.QueryParams = map[string]string{
 		"AccessKeySecret": s.client.SecretKey,
-		"Product":         "ascm",
+		"Product":         connectivity.ApsaraStackAscmProduct,
 		"Department":      s.client.Department,
 		"ResourceGroup":   s.client.ResourceGroup,
 		"RegionId":        s.client.RegionId,
 		"Action":          "ListLoginPolicies",
-		"Version":         "2019-05-10",
+		"Version":         fmt.Sprint(connectivity.ApiVersion20190510),
 		"Name":            id,
 	}
 	var resp = &LoginPolicy{}
@@ -75,14 +76,14 @@ func (s *AscmService) DescribeAscmResourceGroup(id string) (response *ResourceGr
 	request.QueryParams = map[string]string{
 		"RegionId":          s.client.RegionId,
 		"AccessKeySecret":   s.client.SecretKey,
-		"Product":           "ascm",
+		"Product":           connectivity.ApsaraStackAscmProduct,
 		"Action":            "ListResourceGroup",
-		"Version":           "2019-05-10",
+		"Version":           fmt.Sprint(connectivity.ApiVersion20190510),
 		"resourceGroupName": did[0],
 	}
 	request.Method = "POST"
 	request.Product = "Ascm"
-	request.Version = "2019-05-10"
+	request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 	request.ServiceCode = "ascm"
 	request.Domain = s.client.Domain
 	if strings.ToLower(s.client.Config.Protocol) == "https" {
@@ -130,15 +131,15 @@ func (s *AscmService) DescribeAscmCustomRole(id string) (response *AscmCustomRol
 	request.QueryParams = map[string]string{
 		"RegionId":        s.client.RegionId,
 		"AccessKeySecret": s.client.SecretKey,
-		"Product":         "ascm",
+		"Product":         connectivity.ApsaraStackAscmProduct,
 		"Action":          "ListRoles",
-		"Version":         "2019-05-10",
+		"Version":         fmt.Sprint(connectivity.ApiVersion20190510),
 		"roleName":        did[0],
 		"roleType":        "ROLETYPE_ASCM",
 	}
 	request.Method = "POST"
 	request.Product = "Ascm"
-	request.Version = "2019-05-10"
+	request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 	request.ServiceCode = "ascm"
 	request.Domain = s.client.Domain
 	if strings.ToLower(s.client.Config.Protocol) == "https" {
@@ -188,15 +189,15 @@ func (s *AscmService) DescribeAscmRamRole(id string) (response *AscmRoles, err e
 		"AccessKeySecret": s.client.SecretKey,
 		"Department":      s.client.Department,
 		"ResourceGroup":   s.client.ResourceGroup,
-		"Product":         "ascm",
+		"Product":         connectivity.ApsaraStackAscmProduct,
 		"Action":          "ListRoles",
-		"Version":         "2019-05-10",
+		"Version":         fmt.Sprint(connectivity.ApiVersion20190510),
 		"roleName":        did[0],
 		"roleType":        "ROLETYPE_RAM",
 	}
 	request.Method = "POST"
 	request.Product = "Ascm"
-	request.Version = "2019-05-10"
+	request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 	request.ServiceCode = "ascm"
 	request.Domain = s.client.Domain
 	if strings.ToLower(s.client.Config.Protocol) == "https" {
@@ -246,15 +247,15 @@ func (s *AscmService) DescribeAscmRamServiceRole(id string) (response *RamRole, 
 		"AccessKeySecret": s.client.SecretKey,
 		"Department":      s.client.Department,
 		"ResourceGroup":   s.client.ResourceGroup,
-		"Product":         "ascm",
+		"Product":         connectivity.ApsaraStackAscmProduct,
 		"id":              id,
 		"Action":          "GetRAMServiceRole",
-		"Version":         "2019-05-10",
+		"Version":         fmt.Sprint(connectivity.ApiVersion20190510),
 		"roleType":        "ROLETYPE_RAM",
 	}
 	request.Method = "POST"
 	request.Product = "Ascm"
-	request.Version = "2019-05-10"
+	request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 	request.ServiceCode = "ascm"
 	request.Domain = s.client.Domain
 	if strings.ToLower(s.client.Config.Protocol) == "https" {
@@ -313,14 +314,14 @@ func (s *AscmService) DescribeAscmResourceGroupUserAttachment(id string) (respon
 	request.QueryParams = map[string]string{
 		"RegionId":        s.client.RegionId,
 		"AccessKeySecret": s.client.SecretKey,
-		"Product":         "ascm",
+		"Product":         connectivity.ApsaraStackAscmProduct,
 		"Action":          "ListAscmUsersInsideResourceGroup",
-		"Version":         "2019-05-10",
+		"Version":         fmt.Sprint(connectivity.ApiVersion20190510),
 		"resourceGroupId": id,
 	}
 	request.Method = "POST"
 	request.Product = "Ascm"
-	request.Version = "2019-05-10"
+	request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 	request.ServiceCode = "ascm"
 	request.Domain = s.client.Domain
 	if strings.ToLower(s.client.Config.Protocol) == "https" {
@@ -366,14 +367,14 @@ func (s *AscmService) DescribeAscmUser(id string) (response *User, err error) {
 	request.QueryParams = map[string]string{
 		"RegionId":        s.client.RegionId,
 		"AccessKeySecret": s.client.SecretKey,
-		"Product":         "ascm",
+		"Product":         connectivity.ApsaraStackAscmProduct,
 		"Action":          "ListUsers",
-		"Version":         "2019-05-10",
+		"Version":         fmt.Sprint(connectivity.ApiVersion20190510),
 		"loginName":       id,
 	}
 	request.Method = "POST"
 	request.Product = "Ascm"
-	request.Version = "2019-05-10"
+	request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 	request.ServiceCode = "ascm"
 	request.Domain = s.client.Domain
 	if strings.ToLower(s.client.Config.Protocol) == "https" {
@@ -418,14 +419,14 @@ func (s *AscmService) DescribeAscmUserRoleBinding(id string) (response *User, er
 	request.QueryParams = map[string]string{
 		"RegionId":        s.client.RegionId,
 		"AccessKeySecret": s.client.SecretKey,
-		"Product":         "ascm",
+		"Product":         connectivity.ApsaraStackAscmProduct,
 		"Action":          "ListUsers",
-		"Version":         "2019-05-10",
+		"Version":         fmt.Sprint(connectivity.ApiVersion20190510),
 		"loginName":       id,
 	}
 	request.Method = "POST"
 	request.Product = "Ascm"
-	request.Version = "2019-05-10"
+	request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 	request.ServiceCode = "ascm"
 	request.Domain = s.client.Domain
 	if strings.ToLower(s.client.Config.Protocol) == "https" {
@@ -470,14 +471,14 @@ func (s *AscmService) DescribeAscmDeletedUser(id string) (response *DeletedUser,
 	request.QueryParams = map[string]string{
 		"RegionId":        s.client.RegionId,
 		"AccessKeySecret": s.client.SecretKey,
-		"Product":         "ascm",
+		"Product":         connectivity.ApsaraStackAscmProduct,
 		"Action":          "ListDeletedUsers",
-		"Version":         "2019-05-10",
+		"Version":         fmt.Sprint(connectivity.ApiVersion20190510),
 		"loginName":       id,
 	}
 	request.Method = "POST"
 	request.Product = "Ascm"
-	request.Version = "2019-05-10"
+	request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 	request.ServiceCode = "ascm"
 	request.Domain = s.client.Domain
 	if strings.ToLower(s.client.Config.Protocol) == "https" {
@@ -525,14 +526,14 @@ func (s *AscmService) DescribeAscmOrganization(id string) (response *Organizatio
 		"AccessKeySecret": s.client.SecretKey,
 		"Department":      s.client.Department,
 		"ResourceGroup":   s.client.ResourceGroup,
-		"Product":         "ascm",
+		"Product":         connectivity.ApsaraStackAscmProduct,
 		"Action":          "GetOrganizationList",
-		"Version":         "2019-05-10",
+		"Version":         fmt.Sprint(connectivity.ApiVersion20190510),
 		"name":            did[0],
 	}
 	request.Method = "POST"
 	request.Product = "ascm"
-	request.Version = "2019-05-10"
+	request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 	request.ServiceCode = "ascm"
 	request.Domain = s.client.Domain
 	if strings.ToLower(s.client.Config.Protocol) == "https" {
@@ -581,14 +582,14 @@ func (s *AscmService) DescribeAscmRamPolicy(id string) (response *RamPolicies, e
 		"AccessKeySecret": s.client.SecretKey,
 		"Department":      s.client.Department,
 		"ResourceGroup":   s.client.ResourceGroup,
-		"Product":         "ascm",
+		"Product":         connectivity.ApsaraStackAscmProduct,
 		"Action":          "ListRAMPolicies",
-		"Version":         "2019-05-10",
+		"Version":         fmt.Sprint(connectivity.ApiVersion20190510),
 		"policyName":      did[0],
 	}
 	request.Method = "POST"
 	request.Product = "ascm"
-	request.Version = "2019-05-10"
+	request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 	request.ServiceCode = "ascm"
 	request.Domain = s.client.Domain
 	if strings.ToLower(s.client.Config.Protocol) == "https" {
@@ -638,15 +639,15 @@ func (s *AscmService) DescribeAscmRamPolicyForRole(id string) (response *RamPoli
 		"AccessKeySecret": s.client.SecretKey,
 		"Department":      s.client.Department,
 		"ResourceGroup":   s.client.ResourceGroup,
-		"Product":         "ascm",
+		"Product":         connectivity.ApsaraStackAscmProduct,
 		"Action":          "ListRAMPolicies",
-		"Version":         "2019-05-10",
+		"Version":         fmt.Sprint(connectivity.ApiVersion20190510),
 		"RamPolicyId":     did[0],
 		//"roleId":     did[1],
 	}
 	request.Method = "POST"
 	request.Product = "ascm"
-	request.Version = "2019-05-10"
+	request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 	request.ServiceCode = "ascm"
 	request.Domain = s.client.Domain
 	if strings.ToLower(s.client.Config.Protocol) == "https" {
@@ -705,9 +706,9 @@ func (s *AscmService) DescribeAscmQuota(id string) (response *AscmQuota, err err
 		"AccessKeySecret": s.client.SecretKey,
 		"Department":      s.client.Department,
 		"ResourceGroup":   s.client.ResourceGroup,
-		"Product":         "ascm",
+		"Product":         connectivity.ApsaraStackAscmProduct,
 		"Action":          "GetQuota",
-		"Version":         "2019-05-10",
+		"Version":         fmt.Sprint(connectivity.ApiVersion20190510),
 		"productName":     did[0],
 		"quotaType":       did[1],
 		"quotaTypeId":     did[2],
@@ -715,7 +716,7 @@ func (s *AscmService) DescribeAscmQuota(id string) (response *AscmQuota, err err
 	}
 	request.Method = "GET"
 	request.Product = "Ascm"
-	request.Version = "2019-05-10"
+	request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 	request.ServiceCode = "ascm"
 	request.ApiName = "GetQuota"
 	request.Domain = s.client.Domain
@@ -764,14 +765,14 @@ func (s *AscmService) DescribeAscmPasswordPolicy(id string) (response *PasswordP
 		"AccessKeySecret": s.client.SecretKey,
 		"Department":      s.client.Department,
 		"ResourceGroup":   s.client.ResourceGroup,
-		"Product":         "ascm",
+		"Product":         connectivity.ApsaraStackAscmProduct,
 		"Action":          "GetPasswordPolicy",
-		"Version":         "2019-05-10",
+		"Version":         fmt.Sprint(connectivity.ApiVersion20190510),
 		"id":              id,
 	}
 	request.Method = "POST"
 	request.Product = "ascm"
-	request.Version = "2019-05-10"
+	request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 	request.ServiceCode = "ascm"
 	if strings.ToLower(s.client.Config.Protocol) == "https" {
 		request.Scheme = "https"

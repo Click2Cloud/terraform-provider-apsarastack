@@ -68,7 +68,7 @@ func resourceApsaraStackAscmOrganizationCreate(d *schema.ResourceData, meta inte
 		request.Domain = client.Domain
 		request.RegionId = client.RegionId
 		request.Product = "Ascm"
-		request.Version = "2019-05-10"
+		request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 		if strings.ToLower(client.Config.Protocol) == "https" {
 			request.Scheme = "https"
 		} else {
@@ -78,7 +78,7 @@ func resourceApsaraStackAscmOrganizationCreate(d *schema.ResourceData, meta inte
 		request.Headers = map[string]string{"RegionId": client.RegionId}
 		request.QueryParams = map[string]string{
 			"AccessKeySecret": client.SecretKey,
-			"Product":         "ascm",
+			"Product":         connectivity.ApsaraStackAscmProduct,
 			//"Department":      client.Department,
 			//"ResourceGroup":   client.ResourceGroup,
 			"RegionId": client.RegionId,
@@ -146,15 +146,15 @@ func resourceApsaraStackAscmOrganizationUpdate(d *schema.ResourceData, meta inte
 		"AccessKeySecret": client.SecretKey,
 		//"Department":      client.Department,
 		//"ResourceGroup":   client.ResourceGroup,
-		"Product": "Ascm",
+		"Product": connectivity.ApsaraStackAscmProduct,
 		"Action":  "UpdateOrganization",
-		"Version": "2019-05-10",
+		"Version": fmt.Sprint(connectivity.ApiVersion20190510),
 		"name":    name,
 		"id":      did[1],
 	}
 	request.Method = "POST"
 	request.Product = "Ascm"
-	request.Version = "2019-05-10"
+	request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 	request.Domain = client.Domain
 	if strings.ToLower(client.Config.Protocol) == "https" {
 		request.Scheme = "https"
@@ -233,16 +233,16 @@ func resourceApsaraStackAscmOrganizationDelete(d *schema.ResourceData, meta inte
 				"AccessKeySecret": client.SecretKey,
 				//"Department":      client.Department,
 				//"ResourceGroup":   client.ResourceGroup,
-				"Product":     "ascm",
+				"Product":     connectivity.ApsaraStackAscmProduct,
 				"Action":      "RemoveOrganization",
-				"Version":     "2019-05-10",
+				"Version":     fmt.Sprint(connectivity.ApiVersion20190510),
 				"ProductName": "ascm",
 				"id":          did[1],
 			}
 
 			request.Method = "POST"
 			request.Product = "ascm"
-			request.Version = "2019-05-10"
+			request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 			request.ServiceCode = "ascm"
 			request.Domain = client.Domain
 			if strings.ToLower(client.Config.Protocol) == "https" {

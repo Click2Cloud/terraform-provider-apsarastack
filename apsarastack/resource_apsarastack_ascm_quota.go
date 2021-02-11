@@ -124,9 +124,9 @@ func resourceApsaraStackAscmQuotaCreate(d *schema.ResourceData, meta interface{}
 			"AccessKeySecret": client.SecretKey,
 			"Department":      client.Department,
 			"ResourceGroup":   client.ResourceGroup,
-			"Product":         "Ascm",
+			"Product":         connectivity.ApsaraStackAscmProduct,
 			"Action":          "CreateQuota",
-			"Version":         "2019-05-10",
+			"Version":         fmt.Sprint(connectivity.ApiVersion20190510),
 			"regionName":      client.RegionId,
 			"quotaType":       quotaType,
 			"quotaTypeId":     quotaTypeId,
@@ -142,7 +142,7 @@ func resourceApsaraStackAscmQuotaCreate(d *schema.ResourceData, meta interface{}
 		}
 		request.Method = "POST"
 		request.Product = "Ascm"
-		request.Version = "2019-05-10"
+		request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 		request.ServiceCode = "ascm"
 		request.Domain = client.Domain
 		request.Scheme = "http"
@@ -175,9 +175,9 @@ func resourceApsaraStackAscmQuotaCreate(d *schema.ResourceData, meta interface{}
 			"AccessKeySecret": client.SecretKey,
 			"Department":      client.Department,
 			"ResourceGroup":   client.ResourceGroup,
-			"Product":         "Ascm",
+			"Product":         connectivity.ApsaraStackAscmProduct,
 			"Action":          "CreateQuota",
-			"Version":         "2019-05-10",
+			"Version":         fmt.Sprint(connectivity.ApiVersion20190510),
 			"quotaType":       quotaType,
 			"quotaTypeId":     quotaTypeId,
 			"productName":     productName,
@@ -188,7 +188,7 @@ func resourceApsaraStackAscmQuotaCreate(d *schema.ResourceData, meta interface{}
 		}
 		request.Method = "POST"
 		request.Product = "Ascm"
-		request.Version = "2019-05-10"
+		request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 		request.ServiceCode = "ascm"
 		request.Domain = client.Domain
 		request.Scheme = "http"
@@ -220,9 +220,9 @@ func resourceApsaraStackAscmQuotaCreate(d *schema.ResourceData, meta interface{}
 			"AccessKeySecret": client.SecretKey,
 			"Department":      client.Department,
 			"ResourceGroup":   client.ResourceGroup,
-			"Product":         "Ascm",
+			"Product":         connectivity.ApsaraStackAscmProduct,
 			"Action":          "CreateQuota",
-			"Version":         "2019-05-10",
+			"Version":         fmt.Sprint(connectivity.ApiVersion20190510),
 			"quotaType":       quotaType,
 			"quotaTypeId":     quotaTypeId,
 			"productName":     productName,
@@ -233,7 +233,7 @@ func resourceApsaraStackAscmQuotaCreate(d *schema.ResourceData, meta interface{}
 		}
 		request.Method = "POST"
 		request.Product = "Ascm"
-		request.Version = "2019-05-10"
+		request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 		request.ServiceCode = "ascm"
 		request.Domain = client.Domain
 		request.Scheme = "http"
@@ -266,9 +266,9 @@ func resourceApsaraStackAscmQuotaCreate(d *schema.ResourceData, meta interface{}
 			"AccessKeySecret": client.SecretKey,
 			"Department":      client.Department,
 			"ResourceGroup":   client.ResourceGroup,
-			"Product":         "Ascm",
+			"Product":         connectivity.ApsaraStackAscmProduct,
 			"Action":          "CreateQuota",
-			"Version":         "2019-05-10",
+			"Version":         fmt.Sprint(connectivity.ApiVersion20190510),
 			"quotaType":       quotaType,
 			"quotaTypeId":     quotaTypeId,
 			"productName":     productName,
@@ -280,7 +280,7 @@ func resourceApsaraStackAscmQuotaCreate(d *schema.ResourceData, meta interface{}
 		}
 		request.Method = "POST"
 		request.Product = "Ascm"
-		request.Version = "2019-05-10"
+		request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 		request.ServiceCode = "ascm"
 		request.Domain = client.Domain
 		request.Scheme = "http"
@@ -313,9 +313,9 @@ func resourceApsaraStackAscmQuotaCreate(d *schema.ResourceData, meta interface{}
 			"AccessKeySecret": client.SecretKey,
 			"Department":      client.Department,
 			"ResourceGroup":   client.ResourceGroup,
-			"Product":         "Ascm",
+			"Product":         connectivity.ApsaraStackAscmProduct,
 			"Action":          "CreateQuota",
-			"Version":         "2019-05-10",
+			"Version":         fmt.Sprint(connectivity.ApiVersion20190510),
 			"quotaType":       quotaType,
 			"quotaTypeId":     quotaTypeId,
 			"productName":     productName,
@@ -327,7 +327,7 @@ func resourceApsaraStackAscmQuotaCreate(d *schema.ResourceData, meta interface{}
 		}
 		request.Method = "POST"
 		request.Product = "Ascm"
-		request.Version = "2019-05-10"
+		request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 		request.ServiceCode = "ascm"
 		request.Domain = client.Domain
 		request.Scheme = "http"
@@ -361,9 +361,9 @@ func resourceApsaraStackAscmQuotaCreate(d *schema.ResourceData, meta interface{}
 			"AccessKeySecret": client.SecretKey,
 			"Department":      client.Department,
 			"ResourceGroup":   client.ResourceGroup,
-			"Product":         "Ascm",
+			"Product":         connectivity.ApsaraStackAscmProduct,
 			"Action":          "CreateQuota",
-			"Version":         "2019-05-10",
+			"Version":         fmt.Sprint(connectivity.ApiVersion20190510),
 			"quotaType":       quotaType,
 			"quotaTypeId":     quotaTypeId,
 			"productName":     productName,
@@ -376,7 +376,7 @@ func resourceApsaraStackAscmQuotaCreate(d *schema.ResourceData, meta interface{}
 		}
 		request.Method = "POST"
 		request.Product = "Ascm"
-		request.Version = "2019-05-10"
+		request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 		request.ServiceCode = "ascm"
 		request.Domain = client.Domain
 		request.Scheme = "http"
@@ -411,9 +411,9 @@ func resourceApsaraStackAscmQuotaCreate(d *schema.ResourceData, meta interface{}
 			"AccessKeySecret": client.SecretKey,
 			"Department":      client.Department,
 			"ResourceGroup":   client.ResourceGroup,
-			"Product":         "Ascm",
+			"Product":         connectivity.ApsaraStackAscmProduct,
 			"Action":          "CreateQuota",
-			"Version":         "2019-05-10",
+			"Version":         fmt.Sprint(connectivity.ApiVersion20190510),
 			"quotaType":       quotaType,
 			"quotaTypeId":     quotaTypeId,
 			"productName":     productName,
@@ -426,7 +426,7 @@ func resourceApsaraStackAscmQuotaCreate(d *schema.ResourceData, meta interface{}
 		}
 		request.Method = "POST"
 		request.Product = "Ascm"
-		request.Version = "2019-05-10"
+		request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 		request.ServiceCode = "ascm"
 		request.Domain = client.Domain
 		request.Scheme = "http"
@@ -460,9 +460,9 @@ func resourceApsaraStackAscmQuotaCreate(d *schema.ResourceData, meta interface{}
 			"AccessKeySecret": client.SecretKey,
 			"Department":      client.Department,
 			"ResourceGroup":   client.ResourceGroup,
-			"Product":         "Ascm",
+			"Product":         connectivity.ApsaraStackAscmProduct,
 			"Action":          "CreateQuota",
-			"Version":         "2019-05-10",
+			"Version":         fmt.Sprint(connectivity.ApiVersion20190510),
 			"quotaType":       quotaType,
 			"quotaTypeId":     quotaTypeId,
 			"productName":     productName,
@@ -475,7 +475,7 @@ func resourceApsaraStackAscmQuotaCreate(d *schema.ResourceData, meta interface{}
 		}
 		request.Method = "POST"
 		request.Product = "Ascm"
-		request.Version = "2019-05-10"
+		request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 		request.ServiceCode = "ascm"
 		request.Domain = client.Domain
 		request.Scheme = "http"
@@ -508,9 +508,9 @@ func resourceApsaraStackAscmQuotaCreate(d *schema.ResourceData, meta interface{}
 			"AccessKeySecret": client.SecretKey,
 			"Department":      client.Department,
 			"ResourceGroup":   client.ResourceGroup,
-			"Product":         "Ascm",
+			"Product":         connectivity.ApsaraStackAscmProduct,
 			"Action":          "CreateQuota",
-			"Version":         "2019-05-10",
+			"Version":         fmt.Sprint(connectivity.ApiVersion20190510),
 			"quotaType":       quotaType,
 			"quotaTypeId":     quotaTypeId,
 			"productName":     productName,
@@ -521,7 +521,7 @@ func resourceApsaraStackAscmQuotaCreate(d *schema.ResourceData, meta interface{}
 		}
 		request.Method = "POST"
 		request.Product = "Ascm"
-		request.Version = "2019-05-10"
+		request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 		request.ServiceCode = "ascm"
 		request.Domain = client.Domain
 		request.Scheme = "http"
@@ -553,9 +553,9 @@ func resourceApsaraStackAscmQuotaCreate(d *schema.ResourceData, meta interface{}
 			"AccessKeySecret": client.SecretKey,
 			"Department":      client.Department,
 			"ResourceGroup":   client.ResourceGroup,
-			"Product":         "Ascm",
+			"Product":         connectivity.ApsaraStackAscmProduct,
 			"Action":          "CreateQuota",
-			"Version":         "2019-05-10",
+			"Version":         fmt.Sprint(connectivity.ApiVersion20190510),
 			"quotaType":       quotaType,
 			"quotaTypeId":     quotaTypeId,
 			"productName":     productName,
@@ -566,7 +566,7 @@ func resourceApsaraStackAscmQuotaCreate(d *schema.ResourceData, meta interface{}
 		}
 		request.Method = "POST"
 		request.Product = "Ascm"
-		request.Version = "2019-05-10"
+		request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 		request.ServiceCode = "ascm"
 		request.Domain = client.Domain
 		request.Scheme = "http"
@@ -629,9 +629,9 @@ func resourceApsaraStackAscmQuotaUpdate(d *schema.ResourceData, meta interface{}
 			"AccessKeySecret": client.SecretKey,
 			"Department":      client.Department,
 			"ResourceGroup":   client.ResourceGroup,
-			"Product":         "Ascm",
+			"Product":         connectivity.ApsaraStackAscmProduct,
 			"Action":          "UpdateQuota",
-			"Version":         "2019-05-10",
+			"Version":         fmt.Sprint(connectivity.ApiVersion20190510),
 			"quotaType":       did[1],
 			"quotaTypeId":     did[2],
 			"productName":     did[0],
@@ -642,7 +642,7 @@ func resourceApsaraStackAscmQuotaUpdate(d *schema.ResourceData, meta interface{}
 		}
 		request.Method = "POST"
 		request.Product = "Ascm"
-		request.Version = "2019-05-10"
+		request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 		request.ServiceCode = "ascm"
 		request.Domain = client.Domain
 		request.Scheme = "http"
@@ -707,9 +707,9 @@ func resourceApsaraStackAscmQuotaUpdate(d *schema.ResourceData, meta interface{}
 			"AccessKeySecret": client.SecretKey,
 			"Department":      client.Department,
 			"ResourceGroup":   client.ResourceGroup,
-			"Product":         "Ascm",
+			"Product":         connectivity.ApsaraStackAscmProduct,
 			"Action":          "UpdateQuota",
-			"Version":         "2019-05-10",
+			"Version":         fmt.Sprint(connectivity.ApiVersion20190510),
 			"quotaType":       did[1],
 			"quotaTypeId":     did[2],
 			"productName":     did[0],
@@ -722,7 +722,7 @@ func resourceApsaraStackAscmQuotaUpdate(d *schema.ResourceData, meta interface{}
 		}
 		request.Method = "POST"
 		request.Product = "Ascm"
-		request.Version = "2019-05-10"
+		request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 		request.ServiceCode = "ascm"
 		request.Domain = client.Domain
 		request.Scheme = "http"
@@ -762,9 +762,9 @@ func resourceApsaraStackAscmQuotaUpdate(d *schema.ResourceData, meta interface{}
 			"AccessKeySecret": client.SecretKey,
 			"Department":      client.Department,
 			"ResourceGroup":   client.ResourceGroup,
-			"Product":         "Ascm",
+			"Product":         connectivity.ApsaraStackAscmProduct,
 			"Action":          "UpdateQuota",
-			"Version":         "2019-05-10",
+			"Version":         fmt.Sprint(connectivity.ApiVersion20190510),
 			"quotaType":       did[1],
 			"quotaTypeId":     did[2],
 			"productName":     did[0],
@@ -775,7 +775,7 @@ func resourceApsaraStackAscmQuotaUpdate(d *schema.ResourceData, meta interface{}
 		}
 		request.Method = "POST"
 		request.Product = "Ascm"
-		request.Version = "2019-05-10"
+		request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 		request.ServiceCode = "ascm"
 		request.Domain = client.Domain
 		request.Scheme = "http"
@@ -863,9 +863,9 @@ func resourceApsaraStackAscmQuotaUpdate(d *schema.ResourceData, meta interface{}
 			"AccessKeySecret": client.SecretKey,
 			"Department":      client.Department,
 			"ResourceGroup":   client.ResourceGroup,
-			"Product":         "Ascm",
+			"Product":         connectivity.ApsaraStackAscmProduct,
 			"Action":          "UpdateQuota",
-			"Version":         "2019-05-10",
+			"Version":         fmt.Sprint(connectivity.ApiVersion20190510),
 			"quotaType":       did[1],
 			"quotaTypeId":     did[2],
 			"productName":     did[0],
@@ -880,7 +880,7 @@ func resourceApsaraStackAscmQuotaUpdate(d *schema.ResourceData, meta interface{}
 		}
 		request.Method = "POST"
 		request.Product = "Ascm"
-		request.Version = "2019-05-10"
+		request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 		request.ServiceCode = "ascm"
 		request.Domain = client.Domain
 		request.Scheme = "http"
@@ -933,9 +933,9 @@ func resourceApsaraStackAscmQuotaUpdate(d *schema.ResourceData, meta interface{}
 			"AccessKeySecret": client.SecretKey,
 			"Department":      client.Department,
 			"ResourceGroup":   client.ResourceGroup,
-			"Product":         "Ascm",
+			"Product":         connectivity.ApsaraStackAscmProduct,
 			"Action":          "UpdateQuota",
-			"Version":         "2019-05-10",
+			"Version":         fmt.Sprint(connectivity.ApiVersion20190510),
 			"quotaType":       did[1],
 			"quotaTypeId":     did[2],
 			"productName":     did[0],
@@ -947,7 +947,7 @@ func resourceApsaraStackAscmQuotaUpdate(d *schema.ResourceData, meta interface{}
 		}
 		request.Method = "POST"
 		request.Product = "Ascm"
-		request.Version = "2019-05-10"
+		request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 		request.ServiceCode = "ascm"
 		request.Domain = client.Domain
 		request.Scheme = "http"
@@ -988,9 +988,9 @@ func resourceApsaraStackAscmQuotaUpdate(d *schema.ResourceData, meta interface{}
 			"AccessKeySecret": client.SecretKey,
 			"Department":      client.Department,
 			"ResourceGroup":   client.ResourceGroup,
-			"Product":         "Ascm",
+			"Product":         connectivity.ApsaraStackAscmProduct,
 			"Action":          "UpdateQuota",
-			"Version":         "2019-05-10",
+			"Version":         fmt.Sprint(connectivity.ApiVersion20190510),
 			"quotaType":       did[1],
 			"quotaTypeId":     did[2],
 			"productName":     did[0],
@@ -1001,7 +1001,7 @@ func resourceApsaraStackAscmQuotaUpdate(d *schema.ResourceData, meta interface{}
 		}
 		request.Method = "POST"
 		request.Product = "Ascm"
-		request.Version = "2019-05-10"
+		request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 		request.ServiceCode = "ascm"
 		request.Domain = client.Domain
 		request.Scheme = "http"
@@ -1065,9 +1065,9 @@ func resourceApsaraStackAscmQuotaUpdate(d *schema.ResourceData, meta interface{}
 			"AccessKeySecret": client.SecretKey,
 			"Department":      client.Department,
 			"ResourceGroup":   client.ResourceGroup,
-			"Product":         "Ascm",
+			"Product":         connectivity.ApsaraStackAscmProduct,
 			"Action":          "UpdateQuota",
-			"Version":         "2019-05-10",
+			"Version":         fmt.Sprint(connectivity.ApiVersion20190510),
 			"quotaType":       did[1],
 			"quotaTypeId":     did[2],
 			"productName":     did[0],
@@ -1080,7 +1080,7 @@ func resourceApsaraStackAscmQuotaUpdate(d *schema.ResourceData, meta interface{}
 		}
 		request.Method = "POST"
 		request.Product = "Ascm"
-		request.Version = "2019-05-10"
+		request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 		request.ServiceCode = "ascm"
 		request.Domain = client.Domain
 		request.Scheme = "http"
@@ -1132,9 +1132,9 @@ func resourceApsaraStackAscmQuotaUpdate(d *schema.ResourceData, meta interface{}
 			"AccessKeySecret": client.SecretKey,
 			"Department":      client.Department,
 			"ResourceGroup":   client.ResourceGroup,
-			"Product":         "Ascm",
+			"Product":         connectivity.ApsaraStackAscmProduct,
 			"Action":          "UpdateQuota",
-			"Version":         "2019-05-10",
+			"Version":         fmt.Sprint(connectivity.ApiVersion20190510),
 			"quotaType":       did[1],
 			"quotaTypeId":     did[2],
 			"productName":     did[0],
@@ -1146,7 +1146,7 @@ func resourceApsaraStackAscmQuotaUpdate(d *schema.ResourceData, meta interface{}
 		}
 		request.Method = "POST"
 		request.Product = "Ascm"
-		request.Version = "2019-05-10"
+		request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 		request.ServiceCode = "ascm"
 		request.Domain = client.Domain
 		request.Scheme = "http"
@@ -1210,9 +1210,9 @@ func resourceApsaraStackAscmQuotaUpdate(d *schema.ResourceData, meta interface{}
 			"AccessKeySecret": client.SecretKey,
 			"Department":      client.Department,
 			"ResourceGroup":   client.ResourceGroup,
-			"Product":         "Ascm",
+			"Product":         connectivity.ApsaraStackAscmProduct,
 			"Action":          "UpdateQuota",
-			"Version":         "2019-05-10",
+			"Version":         fmt.Sprint(connectivity.ApiVersion20190510),
 			"quotaType":       did[1],
 			"quotaTypeId":     did[2],
 			"productName":     did[0],
@@ -1225,7 +1225,7 @@ func resourceApsaraStackAscmQuotaUpdate(d *schema.ResourceData, meta interface{}
 		}
 		request.Method = "POST"
 		request.Product = "Ascm"
-		request.Version = "2019-05-10"
+		request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 		request.ServiceCode = "ascm"
 		request.Domain = client.Domain
 		request.Scheme = "http"
@@ -1266,9 +1266,9 @@ func resourceApsaraStackAscmQuotaUpdate(d *schema.ResourceData, meta interface{}
 			"AccessKeySecret": client.SecretKey,
 			"Department":      client.Department,
 			"ResourceGroup":   client.ResourceGroup,
-			"Product":         "Ascm",
+			"Product":         connectivity.ApsaraStackAscmProduct,
 			"Action":          "UpdateQuota",
-			"Version":         "2019-05-10",
+			"Version":         fmt.Sprint(connectivity.ApiVersion20190510),
 			"quotaType":       did[1],
 			"quotaTypeId":     did[2],
 			"productName":     did[0],
@@ -1279,7 +1279,7 @@ func resourceApsaraStackAscmQuotaUpdate(d *schema.ResourceData, meta interface{}
 		}
 		request.Method = "POST"
 		request.Product = "Ascm"
-		request.Version = "2019-05-10"
+		request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 		request.ServiceCode = "ascm"
 		request.Domain = client.Domain
 		request.Scheme = "http"
@@ -1413,9 +1413,9 @@ func resourceApsaraStackAscmQuotaDelete(d *schema.ResourceData, meta interface{}
 			"RegionId":        client.RegionId,
 			"RegionName ":     client.RegionId,
 			"AccessKeySecret": client.SecretKey,
-			"Product":         "ascm",
+			"Product":         connectivity.ApsaraStackAscmProduct,
 			"Action":          "DeleteQuota",
-			"Version":         "2019-05-10",
+			"Version":         fmt.Sprint(connectivity.ApiVersion20190510),
 			"ProductName":     "ascm",
 			"productName":     did[0],
 			"QuotaType":       did[1],
@@ -1424,7 +1424,7 @@ func resourceApsaraStackAscmQuotaDelete(d *schema.ResourceData, meta interface{}
 
 		request.Method = "POST"
 		request.Product = "ascm"
-		request.Version = "2019-05-10"
+		request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 		request.ServiceCode = "ascm"
 		request.Domain = client.Domain
 		request.Scheme = "http"

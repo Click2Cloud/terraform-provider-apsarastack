@@ -66,16 +66,16 @@ func resourceApsaraStackAscmRamPolicyCreate(d *schema.ResourceData, meta interfa
 			"AccessKeySecret": client.SecretKey,
 			"Department":      client.Department,
 			"ResourceGroup":   client.ResourceGroup,
-			"Product":         "ascm",
+			"Product":         connectivity.ApsaraStackAscmProduct,
 			"Action":          "CreateRAMPolicy",
-			"Version":         "2019-05-10",
+			"Version":         fmt.Sprint(connectivity.ApiVersion20190510),
 			"policyName":      name,
 			"description":     description,
 			"policyDocument":  policyDoc,
 		}
 		request.Method = "POST"
 		request.Product = "ascm"
-		request.Version = "2019-05-10"
+		request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 		request.ServiceCode = "ascm"
 		request.Domain = client.Domain
 		if strings.ToLower(client.Config.Protocol) == "https" {
@@ -195,11 +195,11 @@ func resourceApsaraStackAscmRamPolicyUpdate(d *schema.ResourceData, meta interfa
 		"RegionId":          client.RegionId,
 		"AccessKeySecret":   client.SecretKey,
 		"AccessKeyId":       client.AccessKey,
-		"Product":           "ascm",
+		"Product":           connectivity.ApsaraStackAscmProduct,
 		"Department":        client.Department,
 		"ResourceGroup":     client.ResourceGroup,
 		"Action":            "UpdateRAMPolicy",
-		"Version":           "2019-05-10",
+		"Version":           fmt.Sprint(connectivity.ApiVersion20190510),
 		"ProductName":       "ascm",
 		"RamPolicyId":       did[1],
 		"NewPolicyName":     name,
@@ -209,7 +209,7 @@ func resourceApsaraStackAscmRamPolicyUpdate(d *schema.ResourceData, meta interfa
 	request.Domain = client.Domain
 	request.Method = "POST"
 	request.Product = "ascm"
-	request.Version = "2019-05-10"
+	request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 	request.ServiceCode = "ascm"
 	request.ApiName = "UpdateRAMPolicy"
 	request.RegionId = client.RegionId
@@ -260,16 +260,16 @@ func resourceApsaraStackAscmRamPolicyDelete(d *schema.ResourceData, meta interfa
 			"AccessKeyId":     client.AccessKey,
 			"Department":      client.Department,
 			"ResourceGroup":   client.ResourceGroup,
-			"Product":         "ascm",
+			"Product":         connectivity.ApsaraStackAscmProduct,
 			"Action":          "RemoveRAMPolicy",
-			"Version":         "2019-05-10",
+			"Version":         fmt.Sprint(connectivity.ApiVersion20190510),
 			"ProductName":     "ascm",
 			"ramPolicyId":     did[1],
 		}
 
 		request.Method = "POST"
 		request.Product = "ascm"
-		request.Version = "2019-05-10"
+		request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 		request.ServiceCode = "ascm"
 		request.Domain = client.Domain
 		if strings.ToLower(client.Config.Protocol) == "https" {

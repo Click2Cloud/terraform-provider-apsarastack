@@ -2,6 +2,7 @@ package apsarastack
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/responses"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ecs"
@@ -160,7 +161,7 @@ func dataSourceApsarastackAscmMeteringQueryEcsRead(d *schema.ResourceData, meta 
 	}
 	request.Method = "GET"
 	request.Product = "ascm"
-	request.Version = "2019-05-10"
+	request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 	if strings.ToLower(client.Config.Protocol) == "https" {
 		request.Scheme = "https"
 	} else {
@@ -171,7 +172,7 @@ func dataSourceApsarastackAscmMeteringQueryEcsRead(d *schema.ResourceData, meta 
 	request.Headers = map[string]string{"RegionId": client.RegionId}
 	request.QueryParams = map[string]string{
 		"AccessKeyId":     client.AccessKey,
-		"Product":         "ascm",
+		"Product":         connectivity.ApsaraStackAscmProduct,
 		"ProductName":     "ascm",
 		"AccessKeySecret": client.SecretKey,
 		"Department":      client.Department,
@@ -179,7 +180,7 @@ func dataSourceApsarastackAscmMeteringQueryEcsRead(d *schema.ResourceData, meta 
 		"RegionId":        client.RegionId,
 		"ApiName":         "MeteringWebQuery",
 		"Action":          "MeteringWebQuery",
-		"Version":         "2019-05-10",
+		"Version":         fmt.Sprint(connectivity.ApiVersion20190510),
 		"StartTime":       starttime,
 		"EndTime":         endtime,
 		"productName":     "ECS",

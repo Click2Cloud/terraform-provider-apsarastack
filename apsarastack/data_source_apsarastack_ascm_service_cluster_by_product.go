@@ -2,6 +2,7 @@ package apsarastack
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/responses"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ecs"
@@ -56,7 +57,7 @@ func dataSourceApsaraStackServiceClusterByProductRead(d *schema.ResourceData, me
 	}
 	request.Method = "GET"
 	request.Product = "ascm"
-	request.Version = "2019-05-10"
+	request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 	if strings.ToLower(client.Config.Protocol) == "https" {
 		request.Scheme = "https"
 	} else {
@@ -66,7 +67,7 @@ func dataSourceApsaraStackServiceClusterByProductRead(d *schema.ResourceData, me
 	request.ApiName = "GetClustersByProduct"
 	request.Headers = map[string]string{"RegionId": client.RegionId}
 	productName := d.Get("product_name").(string)
-	request.QueryParams = map[string]string{"AccessKeyId": client.AccessKey, "AccessKeySecret": client.SecretKey, "Product": "ascm", "RegionId": client.RegionId, "Department": client.Department, "ResourceGroup": client.ResourceGroup, "productName": productName, "Action": "GetClustersByProduct", "Version": "2019-05-10"}
+	request.QueryParams = map[string]string{"AccessKeyId": client.AccessKey, "AccessKeySecret": client.SecretKey, "Product": connectivity.ApsaraStackAscmProduct, "RegionId": client.RegionId, "Department": client.Department, "ResourceGroup": client.ResourceGroup, "productName": productName, "Action": "GetClustersByProduct", "Version": fmt.Sprint(connectivity.ApiVersion20190510)}
 	response := ClustersByProduct1{}
 
 	for {

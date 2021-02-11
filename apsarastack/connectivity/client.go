@@ -98,6 +98,7 @@ const (
 	ApiVersion20140515 = ApiVersion("2014-05-15")
 	ApiVersion20190510 = ApiVersion("2019-05-10")
 )
+const ApsaraStackAscmProduct = "ascm"
 
 const DefaultClientRetryCountSmall = 5
 
@@ -604,7 +605,7 @@ func (client *ApsaraStackClient) NewCommonRequest(product, serviceCode, schema s
 		request.QueryParams = map[string]string{"AccessKeySecret": client.SecretKey, "Product": "ecs", "Department": client.Department, "ResourceGroup": client.ResourceGroup, "Version": string(apiVersion)}
 	}
 	if strings.ToUpper(product) == "ASCM" {
-		request.QueryParams = map[string]string{"AccessKeySecret": client.SecretKey, "Product": "ascm", "Department": client.Department, "ResourceGroup": client.ResourceGroup, "Version": string(apiVersion)}
+		request.QueryParams = map[string]string{"AccessKeySecret": client.SecretKey, "Product": fmt.Sprint(ApiVersion20190510), "Department": client.Department, "ResourceGroup": client.ResourceGroup, "Version": string(apiVersion)}
 	}
 
 	request.AppendUserAgent(Terraform, TerraformVersion)
@@ -760,12 +761,12 @@ func (client *ApsaraStackClient) GetCallerIdentity() (string, error) {
 	request.ApiName = "GetUserInfo"
 	request.QueryParams = map[string]string{
 		"AccessKeySecret":  client.Config.SecretKey,
-		"Product":          "ascm",
+		"Product":          fmt.Sprint(ApiVersion20190510),
 		"Department":       client.Config.Department,
 		"ResourceGroup":    client.Config.ResourceGroup,
 		"RegionId":         client.RegionId,
 		"Action":           "GetAllNavigationInfo",
-		"Version":          "2019-05-10",
+		"Version":          fmt.Sprint(ApiVersion20190510),
 		"SignatureVersion": "1.0",
 	}
 	resp := responses.BaseResponse{}

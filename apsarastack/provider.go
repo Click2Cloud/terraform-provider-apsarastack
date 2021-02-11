@@ -1006,10 +1006,10 @@ func getResourceCredentials(config *connectivity.Config) (string, string, error)
 		request.SetHTTPSInsecure(config.Insecure)
 	}
 	request.RegionId = config.RegionId
-	request.Method = "GET"         // Set request method
-	request.Product = "ascm"       // Specify product
-	request.Domain = endpoint      // Location Service will not be enabled if the host is specified. For example, service with a Certification type-Bearer Token should be specified
-	request.Version = "2019-05-10" // Specify product version
+	request.Method = "GET"                                        // Set request method
+	request.Product = "ascm"                                      // Specify product
+	request.Domain = endpoint                                     // Location Service will not be enabled if the host is specified. For example, service with a Certification type-Bearer Token should be specified
+	request.Version = fmt.Sprint(connectivity.ApiVersion20190510) // Specify product version
 	// Set request scheme. Default: http
 	if strings.ToLower(config.Protocol) == "https" {
 		log.Printf("PROTOCOL SET TO HTTPS")
@@ -1024,12 +1024,12 @@ func getResourceCredentials(config *connectivity.Config) (string, string, error)
 	request.ApiName = "ListResourceGroup"
 	request.QueryParams = map[string]string{
 		"AccessKeySecret":   config.SecretKey,
-		"Product":           "ascm",
+		"Product":           connectivity.ApsaraStackAscmProduct,
 		"Department":        config.Department,
 		"ResourceGroup":     config.ResourceGroup,
 		"RegionId":          config.RegionId,
 		"Action":            "ListResourceGroup",
-		"Version":           "2019-05-10",
+		"Version":           fmt.Sprint(connectivity.ApiVersion20190510),
 		"SignatureVersion":  "1.0",
 		"resourceGroupName": config.ResourceSetName,
 	}

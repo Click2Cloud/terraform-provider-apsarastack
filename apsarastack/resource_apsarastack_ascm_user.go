@@ -111,9 +111,9 @@ func resourceApsaraStackAscmUserCreate(d *schema.ResourceData, meta interface{})
 		request.QueryParams = map[string]string{
 			"RegionId":         client.RegionId,
 			"AccessKeySecret":  client.SecretKey,
-			"Product":          "Ascm",
+			"Product":          connectivity.ApsaraStackAscmProduct,
 			"Action":           "AddUser",
-			"Version":          "2019-05-10",
+			"Version":          fmt.Sprint(connectivity.ApiVersion20190510),
 			"ProductName":      "ascm",
 			"loginName":        lname,
 			"displayName":      dname,
@@ -129,7 +129,7 @@ func resourceApsaraStackAscmUserCreate(d *schema.ResourceData, meta interface{})
 		}
 		request.Method = "POST"
 		request.Product = "Ascm"
-		request.Version = "2019-05-10"
+		request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 		request.ServiceCode = "ascm"
 		request.Domain = client.Domain
 		if strings.ToLower(client.Config.Protocol) == "https" {
@@ -198,11 +198,11 @@ func resourceApsaraStackAscmUserUpdate(d *schema.ResourceData, meta interface{})
 	request.QueryParams = map[string]string{
 		"RegionId":         client.RegionId,
 		"AccessKeySecret":  client.SecretKey,
-		"Product":          "ascm",
+		"Product":          connectivity.ApsaraStackAscmProduct,
 		"Department":       client.Department,
 		"ResourceGroup":    client.ResourceGroup,
 		"Action":           "ModifyUserInformation",
-		"Version":          "2019-05-10",
+		"Version":          fmt.Sprint(connectivity.ApiVersion20190510),
 		"ProductName":      "ascm",
 		"loginName":        lname,
 		"displayName":      dname,
@@ -216,7 +216,7 @@ func resourceApsaraStackAscmUserUpdate(d *schema.ResourceData, meta interface{})
 	request.Domain = client.Domain
 	request.Method = "POST"
 	request.Product = "ascm"
-	request.Version = "2019-05-10"
+	request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 	request.ServiceCode = "ascm"
 	if strings.ToLower(client.Config.Protocol) == "https" {
 		request.Scheme = "https"
@@ -311,16 +311,16 @@ func resourceApsaraStackAscmUserDelete(d *schema.ResourceData, meta interface{})
 		request.QueryParams = map[string]string{
 			"RegionId":        client.RegionId,
 			"AccessKeySecret": client.SecretKey,
-			"Product":         "ascm",
+			"Product":         connectivity.ApsaraStackAscmProduct,
 			"Action":          "RemoveUserByLoginName",
-			"Version":         "2019-05-10",
+			"Version":         fmt.Sprint(connectivity.ApiVersion20190510),
 			"ProductName":     "ascm",
 			"loginName":       d.Id(),
 		}
 
 		request.Method = "POST"
 		request.Product = "ascm"
-		request.Version = "2019-05-10"
+		request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 		request.ServiceCode = "ascm"
 		request.Domain = client.Domain
 		if strings.ToLower(client.Config.Protocol) == "https" {

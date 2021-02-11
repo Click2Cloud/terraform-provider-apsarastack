@@ -97,7 +97,7 @@ func dataSourceApsaraStackAscmOrganizationsRead(d *schema.ResourceData, meta int
 	}
 	request.Method = "GET"
 	request.Product = "ascm"
-	request.Version = "2019-05-10"
+	request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 	var parentId string
 	if v, ok := d.GetOk("parent_id"); ok {
 		parentId = fmt.Sprint(v.(int))
@@ -111,10 +111,10 @@ func dataSourceApsaraStackAscmOrganizationsRead(d *schema.ResourceData, meta int
 	request.QueryParams = map[string]string{
 		"AccessKeyId":     client.AccessKey,
 		"AccessKeySecret": client.SecretKey,
-		"Product":         "ascm",
+		"Product":         connectivity.ApsaraStackAscmProduct,
 		"RegionId":        client.RegionId,
 		"Action":          "GetOrganizationList",
-		"Version":         "2019-05-10",
+		"Version":         fmt.Sprint(connectivity.ApiVersion20190510),
 		"id":              parentId}
 	response := Organization{}
 

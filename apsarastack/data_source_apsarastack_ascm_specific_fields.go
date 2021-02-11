@@ -2,6 +2,7 @@ package apsarastack
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/responses"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ecs"
@@ -61,7 +62,7 @@ func dataSourceApsaraStackSpecificFieldsRead(d *schema.ResourceData, meta interf
 	}
 	request.Method = "POST"
 	request.Product = "ascm"
-	request.Version = "2019-05-10"
+	request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 	if strings.ToLower(client.Config.Protocol) == "https" {
 		request.Scheme = "https"
 	} else {
@@ -72,7 +73,7 @@ func dataSourceApsaraStackSpecificFieldsRead(d *schema.ResourceData, meta interf
 	request.Headers = map[string]string{"RegionId": client.RegionId}
 	resourceType := d.Get("resource_type").(string)
 	groupFiled := d.Get("group_filed").(string)
-	request.QueryParams = map[string]string{"AccessKeyId": client.AccessKey, "AccessKeySecret": client.SecretKey, "Product": "ascm", "RegionId": client.RegionId, "Department": client.Department, "ResourceGroup": client.ResourceGroup, "Action": "GroupCommonSpec", "Version": "2019-05-10", "resourceType": resourceType, "groupFiled": groupFiled}
+	request.QueryParams = map[string]string{"AccessKeyId": client.AccessKey, "AccessKeySecret": client.SecretKey, "Product": connectivity.ApsaraStackAscmProduct, "RegionId": client.RegionId, "Department": client.Department, "ResourceGroup": client.ResourceGroup, "Action": "GroupCommonSpec", "Version": fmt.Sprint(connectivity.ApiVersion20190510), "resourceType": resourceType, "groupFiled": groupFiled}
 	response := SpecificField{}
 
 	for {

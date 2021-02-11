@@ -115,7 +115,7 @@ func dataSourceApsaraStackAscmUsersRead(d *schema.ResourceData, meta interface{}
 	}
 	request.Method = "GET"
 	request.Product = "ascm"
-	request.Version = "2019-05-10"
+	request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 	if strings.ToLower(client.Config.Protocol) == "https" {
 		request.Scheme = "https"
 	} else {
@@ -132,10 +132,10 @@ func dataSourceApsaraStackAscmUsersRead(d *schema.ResourceData, meta interface{}
 		"AccessKeySecret": client.SecretKey,
 		"Department":      client.Department,
 		"ResourceGroup":   client.ResourceGroup,
-		"Product":         "ascm",
+		"Product":         connectivity.ApsaraStackAscmProduct,
 		"RegionId":        client.RegionId,
 		"Action":          "ListUsers",
-		"Version":         "2019-05-10",
+		"Version":         fmt.Sprint(connectivity.ApiVersion20190510),
 		"loginName":       loginName,
 	}
 

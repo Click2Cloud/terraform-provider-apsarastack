@@ -62,9 +62,9 @@ func resourceApsaraStackAscmRamRoleCreate(d *schema.ResourceData, meta interface
 			"AccessKeySecret":        client.SecretKey,
 			"Department":             client.Department,
 			"ResourceGroup":          client.ResourceGroup,
-			"Product":                "ascm",
+			"Product":                connectivity.ApsaraStackAscmProduct,
 			"Action":                 "CreateRole",
-			"Version":                "2019-05-10",
+			"Version":                fmt.Sprint(connectivity.ApiVersion20190510),
 			"ProductName":            "ascm",
 			"roleName":               name,
 			"description":            description,
@@ -74,7 +74,7 @@ func resourceApsaraStackAscmRamRoleCreate(d *schema.ResourceData, meta interface
 		}
 		request.Method = "POST"
 		request.Product = "ascm"
-		request.Version = "2019-05-10"
+		request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 		request.ServiceCode = "ascm"
 		request.Domain = client.Domain
 		if strings.ToLower(client.Config.Protocol) == "https" {
@@ -159,16 +159,16 @@ func resourceApsaraStackAscmRamRoleDelete(d *schema.ResourceData, meta interface
 		request.QueryParams = map[string]string{
 			"RegionId":        client.RegionId,
 			"AccessKeySecret": client.SecretKey,
-			"Product":         "ascm",
+			"Product":         connectivity.ApsaraStackAscmProduct,
 			"Action":          "RemoveRole",
-			"Version":         "2019-05-10",
+			"Version":         fmt.Sprint(connectivity.ApiVersion20190510),
 			"ProductName":     "ascm",
 			"roleName":        did[0],
 		}
 
 		request.Method = "POST"
 		request.Product = "ascm"
-		request.Version = "2019-05-10"
+		request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 		request.ServiceCode = "ascm"
 		request.Domain = client.Domain
 		if strings.ToLower(client.Config.Protocol) == "https" {

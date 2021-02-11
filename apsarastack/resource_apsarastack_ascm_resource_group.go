@@ -59,16 +59,16 @@ func resourceApsaraStackAscmResourceGroupCreate(d *schema.ResourceData, meta int
 		request.QueryParams = map[string]string{
 			"RegionId":            client.RegionId,
 			"AccessKeySecret":     client.SecretKey,
-			"Product":             "Ascm",
+			"Product":             connectivity.ApsaraStackAscmProduct,
 			"Action":              "CreateResourceGroup",
-			"Version":             "2019-05-10",
+			"Version":             fmt.Sprint(connectivity.ApiVersion20190510),
 			"ProductName":         "ascm",
 			"resource_group_name": name,
 			"organization_id":     organizationid,
 		}
 		request.Method = "POST"
 		request.Product = "Ascm"
-		request.Version = "2019-05-10"
+		request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 		request.ServiceCode = "ascm"
 		request.Domain = client.Domain
 		if strings.ToLower(client.Config.Protocol) == "https" {
@@ -141,15 +141,15 @@ func resourceApsaraStackAscmResourceGroupUpdate(d *schema.ResourceData, meta int
 		"AccessKeySecret":   client.SecretKey,
 		"Department":        client.Department,
 		"ResourceGroup":     client.ResourceGroup,
-		"Product":           "ascm",
+		"Product":           connectivity.ApsaraStackAscmProduct,
 		"Action":            "UpdateResourceGroup",
-		"Version":           "2019-05-10",
+		"Version":           fmt.Sprint(connectivity.ApiVersion20190510),
 		"resourceGroupName": name,
 		"id":                did[1],
 	}
 	request.Method = "POST"
 	request.Product = "ascm"
-	request.Version = "2019-05-10"
+	request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 	request.ServiceCode = "ascm"
 	request.Domain = client.Domain
 	if strings.ToLower(client.Config.Protocol) == "https" {
@@ -225,16 +225,16 @@ func resourceApsaraStackAscmResourceGroupDelete(d *schema.ResourceData, meta int
 		request.QueryParams = map[string]string{
 			"RegionId":          client.RegionId,
 			"AccessKeySecret":   client.SecretKey,
-			"Product":           "ascm",
+			"Product":           connectivity.ApsaraStackAscmProduct,
 			"Action":            "RemoveResourceGroup",
-			"Version":           "2019-05-10",
+			"Version":           fmt.Sprint(connectivity.ApiVersion20190510),
 			"ProductName":       "ascm",
 			"resourceGroupName": did[0],
 		}
 
 		request.Method = "POST"
 		request.Product = "ascm"
-		request.Version = "2019-05-10"
+		request.Version = fmt.Sprint(connectivity.ApiVersion20190510)
 		request.ServiceCode = "ascm"
 		request.Domain = client.Domain
 		if strings.ToLower(client.Config.Protocol) == "https" {
